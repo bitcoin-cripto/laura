@@ -106,30 +106,47 @@
   .mobile-menu a:hover{color:var(--gold);}
 
   /* ---------- HERO ---------- */
-  .hero{position:relative;min-height:100vh;background:var(--sage);display:flex;align-items:center;overflow:hidden;}
-  .hero::before{
-    content:"";position:absolute;inset:0;
-    background:radial-gradient(120% 90% at 78% 35%,rgba(167,195,184,.55),transparent 55%),
-               radial-gradient(80% 70% at 12% 90%,rgba(45,74,93,.28),transparent 60%);
-    pointer-events:none;
+  .hero{
+    position:relative;min-height:100vh;background:var(--sage);
+    display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
   }
-  .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;width:100%;max-width:1180px;margin:0 auto;padding:120px 32px 80px;}
-  .hero-copy{max-width:540px;}
-  .hero-copy .eyebrow{color:rgba(253,251,246,.75);}
-  .hero-name{font-size:clamp(3.6rem,9vw,6.6rem);color:var(--gold);margin:.18em 0 .35em;text-shadow:0 2px 30px rgba(46,59,53,.25);}
-  .hero-quote{font-size:clamp(1.45rem,2.7vw,2.1rem);color:var(--white);line-height:1.4;max-width:30ch;margin-bottom:1.6em;}
-  .hero-quote .mark{color:rgba(253,251,246,.55);}
+  /* left panel — copy */
+  .hero-copy-panel{
+    position:relative;z-index:2;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:120px clamp(24px,5vw,72px) 80px clamp(24px,6vw,90px);
+  }
+  .hero-copy-panel .eyebrow{color:rgba(253,251,246,.78);margin-bottom:.6em;}
+  .hero-name{font-size:clamp(3.2rem,7vw,6rem);color:var(--gold);margin:.1em 0 .4em;text-shadow:0 2px 30px rgba(46,59,53,.3);line-height:1.05;}
+  .hero-quote{font-size:clamp(1.25rem,2.2vw,1.8rem);color:var(--white);line-height:1.5;max-width:28ch;margin-bottom:1.8em;}
   .hero-actions{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
   .hero-actions .btn-earth{background:var(--gold);color:#3c3320;box-shadow:0 14px 30px -14px rgba(0,0,0,.45);}
   .hero-actions .btn-earth:hover{background:#d9bd83;}
-  .hero-media{position:relative;display:flex;justify-content:center;align-items:center;}
-  .portrait{position:relative;width:100%;}
-  .portrait::before{display:none;}
-  .portrait img{
-    position:relative;width:100%;height:100%;object-fit:contain;object-position:50% 100%;
-    filter:drop-shadow(0 28px 40px rgba(45,74,93,.35));
+  /* right panel — full-bleed photo with brush-stroke mask */
+  .hero-photo-panel{
+    position:relative;overflow:hidden;
   }
-  .scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
+  .hero-photo-panel img{
+    width:100%;height:100%;object-fit:cover;object-position:center top;
+    display:block;
+  }
+  /* brush-stroke mask: SVG clip applied as -webkit-mask */
+  .hero-photo-panel::before{
+    content:"";
+    position:absolute;inset:0;z-index:2;
+    background:var(--sage);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L28,0 C22,12 18,30 20,50 C22,70 26,88 24,100 L0,100Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L28,0 C22,12 18,30 20,50 C22,70 26,88 24,100 L0,100Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  }
+  /* bristle / watercolor texture on the dividing edge */
+  .hero-photo-panel::after{
+    content:"";
+    position:absolute;top:0;left:0;width:18%;height:100%;z-index:3;
+    background:var(--sage);
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 600' preserveAspectRatio='none'%3E%3Cpath d='M55,0 C48,40 52,80 46,120 C40,160 50,200 44,240 C38,280 52,320 46,360 C40,400 54,440 48,480 C42,520 50,560 55,600 L60,600 L60,0Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 600' preserveAspectRatio='none'%3E%3Cpath d='M55,0 C48,40 52,80 46,120 C40,160 50,200 44,240 C38,280 52,320 46,360 C40,400 54,440 48,480 C42,520 50,560 55,600 L60,600 L60,0Z'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat;
+  }
+  .scroll-cue{position:absolute;bottom:30px;left:25%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
   .scroll-cue .line{width:1px;height:46px;background:linear-gradient(rgba(253,251,246,.7),transparent);animation:cue 2.4s ease-in-out infinite;}
   @keyframes cue{0%,100%{opacity:.3;transform:scaleY(.7);}50%{opacity:1;transform:scaleY(1);}}
 
@@ -243,6 +260,16 @@
   .modal-price .amt{font-size:2.6rem;color:var(--sage-dark);line-height:1;}
   .modal-price .lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);}
 
+  /* ---------- CONVERSAMOS ---------- */
+  .conversamos{background:var(--sage);padding:80px 0 90px;}
+  .conversamos .sec-head h2{color:var(--white);}
+  .conversamos .sec-head .eyebrow{color:rgba(253,251,246,.75);}
+  .conv-body{max-width:700px;margin:0 auto;text-align:center;}
+  .conv-body p{font-size:1.22rem;color:rgba(253,251,246,.9);margin-bottom:1.2em;line-height:1.65;}
+  .conv-cta{margin-top:2em;display:flex;justify-content:center;}
+  .conv-cta .btn-earth{background:var(--gold);color:#3c3320;box-shadow:0 14px 30px -14px rgba(0,0,0,.4);}
+  .conv-cta .btn-earth:hover{background:#d9bd83;}
+
   /* ---------- reveal ---------- */
   .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.3,1);}
   .reveal.in{opacity:1;transform:none;}
@@ -253,11 +280,6 @@
   /* ---------- responsive ---------- */
   @media(max-width:900px){
     body{font-size:20px;}
-    .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:130px;gap:24px;}
-    .hero-copy{margin:0 auto;}
-    .hero-quote{margin-left:auto;margin-right:auto;}
-    .hero-actions{justify-content:center;width:auto!important;}
-    .portrait{width:min(320px,72%);}
     .about-grid{grid-template-columns:1fr;gap:36px;}
     .about-photo{max-width:380px;margin:0 auto;}
     .card-grid,.card-grid.two{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
@@ -267,18 +289,29 @@
     .nav nav{display:none;}
     .nav-toggle{display:flex;}
     .mobile-menu{display:flex;}
-    .hero-quote{text-align:center!important;}
+    /* reset all inline fixed widths on mobile */
+    [style*="width"]{max-width:100%!important;width:auto!important;}
+    .sec-head h2{width:auto!important;}
+    .foot-grid .tag{width:auto!important;white-space:normal!important;}
+    /* hero mobile: foto arriba, texto abajo */
+    .hero{grid-template-columns:1fr;grid-template-rows:55vw auto;}
+    .hero-photo-panel{order:-1;height:55vw;}
+    .hero-photo-panel::before,.hero-photo-panel::after{display:none;}
+    .hero-copy-panel{
+      padding:32px 28px 60px;
+      text-align:center;
+      align-items:center;
+    }
+    .hero-name{font-size:clamp(2.8rem,11vw,4.2rem);}
+    .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
+    .hero-actions{justify-content:center;}
+    .scroll-cue{left:50%;bottom:16px;}
   }
   @media(max-width:560px){
     .wrap{padding:0 22px;}
     .form-row{grid-template-columns:1fr;}
     .modal-foot{flex-direction:column;align-items:stretch;}
     .modal-foot .btn-earth{justify-content:center;}
-    /* fix inline fixed widths that overflow on mobile */
-    [style*="width"]{max-width:100%!important;width:auto!important;}
-    .hero-copy{width:100%!important;}
-    .sec-head h2{width:auto!important;}
-    .foot-grid .tag{width:auto!important;white-space:normal!important;}
   }
   @media(prefers-reduced-motion:reduce){
     .reveal{opacity:1;transform:none;transition:none;}
@@ -321,8 +354,9 @@
   <nav>
     <a href="#inicio" style="font-size:15px">Inicio</a>
     <a href="#sobre" style="font-size: 15px">Laura</a>
-    <a href="#retiros" style="font-size: 15px">Retiros</a>
-    <a href="#reserva" style="font-size: 15px">Reserva</a>
+    <a href="#retiros" style="font-size:15px">Retiros</a>
+    <a href="#conversamos" style="font-size:15px">¿Conversamos?</a>
+    <a href="#reserva" style="font-size:15px">Reserva</a>
     <a href="#contacto" style="font-size:15px">Escríbeme</a>
   </nav>
   <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
@@ -335,29 +369,27 @@
   <a href="#inicio" class="mobile-link">Inicio</a>
   <a href="#sobre" class="mobile-link">Laura</a>
   <a href="#retiros" class="mobile-link">Retiros</a>
+  <a href="#conversamos" class="mobile-link">¿Conversamos?</a>
   <a href="#reserva" class="mobile-link">Reserva</a>
   <a href="#contacto" class="mobile-link">Escríbeme</a>
 </div>
 
 <!-- ===================== HERO ===================== -->
 <section class="hero" id="inicio" data-screen-label="Hero">
-  <div class="hero-inner">
-    <div class="hero-copy" style="width:533px">
-      <span class="eyebrow" style="font-size: 15px; color: rgb(255, 255, 255); font-weight: 600; letter-spacing: 5.5px; padding: 0px 1px 0px 0px">Conversaciones y meditaciones<br>sobre la naturaleza de la realidad</span>
-      <h1 class="hero-name script" style="color:#ffffff;font-family:'Roboto',sans-serif">Laura Fernández</h1>
-      <p class="hero-quote quote">«En la ignorancia soy alguien.            En la comprensión soy nadie.           En el amor soy todo.»</p>
-      <div class="hero-actions" style="width: 233px; justify-content: center">
-        <a href="#retiros" class="btn btn-earth" style="font-family: &quot;Helvetica&quot;; color: rgb(255, 255, 255)">Retiros</a>
-
-      </div>
-    </div>
-    <div class="hero-media">
-      <div class="portrait">
-        <img src="assets/laura-transp.png" alt="Retrato de Laura Fernández" style="width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(45,74,93,.35))" />
-      </div>
+  <!-- left: copy -->
+  <div class="hero-copy-panel">
+    <span class="eyebrow" style="font-size:15px;letter-spacing:5px">Conversaciones sobre la naturaleza de la realidad</span>
+    <h1 class="hero-name script">Laura Fernández</h1>
+    <p class="hero-quote quote">«En la ignorancia soy alguien. En la comprensión soy nadie. En el amor soy todo.»</p>
+    <div class="hero-actions">
+      <a href="#retiros" class="btn btn-earth">Retiros</a>
     </div>
   </div>
-
+  <!-- right: full-bleed photo with brush-stroke edge -->
+  <div class="hero-photo-panel">
+    <img src="laura_casa.jpg" alt="Laura Fernández" />
+  </div>
+  <div class="scroll-cue" aria-hidden="true"><div class="line"></div></div>
 </section>
 
 <!-- brush: sage -> cream -->
@@ -498,9 +530,31 @@
   </div>
 </section>
 
-<!-- brush: cream -> sage-dark -->
+<!-- brush: cream -> sage -->
+<div class="brush" style="background:var(--sage)" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,82 C1270,60 1050,96 810,84 C570,72 330,98 -110,82 Z"></path><ellipse cx="210" cy="106" rx="42" ry="6"></ellipse><ellipse cx="560" cy="118" rx="30" ry="5"></ellipse><ellipse cx="930" cy="102" rx="38" ry="6"></ellipse><ellipse cx="1250" cy="114" rx="30" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== ¿CONVERSAMOS? ===================== -->
+<section class="section conversamos" id="conversamos" data-screen-label="¿Conversamos?">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size:15px">Sesión gratuita</span>
+      <h2>¿Conversamos?</h2>
+    </div>
+    <div class="conv-body reveal d1">
+      <p>El mayor obstáculo es intentar resolver las dudas de la mente desde la propia mente. No hace falta que pases por esto a solas.</p>
+      <p>Puedes reservar una sesión online de 30 minutos para hablar de lo que necesites, sin filtros ni compromisos. Selecciona el momento que prefieras y nos tomamos un té virtual mientras comentamos lo que desees.</p>
+      <div class="conv-cta">
+        <a href="#contacto" class="btn btn-earth">Reserva tu cita</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- brush: sage -> sage-dark -->
 <div class="brush" style="background:#2d4a5d;margin-bottom:-2px" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,80 C1250,108 1010,70 770,90 C545,110 300,74 -110,100 Z"></path><ellipse cx="160" cy="112" rx="50" ry="7"></ellipse><ellipse cx="500" cy="124" rx="30" ry="5"></ellipse><ellipse cx="860" cy="106" rx="42" ry="6"></ellipse><ellipse cx="1160" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1350" cy="102" rx="24" ry="5"></ellipse></g></svg>
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#7aaec4"><path d="M-110,-70 L1550,-70 L1550,80 C1250,108 1010,70 770,90 C545,110 300,74 -110,100 Z"></path><ellipse cx="160" cy="112" rx="50" ry="7"></ellipse><ellipse cx="500" cy="124" rx="30" ry="5"></ellipse><ellipse cx="860" cy="106" rx="42" ry="6"></ellipse><ellipse cx="1160" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1350" cy="102" rx="24" ry="5"></ellipse></g></svg>
 </div>
 
 <!-- ===================== FOOTER ===================== -->
