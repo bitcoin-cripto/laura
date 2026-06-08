@@ -72,12 +72,21 @@
   /* ---------- nav ---------- */
   header.nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px clamp(20px,4vw,52px);
+    display:flex;align-items:flex-start;justify-content:space-between;
+    padding:0 clamp(20px,4vw,52px) 10px;
     transition:background .5s ease,box-shadow .5s ease,padding .5s ease;
   }
-  header.nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(45,74,93,.1);padding:12px clamp(20px,4vw,52px);}
-  .nav .logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:1.7rem;color:var(--white);transition:color .5s ease;}
+  header.nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(45,74,93,.1);padding:8px clamp(20px,4vw,52px);}
+  .nav .logo{display:flex;align-items:flex-start;}
+  .nav-logo-img img{height:210px;width:auto;transition:opacity .5s ease,height .4s ease;}
+  header.nav.scrolled .nav-logo-img img{opacity:.85;}
+  .nav-logo-img .logo-dark{display:none;}
+  header.nav.scrolled .nav-logo-img .logo-white{display:none;}
+  header.nav.scrolled .nav-logo-img .logo-dark{display:block;}
+  header.nav nav{padding-top:32px;}
+  header.nav.scrolled nav{padding-top:0;}
+  header.nav .nav-toggle{margin-top:28px;}
+  header.nav.scrolled .nav-toggle{margin-top:0;}
   header.nav.scrolled .logo{color:var(--sage-dark);}
   .nav nav{display:flex;gap:34px;}
   .nav nav a{
@@ -108,41 +117,34 @@
   /* ---------- HERO ---------- */
   .hero{
     position:relative;min-height:100vh;background:var(--sage);
-    display:grid;grid-template-columns:1fr 1fr;overflow:hidden;
+    display:grid;grid-template-columns:1fr 1fr;overflow:hidden;direction:rtl;
   }
-  /* left panel — copy */
   .hero-copy-panel{
-    position:relative;z-index:2;
-    display:flex;flex-direction:column;justify-content:center;
-    padding:120px clamp(24px,5vw,72px) 80px clamp(24px,6vw,90px);
+    position:relative;z-index:2;direction:ltr;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+    padding:120px clamp(24px,6vw,90px) 80px clamp(24px,5vw,72px);
   }
   .hero-copy-panel .eyebrow{color:rgba(253,251,246,.78);margin-bottom:.6em;}
-  .hero-name{font-size:clamp(3.2rem,7vw,6rem);color:var(--gold);margin:.1em 0 .4em;text-shadow:0 2px 30px rgba(46,59,53,.3);line-height:1.05;}
+  .hero-name{font-size:clamp(3.2rem,7vw,6rem);color:#ffffff;margin:.1em 0 .4em;text-shadow:0 2px 30px rgba(46,59,53,.3);line-height:1.05;}
   .hero-quote{font-size:clamp(1.25rem,2.2vw,1.8rem);color:var(--white);line-height:1.5;max-width:28ch;margin-bottom:1.8em;}
   .hero-actions{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
   .hero-actions .btn-earth{background:var(--gold);color:#3c3320;box-shadow:0 14px 30px -14px rgba(0,0,0,.45);}
   .hero-actions .btn-earth:hover{background:#d9bd83;}
-  /* right panel — full-bleed photo with painted-edge clip */
   .hero-photo-panel{
-    position:relative;overflow:hidden;
-    clip-path:polygon(8% 0%, 100% 0%, 100% 100%, 6% 100%, 4% 85%, 7% 70%, 3% 55%, 7% 40%, 4% 25%, 8% 10%);
+    position:relative;overflow:hidden;direction:ltr;
+    clip-path:polygon(0% 0%,93% 0%,95% 10%,92% 25%,96% 40%,93% 55%,97% 70%,94% 85%,96% 100%,0% 100%);
   }
-  .hero-photo-panel img{
-    width:100%;height:100%;object-fit:cover;object-position:center top;
-    display:block;
-  }
-  /* painted overlap — sage wedge over left edge */
+  .hero-photo-panel img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
   .hero-photo-panel::before{
-    content:"";
-    position:absolute;top:0;left:0;width:10%;height:100%;z-index:2;
-    background:linear-gradient(to right, var(--sage) 40%, transparent 100%);
+    content:"";position:absolute;top:0;right:0;width:12%;height:100%;z-index:2;
+    background:linear-gradient(to left,var(--sage) 30%,transparent 100%);
     pointer-events:none;
   }
-  .scroll-cue{position:absolute;bottom:30px;left:25%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
+  .scroll-cue{position:absolute;bottom:30px;left:75%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
   .scroll-cue .line{width:1px;height:46px;background:linear-gradient(rgba(253,251,246,.7),transparent);animation:cue 2.4s ease-in-out infinite;}
   @keyframes cue{0%,100%{opacity:.3;transform:scaleY(.7);}50%{opacity:1;transform:scaleY(1);}}
 
-  /* ---------- brush dividers ---------- */
+    /* ---------- brush dividers ---------- */
   .brush{display:block;width:100%;line-height:0;position:relative;margin:-1px 0;z-index:1;}
   .brush svg{display:block;width:100%;height:auto;}
   .section{position:relative;}
@@ -257,7 +259,7 @@
   .conversamos .sec-head h2{color:var(--white);}
   .conversamos .sec-head .eyebrow{color:rgba(253,251,246,.75);}
   .conv-body{max-width:700px;margin:0 auto;text-align:center;}
-  .conv-body p{font-size:1.22rem;color:rgba(253,251,246,.9);margin-bottom:1.2em;line-height:1.65;}
+  .conv-body p{font-size:1.55rem;color:rgba(253,251,246,.9);margin-bottom:1.2em;line-height:1.65;font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;}
   .conv-cta{margin-top:2em;display:flex;justify-content:center;}
   .conv-cta .btn-earth{background:var(--gold);color:#3c3320;box-shadow:0 14px 30px -14px rgba(0,0,0,.4);}
   .conv-cta .btn-earth:hover{background:#d9bd83;}
@@ -298,7 +300,20 @@
     .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
     .hero-actions{justify-content:center;}
     .scroll-cue{left:50%;bottom:16px;}
-  }
+    /* hero mobile: foto arriba a pantalla completa, texto debajo */
+    .hero{grid-template-columns:1fr;grid-template-rows:80vw auto;}
+    .hero-photo-panel{order:-1;clip-path:none;height:80vw;}
+    .hero-photo-panel::before{display:none;}
+    .hero-brush-divider{display:none;}
+    .hero-photo-panel img{object-position:center 15%;}
+    .hero-copy-panel{
+      padding:36px 28px 60px;
+      text-align:center;align-items:center;
+    }
+    .hero-name{font-size:clamp(2.8rem,11vw,4.2rem);}
+    .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
+    .hero-actions{justify-content:center;}
+    .scroll-cue{display:none;}
   @media(max-width:560px){
     .wrap{padding:0 22px;}
     .form-row{grid-template-columns:1fr;}
@@ -342,7 +357,10 @@
 
 <!-- ===================== NAV ===================== -->
 <header class="nav" id="nav">
-  <a href="#inicio" class="logo" style="font-family:'Dancing Script',cursive">Laura&nbsp;Fernández</a>
+  <a href="#inicio" class="logo nav-logo-img">
+    <img class="logo-white" src="logo_blanco_transp.png" alt="Laura Fernandez" />
+    <img class="logo-dark" src="logo-transp.png" alt="Laura Fernandez" />
+  </a>
   <nav>
     <a href="#inicio" style="font-size:15px">Inicio</a>
     <a href="#sobre" style="font-size: 15px">Laura</a>
@@ -368,18 +386,16 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero" id="inicio" data-screen-label="Hero">
-  <!-- left: copy -->
   <div class="hero-copy-panel">
-    <span class="eyebrow" style="font-size:15px;letter-spacing:5px">Conversaciones sobre la naturaleza de la realidad</span>
+    <span class="eyebrow" style="font-size:19px;letter-spacing:5px">Conversaciones sobre<br>la naturaleza de la realidad</span>
     <h1 class="hero-name script">Laura Fernández</h1>
-    <p class="hero-quote quote">«En la ignorancia soy alguien. En la comprensión soy nadie. En el amor soy todo.»</p>
+    <p class="hero-quote quote">«En la ignorancia soy alguien.<br>En la comprensión soy nadie.<br>En el amor soy todo.»</p>
     <div class="hero-actions">
-      <a href="#retiros" class="btn btn-earth">Retiros</a>
+      <a href="#retiros" class="btn btn-earth" style="color:#fff">Retiros</a>
     </div>
   </div>
-  <!-- right: full-bleed photo with brush-stroke edge -->
   <div class="hero-photo-panel">
-    <img src="laura_casa.jpg" alt="Laura Fernández" />
+    <img src="laura_desenfocada.png" alt="Laura Fernández" />
   </div>
   <div class="scroll-cue" aria-hidden="true"><div class="line"></div></div>
 </section>
@@ -395,9 +411,9 @@
     <div class="about-text reveal d1" style="direction:ltr;max-width:720px;margin:0 auto">
       <span class="eyebrow" style="font-size: 15px">Sobre Laura</span>
       <h2 style="text-align: left">Un señalamiento directo<br />e impersonal</h2>
-      <p class="lead" style="font-family: &quot;Inter&quot;; font-size: 18px; text-align: left">Desde muy joven busqué alivio en la espiritualidad y exploré multitud de vías en profundidad durante años.</p>
-      <p style="font-family: &quot;Inter&quot;; font-size: 18px; text-align: left">En algún momento se hizo evidente que las enseñanzas dirigidas a la persona confirmaban de un modo u otro la separación que es origen de la insatisfacción y de la búsqueda.</p>
-      <p style="font-family: &quot;Roboto&quot;; font-size: 18px; text-align: left; width: 613px">En mis encuentros online, retiros y sesiones individuales señalo de forma directa e impersonal los asideros y trampas que siguen sosteniendo la ilusión de separación y que, aparentemente, velan la completud atemporal e incondicional que ya es.</p>
+      <p class="lead" style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">Desde muy joven busqué alivio en la espiritualidad y exploré multitud de vías en profundidad durante años.</p>
+      <p style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">En algún momento se hizo evidente que las enseñanzas dirigidas a la persona confirmaban de un modo u otro la separación que es origen de la insatisfacción y de la búsqueda.</p>
+      <p style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">En mis encuentros online, retiros y sesiones individuales señalo de forma directa e impersonal los asideros y trampas que siguen sosteniendo la ilusión de separación y que, aparentemente, velan la completud atemporal e incondicional que ya es.</p>
     </div>
   </div>
 </section>
@@ -433,6 +449,28 @@
       <p style="font-size: 25px">El encuentro no precisa desplazamiento: la atención está siempre aquí.</p>
     </div>
     <div class="card-grid two" id="grid-online"></div>
+  </div>
+</section>
+
+<!-- brush: cream -> sage -->
+<div class="brush" style="background:var(--sage)" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,82 C1270,60 1050,96 810,84 C570,72 330,98 -110,82 Z"></path><ellipse cx="210" cy="106" rx="42" ry="6"></ellipse><ellipse cx="560" cy="118" rx="30" ry="5"></ellipse><ellipse cx="930" cy="102" rx="38" ry="6"></ellipse><ellipse cx="1250" cy="114" rx="30" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== ¿CONVERSAMOS? ===================== -->
+<section class="section conversamos" id="conversamos" data-screen-label="¿Conversamos?">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size:15px">Sesión gratuita</span>
+      <h2>¿Conversamos?</h2>
+    </div>
+    <div class="conv-body reveal d1">
+      <p>El mayor obstáculo es intentar resolver las dudas de la mente desde la propia mente. No hace falta que pases por esto a solas.</p>
+      <p>Puedes reservar una <strong>sesión online de 30 minutos gratuíta</strong> para hablar de lo que necesites, sin filtros ni compromisos. Selecciona el momento que prefieras y nos tomamos un té virtual mientras comentamos lo que desees.</p>
+      <div class="conv-cta">
+        <a href="#contacto" class="btn btn-earth" style="color:#fff">Reserva tu cita</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -522,28 +560,6 @@
   </div>
 </section>
 
-<!-- brush: cream -> sage -->
-<div class="brush" style="background:var(--sage)" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,82 C1270,60 1050,96 810,84 C570,72 330,98 -110,82 Z"></path><ellipse cx="210" cy="106" rx="42" ry="6"></ellipse><ellipse cx="560" cy="118" rx="30" ry="5"></ellipse><ellipse cx="930" cy="102" rx="38" ry="6"></ellipse><ellipse cx="1250" cy="114" rx="30" ry="5"></ellipse></g></svg>
-</div>
-
-<!-- ===================== ¿CONVERSAMOS? ===================== -->
-<section class="section conversamos" id="conversamos" data-screen-label="¿Conversamos?">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow" style="font-size:15px">Sesión gratuita</span>
-      <h2>¿Conversamos?</h2>
-    </div>
-    <div class="conv-body reveal d1">
-      <p>El mayor obstáculo es intentar resolver las dudas de la mente desde la propia mente. No hace falta que pases por esto a solas.</p>
-      <p>Puedes reservar una sesión online de 30 minutos para hablar de lo que necesites, sin filtros ni compromisos. Selecciona el momento que prefieras y nos tomamos un té virtual mientras comentamos lo que desees.</p>
-      <div class="conv-cta">
-        <a href="#contacto" class="btn btn-earth">Reserva tu cita</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- brush: sage -> sage-dark -->
 <div class="brush" style="background:#2d4a5d;margin-bottom:-2px" aria-hidden="true">
   <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#7aaec4"><path d="M-110,-70 L1550,-70 L1550,80 C1250,108 1010,70 770,90 C545,110 300,74 -110,100 Z"></path><ellipse cx="160" cy="112" rx="50" ry="7"></ellipse><ellipse cx="500" cy="124" rx="30" ry="5"></ellipse><ellipse cx="860" cy="106" rx="42" ry="6"></ellipse><ellipse cx="1160" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1350" cy="102" rx="24" ry="5"></ellipse></g></svg>
@@ -553,7 +569,7 @@
 <footer class="site" data-screen-label="Footer">
   <div class="wrap foot-grid">
     <div class="logo">Laura Fernández</div>
-    <p class="tag" style="font-weight: 500; width: 500px; font-size: 25px; height: 50px; line-height: 1.6; text-align: center; white-space: nowrap">Señalando lo que siempre ha estado aquí.</p>
+    <p class="tag" style="font-weight: 500; width: 500px; font-size: 25px; height: 50px; line-height: 1.6; text-align: center; white-space: nowrap">Señalando lo que siempre ha estado aquí</p>
     <div class="foot-links">
       <a href="#inicio" style="font-size: 15px">Inicio</a>
       <a href="#retiros" style="font-size: 15px">Retiros</a>
