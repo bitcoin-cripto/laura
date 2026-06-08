@@ -87,7 +87,23 @@
   header.nav.scrolled nav a{color:var(--ink-soft);}
   .nav nav a:hover{opacity:1;color:var(--white);}
   header.nav.scrolled nav a:hover{color:var(--earth-deep);}
-  .nav-toggle{display:none;}
+  .nav-toggle{
+    display:none;flex-direction:column;justify-content:center;gap:5px;
+    width:36px;height:36px;background:none;border:none;cursor:pointer;padding:4px;
+  }
+  .nav-toggle span{display:block;height:2px;border-radius:2px;background:rgba(255,255,255,.9);transition:transform .35s ease,opacity .35s ease,background .5s ease;}
+  header.nav.scrolled .nav-toggle span{background:var(--sage-dark);}
+  header.nav.open .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  header.nav.open .nav-toggle span:nth-child(2){opacity:0;}
+  header.nav.open .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .mobile-menu{
+    display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:49;
+    background:rgba(45,74,93,.97);flex-direction:column;align-items:center;justify-content:center;gap:32px;
+    opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;
+  }
+  .mobile-menu.open{opacity:1;visibility:visible;}
+  .mobile-menu a{font-size:1.5rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(253,251,246,.9);transition:color .3s ease;}
+  .mobile-menu a:hover{color:var(--gold);}
 
   /* ---------- HERO ---------- */
   .hero{position:relative;min-height:100vh;background:var(--sage);display:flex;align-items:center;overflow:hidden;}
@@ -249,6 +265,9 @@
   }
   @media(max-width:768px){
     .nav nav{display:none;}
+    .nav-toggle{display:flex;}
+    .mobile-menu{display:flex;}
+    .hero-quote{text-align:center!important;}
   }
   @media(max-width:560px){
     .wrap{padding:0 22px;}
@@ -306,7 +325,19 @@
     <a href="#reserva" style="font-size: 15px">Reserva</a>
     <a href="#contacto" style="font-size:15px">Escríbeme</a>
   </nav>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- menú móvil overlay -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#inicio" class="mobile-link">Inicio</a>
+  <a href="#sobre" class="mobile-link">Laura</a>
+  <a href="#retiros" class="mobile-link">Retiros</a>
+  <a href="#reserva" class="mobile-link">Reserva</a>
+  <a href="#contacto" class="mobile-link">Escríbeme</a>
+</div>
 
 <!-- ===================== HERO ===================== -->
 <section class="hero" id="inicio" data-screen-label="Hero">
@@ -641,6 +672,18 @@ fileInput.addEventListener('change', ()=>{
 const nav = document.getElementById('nav');
 const onScroll = ()=>{ nav.classList.toggle('scrolled', window.scrollY > 40); };
 onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+/* ---------- mobile menu ---------- */
+const navToggle = document.getElementById('nav-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+function toggleMenu(force){
+  const open = force !== undefined ? force : !nav.classList.contains('open');
+  nav.classList.toggle('open', open);
+  mobileMenu.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+navToggle.addEventListener('click', ()=> toggleMenu());
+document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', ()=> toggleMenu(false)));
 
 /* ---------- reveal on scroll ---------- */
 const io = new IntersectionObserver((entries)=>{
