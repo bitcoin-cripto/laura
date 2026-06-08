@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Laura Fernández · Maestra de no dualidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Dancing+Script:wght@500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --sage:#7aaec4;
+    --sage-deep:#5990ad;
+    --sage-soft:#a3c4d6;
+    --sage-wash:#cde0ec;
+    --sage-dark:#2d4a5d;
+    --cream:#f5f0e8;
+    --cream-warm:#efe6d6;
+    --white:#fdfbf6;
+    --earth:#c4956a;
+    --earth-deep:#a8794f;
+    --gold:#cba96b;
+    --ink:#3a3c36;
+    --ink-soft:#6f6f64;
+    --ink-onsage:#1e3244;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Cormorant Garamond",Georgia,serif;
+    color:var(--ink);
+    background:var(--cream);
+    font-size:21px;
+    line-height:1.6;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- typography helpers ---------- */
+  .script{font-family:"Dancing Script",cursive;font-weight:600;line-height:1;}
+  .eyebrow{
+    font-size:.82rem;letter-spacing:.32em;text-transform:uppercase;
+    font-weight:600;color:var(--earth-deep);
+  }
+  .display{font-weight:300;line-height:1.08;letter-spacing:.005em;}
+  .quote{font-style:italic;font-weight:300;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55em;cursor:pointer;
+    font-family:"Cormorant Garamond",serif;font-size:1.05rem;
+    letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+    padding:.85em 2em;border:none;border-radius:40px;
+    transition:transform .35s ease,background .35s ease,color .35s ease,box-shadow .35s ease;
+  }
+  .btn-earth{background:var(--earth);color:var(--white);box-shadow:0 10px 26px -12px rgba(168,121,79,.7);}
+  .btn-earth:hover{background:var(--earth-deep);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--sage-dark);border:1.5px solid var(--sage-deep);}
+  .btn-ghost:hover{background:var(--sage-deep);color:var(--white);}
+  .btn-line{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+    color:var(--earth-deep);padding:.4em 0;position:relative;
+  }
+  .btn-line::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:100%;background:var(--earth);transform:scaleX(.4);transform-origin:left;transition:transform .4s ease;opacity:.6;}
+  .btn-line:hover::after{transform:scaleX(1);opacity:1;}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px clamp(20px,4vw,52px);
+    transition:background .5s ease,box-shadow .5s ease,padding .5s ease;
+  }
+  header.nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(45,74,93,.1);padding:12px clamp(20px,4vw,52px);}
+  .nav .logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:1.7rem;color:var(--white);transition:color .5s ease;}
+  header.nav.scrolled .logo{color:var(--sage-dark);}
+  .nav nav{display:flex;gap:34px;}
+  .nav nav a{
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+    color:rgba(255,255,255,.92);transition:color .5s ease,opacity .3s ease;opacity:.9;
+  }
+  header.nav.scrolled nav a{color:var(--ink-soft);}
+  .nav nav a:hover{opacity:1;color:var(--white);}
+  header.nav.scrolled nav a:hover{color:var(--earth-deep);}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;min-height:100vh;background:var(--sage);display:flex;align-items:center;overflow:hidden;}
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(120% 90% at 78% 35%,rgba(167,195,184,.55),transparent 55%),
+               radial-gradient(80% 70% at 12% 90%,rgba(45,74,93,.28),transparent 60%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;width:100%;max-width:1180px;margin:0 auto;padding:120px 32px 80px;}
+  .hero-copy{max-width:540px;}
+  .hero-copy .eyebrow{color:rgba(253,251,246,.75);}
+  .hero-name{font-size:clamp(3.6rem,9vw,6.6rem);color:var(--gold);margin:.18em 0 .35em;text-shadow:0 2px 30px rgba(46,59,53,.25);}
+  .hero-quote{font-size:clamp(1.45rem,2.7vw,2.1rem);color:var(--white);line-height:1.4;max-width:30ch;margin-bottom:1.6em;}
+  .hero-quote .mark{color:rgba(253,251,246,.55);}
+  .hero-actions{display:flex;align-items:center;gap:26px;flex-wrap:wrap;}
+  .hero-actions .btn-earth{background:var(--gold);color:#3c3320;box-shadow:0 14px 30px -14px rgba(0,0,0,.45);}
+  .hero-actions .btn-earth:hover{background:#d9bd83;}
+  .hero-media{position:relative;display:flex;justify-content:center;align-items:center;}
+  .portrait{position:relative;width:100%;}
+  .portrait::before{display:none;}
+  .portrait img{
+    position:relative;width:100%;height:100%;object-fit:contain;object-position:50% 100%;
+    filter:drop-shadow(0 28px 40px rgba(45,74,93,.35));
+  }
+  .scroll-cue{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
+  .scroll-cue .line{width:1px;height:46px;background:linear-gradient(rgba(253,251,246,.7),transparent);animation:cue 2.4s ease-in-out infinite;}
+  @keyframes cue{0%,100%{opacity:.3;transform:scaleY(.7);}50%{opacity:1;transform:scaleY(1);}}
+
+  /* ---------- brush dividers ---------- */
+  .brush{display:block;width:100%;line-height:0;position:relative;margin:-1px 0;z-index:1;}
+  .brush svg{display:block;width:100%;height:auto;}
+  .section{position:relative;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--cream);padding:30px 0 90px;}
+  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(36px,6vw,80px);align-items:center;}
+  .about-photo{position:relative;}
+  .about-photo img{width:100%;border-radius:0;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(45,74,93,.25));}
+  .about-photo .frame{position:absolute;inset:18px -18px -18px 18px;border:1px solid var(--sage-soft);border-radius:24px 24px 120px 120px/24px 24px 150px 150px;z-index:-1;}
+  .about-text h2{font-size:clamp(2.3rem,4.6vw,3.4rem);font-weight:300;line-height:1.1;margin:.32em 0 .55em;color:var(--sage-dark);}
+  .about-text p{font-size:1.22rem;color:var(--ink-soft);margin-bottom:1em;max-width:54ch;}
+  .about-text p .lead{color:var(--ink);font-style:italic;}
+
+  /* ---------- RETREATS ---------- */
+  .retreats{padding:40px 0 60px;}
+  .retreats.presencial{background:var(--white);}
+  .retreats.online{background:var(--cream-warm);}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 56px;}
+  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);margin:.5em 0 .35em;}
+  .sec-head p{font-size:1.18rem;color:var(--ink-soft);font-style:italic;}
+  .card-grid{display:grid;gap:30px;grid-template-columns:repeat(2,1fr);max-width:820px;margin:0 auto;}
+  .card-grid.two{grid-template-columns:repeat(2,1fr);max-width:820px;margin:0 auto;}
+  .card{
+    background:var(--cream);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:0 24px 50px -34px rgba(45,74,93,.55);border:1px solid rgba(122,174,196,.22);
+    transition:transform .5s ease,box-shadow .5s ease;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 34px 60px -30px rgba(45,74,93,.55);}
+  .card-img{height:210px;background-size:cover;background-position:center;position:relative;background-color:var(--sage-deep);}
+  .card-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(46,59,53,.35));}
+  .card-tag{position:absolute;top:14px;left:14px;z-index:2;background:rgba(253,251,246,.92);color:var(--earth-deep);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;padding:.45em 1em;border-radius:30px;}
+  .card-tag:empty{display:none;}
+  .card-body{padding:26px 26px 28px;display:flex;flex-direction:column;flex:1;}
+  .card-body h3{font-size:27px;font-weight:500;line-height:1.15;color:var(--sage-dark);margin-bottom:.5em;}
+  .card-meta{display:flex;flex-direction:column;gap:4px;margin-bottom:18px;}
+  .card-meta span{font-size:1.25rem;letter-spacing:.02em;color:var(--ink-soft);display:flex;align-items:center;gap:.6em;}
+  .card-meta span b{font-weight:600;color:var(--earth-deep);letter-spacing:.14em;text-transform:uppercase;font-size:13px;width:74px;flex-shrink:0;}
+  .card-actions{margin-top:auto;display:flex;gap:12px;align-items:center;}
+  .card-actions .btn{font-size:.78rem;padding:.7em 1.4em;}
+  .card-actions .btn-earth{flex:1;justify-content:center;}
+
+  /* ---------- PAGO ---------- */
+  .pago{background:linear-gradient(180deg,var(--sage-wash),#b8d9ea);padding:40px 0 90px;}
+  .pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:880px;margin:0 auto 36px;}
+  .pay-card{background:var(--white);border-radius:18px;padding:38px 34px;box-shadow:0 24px 50px -34px rgba(45,74,93,.5);border:1px solid rgba(255,255,255,.6);}
+  .pay-card h3{font-size:1.5rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-dark);margin-bottom:.2em;}
+  .pay-card .pay-sub{font-style:italic;color:var(--ink-soft);margin-bottom:22px;}
+  .pay-row{padding:14px 0;border-top:1px solid rgba(122,174,196,.3);}
+  .pay-row .k{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--earth-deep);margin-bottom:3px;}
+  .pay-row .v{font-size:1.2rem;color:var(--ink);}
+  .pay-row .v.pending{color:var(--ink-soft);font-style:italic;}
+  .pay-note{max-width:720px;margin:0 auto;text-align:center;font-size:1.18rem;font-style:italic;color:var(--sage-dark);background:rgba(253,251,246,.55);border-radius:16px;padding:26px 34px;}
+
+  /* ---------- CONTACTO ---------- */
+  .contacto{background:var(--cream);padding:40px 0 100px;}
+  .form-shell{max-width:760px;margin:0 auto;background:var(--white);border-radius:22px;padding:clamp(30px,5vw,56px);box-shadow:0 30px 60px -40px rgba(45,74,93,.55);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .field{display:flex;flex-direction:column;margin-bottom:22px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--sage-deep);margin-bottom:8px;}
+  .field input,.field select,.field textarea{
+    font-family:"Cormorant Garamond",serif;font-size:1.15rem;color:var(--ink);
+    background:var(--cream);border:1px solid rgba(122,174,196,.4);border-radius:12px;
+    padding:13px 16px;transition:border .3s ease,box-shadow .3s ease;width:100%;
+  }
+  .field textarea{resize:vertical;min-height:130px;}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--sage-deep);box-shadow:0 0 0 4px rgba(122,174,196,.18);}
+  .field .file{display:flex;align-items:center;gap:14px;background:var(--cream);border:1px dashed rgba(122,174,196,.6);border-radius:12px;padding:13px 16px;cursor:pointer;color:var(--ink-soft);font-style:italic;transition:border .3s ease,background .3s;}
+  .field .file:hover{border-color:var(--sage-deep);background:#f0ece2;}
+  .field .file input{display:none;}
+  .field .file .badge{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;font-style:normal;color:var(--earth-deep);border:1px solid var(--earth);border-radius:30px;padding:.4em 1em;}
+  .form-shell .submit-row{margin-top:8px;display:flex;justify-content:center;}
+  .form-shell .submit-row .btn-earth{padding:1em 3em;font-size:1rem;}
+
+  /* ---------- FOOTER ---------- */
+  footer.site{background:var(--sage-dark);color:rgba(253,251,246,.78);padding:80px 0 40px;position:relative;}
+  .foot-grid{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
+  .foot-grid .logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:2.8rem;color:var(--gold);}
+  .foot-grid .tag{font-size:1.3rem;font-style:italic;color:rgba(253,251,246,.85);max-width:30ch;}
+  .foot-links{display:flex;gap:30px;margin:14px 0 4px;flex-wrap:wrap;justify-content:center;}
+  .foot-links a{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(253,251,246,.7);transition:color .3s ease;}
+  .foot-links a:hover{color:var(--gold);}
+  .foot-rule{display:none;}
+  .copyright{font-size:.9rem;letter-spacing:.1em;color:rgba(253,251,246,.5);}
+
+  /* ---------- MODAL ---------- */
+  .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(46,59,53,.55);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;}
+  .modal-backdrop.open{opacity:1;visibility:visible;}
+  .modal{background:var(--cream);max-width:640px;width:100%;max-height:88vh;overflow-y:auto;border-radius:22px;position:relative;transform:translateY(24px) scale(.98);transition:transform .45s cubic-bezier(.2,.8,.25,1);box-shadow:0 50px 90px -40px rgba(0,0,0,.5);}
+  .modal-backdrop.open .modal{transform:translateY(0) scale(1);}
+  .modal-img{height:200px;background-size:cover;background-position:center;background-color:var(--sage-deep);}
+  .modal-close{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(253,251,246,.92);color:var(--sage-dark);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s ease,transform .3s ease;z-index:2;}
+  .modal-close:hover{background:var(--white);transform:rotate(90deg);}
+  .modal-content{padding:34px clamp(26px,4vw,44px) 40px;}
+  .modal-content .eyebrow{color:var(--earth-deep);}
+  .modal-content h3{font-size:2.2rem;font-weight:400;color:var(--sage-dark);line-height:1.1;margin:.3em 0 .15em;}
+  .modal-meta{display:flex;gap:22px;flex-wrap:wrap;color:var(--ink-soft);font-style:italic;margin-bottom:20px;font-size:1.05rem;}
+  .modal-content p{font-size:1.15rem;color:var(--ink-soft);margin-bottom:1em;}
+  .modal-incl{background:rgba(122,174,196,.14);border-radius:14px;padding:22px 26px;margin:6px 0 26px;}
+  .modal-incl h4{font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:12px;font-weight:600;}
+  .modal-incl ul{list-style:none;display:grid;gap:9px;}
+  .modal-incl li{position:relative;padding-left:24px;font-size:1.08rem;color:var(--ink);}
+  .modal-incl li::before{content:"";position:absolute;left:2px;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--earth);}
+  .modal-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(122,174,196,.3);padding-top:24px;}
+  .modal-price{display:flex;flex-direction:column;}
+  .modal-price .amt{font-size:2.6rem;color:var(--sage-dark);line-height:1;}
+  .modal-price .lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in{opacity:1;transform:none;}
+  .reveal.d1{transition-delay:.12s;}
+  .reveal.d2{transition-delay:.24s;}
+  .reveal.d3{transition-delay:.36s;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    body{font-size:20px;}
+    .hero-inner{grid-template-columns:1fr;text-align:center;padding-top:130px;gap:24px;}
+    .hero-copy{margin:0 auto;}
+    .hero-quote{margin-left:auto;margin-right:auto;}
+    .hero-actions{justify-content:center;}
+    .portrait{width:min(320px,72%);}
+    .about-grid{grid-template-columns:1fr;gap:36px;}
+    .about-photo{max-width:380px;margin:0 auto;}
+    .card-grid,.card-grid.two{grid-template-columns:1fr;max-width:440px;margin:0 auto;}
+    .pay-grid{grid-template-columns:1fr;}
+    .nav nav{display:none;}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 22px;}
+    .form-row{grid-template-columns:1fr;}
+    .modal-foot{flex-direction:column;align-items:stretch;}
+    .modal-foot .btn-earth{justify-content:center;}
+    /* brush scales with width automatically */
+  }
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .scroll-cue .line{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+<link id="gfont-Lato" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Inter" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Noto-Sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Dancing-Script" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@300;400;500;600;700&amp;display=swap">
+<link id="gfont-Architects-Daughter" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Architects+Daughter:wght@300;400;500;600;700&amp;display=swap">
+</head>
+<body>
+
+<!-- ===== watercolor / dry-brush filters (roughen a simple band into bristled paint edges) ===== -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <defs>
+    <filter id="bristleA" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.026" numOctaves="4" seed="6" stitchTiles="stitch" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="58" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="bristleB" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.011 0.03" numOctaves="4" seed="19" stitchTiles="stitch" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="48" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="bristleC" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.022" numOctaves="5" seed="33" stitchTiles="stitch" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="66" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="nav">
+  <a href="#inicio" class="logo" style="font-family:'Dancing Script',cursive">Laura&nbsp;Fernández</a>
+  <nav>
+    <a href="#inicio" style="font-size:15px">Inicio</a>
+    <a href="#sobre" style="font-size: 15px">Laura</a>
+    <a href="#retiros" style="font-size: 15px">Retiros</a>
+    <a href="#reserva" style="font-size: 15px">Reserva</a>
+    <a href="#contacto" style="font-size:15px">Escríbeme</a>
+  </nav>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="inicio" data-screen-label="Hero">
+  <div class="hero-inner">
+    <div class="hero-copy" style="width:533px">
+      <span class="eyebrow" style="font-size: 15px; color: rgb(255, 255, 255); font-weight: 600; letter-spacing: 5.5px; padding: 0px 1px 0px 0px">Conversaciones y meditaciones<br>sobre la naturaleza de la realidad</span>
+      <h1 class="hero-name script" style="color:#ffffff;font-family:'Roboto',sans-serif">Laura Fernández</h1>
+      <p class="hero-quote quote">«En la ignorancia soy alguien.            En la comprensión soy nadie.           En el amor soy todo.»</p>
+      <div class="hero-actions" style="width: 233px; justify-content: center">
+        <a href="#retiros" class="btn btn-earth" style="font-family: &quot;Helvetica&quot;; color: rgb(255, 255, 255)">Ver retiros</a>
+
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="portrait">
+        <img src="assets/laura-transp.png" alt="Retrato de Laura Fernández" style="width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(45,74,93,.35))" />
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- brush: sage -> cream -->
+<div class="brush" style="background:#f5f0e8" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#7aaec4"><path d="M-110,-70 L1550,-70 L1550,76 C1240,104 1010,70 772,90 C548,108 300,74 -110,98 Z"></path><ellipse cx="150" cy="110" rx="50" ry="7"></ellipse><ellipse cx="470" cy="122" rx="30" ry="5"></ellipse><ellipse cx="835" cy="104" rx="42" ry="6"></ellipse><ellipse cx="1135" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1340" cy="100" rx="24" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== SOBRE LAURA ===================== -->
+<section class="section about" id="sobre" data-screen-label="Sobre Laura">
+  <div class="wrap" style="max-width:1180px;margin:0 auto;padding:0 32px">
+    <div class="about-text reveal d1" style="direction:ltr;max-width:720px;margin:0 auto">
+      <span class="eyebrow" style="font-size: 15px">Sobre Laura</span>
+      <h2 style="text-align: left">Un señalamiento directo<br />e impersonal</h2>
+      <p class="lead" style="font-family: &quot;Inter&quot;; font-size: 18px; text-align: left">Desde muy joven busqué alivio en la espiritualidad y exploré multitud de vías en profundidad durante años.</p>
+      <p style="font-family: &quot;Inter&quot;; font-size: 18px; text-align: left">En algún momento se hizo evidente que las enseñanzas dirigidas a la persona confirmaban de un modo u otro la separación que es origen de la insatisfacción y de la búsqueda.</p>
+      <p style="font-family: &quot;Roboto&quot;; font-size: 18px; text-align: left; width: 613px">En mis encuentros online, retiros y sesiones individuales señalo de forma directa e impersonal los asideros y trampas que siguen sosteniendo la ilusión de separación y que, aparentemente, velan la completud atemporal e incondicional que ya es.</p>
+    </div>
+  </div>
+</section>
+
+<!-- brush: cream -> white -->
+<div class="brush" style="background:#fdfbf6" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,84 C1260,62 1040,98 800,86 C560,74 320,100 -110,84 Z"></path><ellipse cx="230" cy="108" rx="40" ry="6"></ellipse><ellipse cx="600" cy="100" rx="30" ry="5"></ellipse><ellipse cx="980" cy="112" rx="38" ry="6"></ellipse><ellipse cx="1280" cy="102" rx="28" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== RETIROS PRESENCIALES ===================== -->
+<section class="section retreats presencial" id="retiros" data-screen-label="Retiros presenciales">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size: 15px">Encuentros en silencio</span>
+      <h2>Retiros presenciales</h2>
+      <p style="font-size: 25px">Unos días de detención y mirada honesta en lugares que invitan al silencio.</p>
+    </div>
+    <div class="card-grid" id="grid-presencial"></div>
+  </div>
+</section>
+
+<!-- brush: white -> cream-warm -->
+<div class="brush" style="background:#efe6d6" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleC)" fill="#fdfbf6"><path d="M-110,-70 L1550,-70 L1550,80 C1250,106 1030,72 790,92 C560,110 320,76 -110,96 Z"></path><ellipse cx="190" cy="112" rx="44" ry="7"></ellipse><ellipse cx="540" cy="122" rx="30" ry="5"></ellipse><ellipse cx="900" cy="106" rx="40" ry="6"></ellipse><ellipse cx="1210" cy="118" rx="32" ry="6"></ellipse></g></svg>
+</div>
+
+<!-- ===================== RETIROS ONLINE ===================== -->
+<section class="section retreats online" data-screen-label="Retiros online">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size: 15px">Desde donde estés</span>
+      <h2>Retiros online</h2>
+      <p style="font-size: 25px">El encuentro no precisa desplazamiento: la atención está siempre aquí.</p>
+    </div>
+    <div class="card-grid two" id="grid-online"></div>
+  </div>
+</section>
+
+<!-- brush: cream-warm -> sage-wash -->
+<div class="brush" style="background:#cde0ec" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#efe6d6"><path d="M-110,-70 L1550,-70 L1550,82 C1270,60 1050,96 810,84 C570,72 330,98 -110,82 Z"></path><ellipse cx="210" cy="106" rx="42" ry="6"></ellipse><ellipse cx="560" cy="118" rx="30" ry="5"></ellipse><ellipse cx="930" cy="102" rx="38" ry="6"></ellipse><ellipse cx="1250" cy="114" rx="30" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== RESERVA Y PAGO ===================== -->
+<section class="section pago" id="reserva" data-screen-label="Reserva y pago">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size: 15px">Reserva</span>
+      <h2 style="color: var(--sage-dark); width: 750px">Cómo reservar tu plaza</h2>
+      <p style="font-size: 25px">Dos formas sencillas de confirmar tu asistencia.</p>
+    </div>
+    <div class="pay-grid">
+      <div class="pay-card reveal">
+        <h3 style="font-family: &quot;Roboto&quot;; font-size: 20px">Transferencia</h3>
+        <p class="pay-sub">Desde cualquier entidad</p>
+        <div class="pay-row"><div class="k">IBAN</div><div class="v pending">Pendiente de confirmar</div></div>
+        <div class="pay-row"><div class="k">Concepto</div><div class="v">Tu nombre + retiro</div></div>
+      </div>
+      <div class="pay-card reveal d1">
+        <h3 style="font-family: &quot;Roboto&quot;; font-size: 20px">Bizum</h3>
+        <p class="pay-sub">Pago inmediato desde el móvil</p>
+        <div class="pay-row"><div class="k">Número</div><div class="v pending">Pendiente de confirmar</div></div>
+        <div class="pay-row"><div class="k">Concepto</div><div class="v">Tu nombre + retiro</div></div>
+      </div>
+    </div>
+    <p class="pay-note reveal d1" style="font-size: 20px; font-family: &quot;Lato&quot;">Una vez realizado el pago, envía el comprobante a través del formulario de contacto indicando tu nombre completo y el retiro al que deseas asistir.</p>
+  </div>
+</section>
+
+<!-- brush: sage-wash -> cream -->
+<div class="brush" style="background:#f5f0e8" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleC)" fill="#b8d9ea"><path d="M-110,-70 L1550,-70 L1550,78 C1240,104 1020,70 780,92 C550,110 310,74 -110,98 Z"></path><ellipse cx="170" cy="110" rx="48" ry="7"></ellipse><ellipse cx="520" cy="122" rx="30" ry="5"></ellipse><ellipse cx="880" cy="104" rx="40" ry="6"></ellipse><ellipse cx="1190" cy="118" rx="34" ry="6"></ellipse><ellipse cx="1360" cy="100" rx="22" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== CONTACTO ===================== -->
+<section class="section contacto" id="contacto" data-screen-label="Contacto">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow" style="font-size: 15px">Escríbeme</span>
+      <h2 style="color:var(--sage-dark)">Contacto</h2>
+      <p style="font-size: 25px">Para reservas, comprobantes de pago o cualquier consulta.</p>
+    </div>
+    <form class="form-shell reveal" onsubmit="return false">
+      <div class="form-row">
+        <div class="field">
+          <label for="nombre" style="font-size: 14px">Nombre</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" />
+        </div>
+        <div class="field">
+          <label for="email" style="font-size: 14px">Email</label>
+          <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" />
+        </div>
+      </div>
+      <div class="field full">
+        <label for="asunto" style="font-size: 14px">Asunto</label>
+        <select id="asunto" name="asunto">
+          <option value="">Selecciona un retiro o tema…</option>
+          <option>Retiro de Silencio Interior — León</option>
+          <option>Encuentro con el Ser — Barcelona</option>
+          <option>La Naturaleza de lo Real — Granada</option>
+          <option>Satsang Semanal Online</option>
+          <option>Sesión Individual por Videollamada</option>
+          <option>Consulta general</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="mensaje" style="font-size: 14px">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Cuéntame en qué puedo acompañarte…"></textarea>
+      </div>
+      <div class="field full">
+        <label style="font-size: 14px">Comprobante de pago <span style="text-transform:none;letter-spacing:0;font-weight:400;font-style:italic;color:var(--ink-soft)">(opcional)</span></label>
+        <label class="file">
+          <span id="file-label">Adjuntar comprobante (PDF o imagen)</span>
+          <span class="badge">Examinar</span>
+          <input type="file" id="comprobante" accept="image/*,application/pdf" />
+        </label>
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn btn-earth">Enviar mensaje</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- brush: cream -> sage-dark -->
+<div class="brush" style="background:#2d4a5d;margin-bottom:-2px" aria-hidden="true">
+  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,80 C1250,108 1010,70 770,90 C545,110 300,74 -110,100 Z"></path><ellipse cx="160" cy="112" rx="50" ry="7"></ellipse><ellipse cx="500" cy="124" rx="30" ry="5"></ellipse><ellipse cx="860" cy="106" rx="42" ry="6"></ellipse><ellipse cx="1160" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1350" cy="102" rx="24" ry="5"></ellipse></g></svg>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site" data-screen-label="Footer">
+  <div class="wrap foot-grid">
+    <div class="logo">Laura Fernández</div>
+    <p class="tag" style="font-weight: 500; width: 500px; font-size: 25px; height: 50px; line-height: 1.6; text-align: center; white-space: nowrap">Señalando lo que siempre ha estado aquí.</p>
+    <div class="foot-links">
+      <a href="#inicio" style="font-size: 15px">Inicio</a>
+      <a href="#retiros" style="font-size: 15px">Retiros</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <span class="foot-rule"></span>
+    <p class="copyright">© 2026 Laura Fernández</p>
+  </div>
+</footer>
+
+<!-- ===================== MODAL ===================== -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <button class="modal-close" id="modal-close" aria-label="Cerrar">×</button>
+    <div class="modal-img" id="m-img"></div>
+    <div class="modal-content">
+      <span class="eyebrow" id="m-loc"></span>
+      <h3 id="m-title"></h3>
+      <div class="modal-meta"><span id="m-date"></span><span id="m-place"></span></div>
+      <div id="m-desc"></div>
+      <div class="modal-incl">
+        <h4>Qué incluye</h4>
+        <ul id="m-incl"></ul>
+      </div>
+      <div class="modal-foot">
+        <div class="modal-price">
+          <span class="amt" id="m-price"></span>
+          <span class="lbl">por persona</span>
+        </div>
+        <a href="#reserva" class="btn btn-earth" id="m-reserve">Reservar plaza</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- data ---------- */
+const IMG = {
+  leon:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1100&q=80",
+  bcn:"https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&w=1100&q=80",
+  granada:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1100&q=80",
+  satsang:"https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1100&q=80",
+  sesion:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1100&q=80"
+};
+
+const presencial = [
+  {
+    id:"leon", img:IMG.leon, tag:"",
+    title:"El silencio que ya Eres", date:"12 – 14 septiembre 2026", place:"León",
+    price:"350€",
+    desc:[
+      "Tres días de silencio sostenido en plena montaña de Castilla, donde el ruido habitual se aquieta y lo que permanece se vuelve evidente por sí mismo. Sin nada que alcanzar ni que mejorar, el encuentro consiste en detenerse y mirar con honestidad.",
+      "Las jornadas combinan periodos de silencio, encuentros de indagación con Laura y largos espacios de quietud al aire libre. No se trata de adquirir una nueva creencia, sino de soltar las que sostienen la sensación de separación.",
+      "Un marco sencillo y cuidado para que la atención descanse en su origen, sin agenda y sin personaje que defender."
+    ],
+    incl:["Tres días de programa completo","Alojamiento en casa rural","Comidas vegetarianas incluidas","Encuentros de indagación con Laura","Espacios de silencio guiado"]
+  },
+  {
+    id:"bcn", img:IMG.bcn, tag:"",
+    title:"Encuentro con el Ser", date:"3 – 5 octubre 2026", place:"Barcelona",
+    price:"350€",
+    desc:[
+      "A las afueras de Barcelona, en un espacio de luz mediterránea, este encuentro invita a reconocer aquello que ya está presente antes de todo pensamiento. La cercanía del mar acompaña un ritmo pausado y atento.",
+      "A lo largo de los tres días se alternan diálogos abiertos, indagación directa y momentos de quietud compartida. Laura señala, sin rodeos, los lugares donde la mente vuelve una y otra vez a la idea de ser alguien separado.",
+      "Un espacio para quien intuye que la búsqueda misma puede ser el último velo, y desea mirarlo de frente en compañía."
+    ],
+    incl:["Tres días de programa completo","Alojamiento en espacio mediterráneo","Comidas vegetarianas incluidas","Diálogos e indagación con Laura","Paseos en silencio junto al mar"]
+  },
+  {
+    id:"granada", img:IMG.granada, tag:"",
+    title:"La Naturaleza de lo Real", date:"7 – 9 noviembre 2026", place:"Granada",
+    price:"350€",
+    desc:[
+      "Bajo la luz dorada del atardecer andaluz, con la Alhambra recortada en el horizonte, este retiro propone una mirada serena a la naturaleza de lo que es. Tres días para reconocer la completud atemporal e incondicional que ya somos.",
+      "El programa entreteje silencio, indagación y descanso, dejando que las preguntas se disuelvan en su propia raíz. No hay método que seguir: solo la disposición a ver con claridad lo que siempre ha estado aquí.",
+      "Un cierre cálido del año, en un entorno que invita a la contemplación y al recogimiento."
+    ],
+    incl:["Tres días de programa completo","Alojamiento con vistas a Granada","Comidas vegetarianas incluidas","Encuentros de indagación con Laura","Tiempo libre para la contemplación"]
+  }
+];
+
+const online = [
+  {
+    id:"satsang", img:IMG.satsang, tag:"",
+    title:"Satsang Semanal Online", date:"Todos los jueves", place:"19:00h · hora de España",
+    price:"Aportación libre",
+    desc:[
+      "Un encuentro semanal en directo, abierto a cualquier persona con independencia de su recorrido. Cada jueves, un espacio para preguntar, escuchar y mirar juntos los mecanismos que sostienen la ilusión de separación.",
+      "Las sesiones se desarrollan en formato de diálogo: tú planteas lo que te ocupa y Laura señala de forma directa e impersonal. No se requiere preparación ni conocimientos previos.",
+      "Una cita regular para sostener la indagación en lo cotidiano, desde donde estés."
+    ],
+    incl:["Encuentro semanal en directo","Espacio de preguntas y diálogo","Acceso por videollamada","Aportación libre y consciente"]
+  },
+  {
+    id:"sesion", img:IMG.sesion, tag:"",
+    title:"Sesión Individual por Videollamada", date:"A convenir", place:"Horario flexible",
+    price:"A consultar",
+    desc:[
+      "Un encuentro a solas, en el que la indagación se ajusta a lo que en ti pide ser mirado. Sin guion previo, la conversación va directa a los asideros y trampas que sostienen, aparentemente, la sensación de ser alguien separado.",
+      "Estas sesiones ofrecen un espacio íntimo y cuidado para quienes desean acompañamiento personal. La fecha y el horario se acuerdan de forma flexible, según disponibilidad.",
+      "Escríbeme a través del formulario de contacto para concertar día y hora."
+    ],
+    incl:["Sesión individual por videollamada","Duración aproximada de 60 minutos","Día y horario a convenir","Acompañamiento personal y directo"]
+  }
+];
+
+/* ---------- render cards ---------- */
+function cardHTML(r){
+  return `<article class="card reveal">
+    <div class="card-img" style="background-image:url('${r.img}')">
+    </div>
+    <div class="card-body">
+      <h3>${r.title}</h3>
+      <div class="card-meta">
+        <span><b>Fecha</b>${r.date}</span>
+        <span><b>Lugar</b>${r.place}</span>
+      </div>
+      <div class="card-actions">
+        <a href="#reserva" class="btn btn-earth">Reservar</a>
+        <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
+      </div>
+    </div>
+  </article>`;
+}
+const allRetreats = {};
+[...presencial, ...online].forEach(r=>allRetreats[r.id]=r);
+document.getElementById('grid-presencial').innerHTML = presencial.map(cardHTML).join('');
+document.getElementById('grid-online').innerHTML = online.map(cardHTML).join('');
+
+/* ---------- modal ---------- */
+const modal = document.getElementById('modal');
+function openModal(id){
+  const r = allRetreats[id]; if(!r) return;
+  document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
+  document.getElementById('m-loc').textContent = r.tag;
+  document.getElementById('m-title').textContent = r.title;
+  document.getElementById('m-date').textContent = r.date;
+  document.getElementById('m-place').textContent = r.place;
+  document.getElementById('m-desc').innerHTML = r.desc.map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('m-incl').innerHTML = r.incl.map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('m-price').textContent = r.price;
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-modal]');
+  if(t){ openModal(t.getAttribute('data-modal')); }
+});
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('m-reserve').addEventListener('click', closeModal);
+modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+
+/* ---------- file input label ---------- */
+const fileInput = document.getElementById('comprobante');
+fileInput.addEventListener('change', ()=>{
+  document.getElementById('file-label').textContent = fileInput.files.length ? fileInput.files[0].name : 'Adjuntar comprobante (PDF o imagen)';
+});
+
+/* ---------- nav scroll state ---------- */
+const nav = document.getElementById('nav');
+const onScroll = ()=>{ nav.classList.toggle('scrolled', window.scrollY > 40); };
+onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+},{threshold:.16, rootMargin:'0px 0px -8% 0px'});
+function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
+observeReveals();
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#grid-online > article:nth-child(1) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) { font-size: 6px !important }
+#grid-online > article:nth-child(1) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1) { font-size: 15px !important }
+#grid-online >article:nth-child(1) span:nth-child(2) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(1) { color: rgb(111, 111, 100) !important }
+#grid-online >article:nth-child(1) span:nth-child(2) >b { font-size: 13px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { width: 400px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(2) { font-size: 15px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { font-size: 25px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { font-size: 26px !important }
+#grid-presencial >article:nth-child(1) :is(h1,h2,h3,h4,h5,h6) { text-align: center !important }
+#grid-presencial >article:nth-child(2) :is(h1,h2,h3,h4,h5,h6) { text-align: center !important }
+#grid-presencial >article:nth-child(3) :is(h1,h2,h3,h4,h5,h6) { text-align: center !important }
+#grid-online > article:nth-child(1) > div:nth-child(2) > h3:nth-child(1) { text-align: center !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { text-align: center !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { text-align: left !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { width: 350px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { width: 3400px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { width: 3px !important }
+#grid-online > article:nth-child(2) > div:nth-child(2) > h3:nth-child(1) { width: 400px !important }
+#grid-online >article:nth-child(1) span:nth-child(1) >b { font-size: 15px !important }
+#grid-online >article:nth-child(1) span:nth-child(2) >b { font-size: 15px !important }
+#grid-online >article:nth-child(2) span:nth-child(1) >b { font-size: 15px !important }
+#grid-online >article:nth-child(2) span:nth-child(2) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(3) span:nth-child(1) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(3) span:nth-child(2) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(1) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(2) >b { font-size: 53px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(2) >b { font-size: 6px !important }
+#grid-presencial >article:nth-child(1) span:nth-child(2) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(2) span:nth-child(1) >b { font-size: 15px !important }
+#grid-presencial >article:nth-child(2) span:nth-child(2) >b { font-size: 15px !important }
+</style>
