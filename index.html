@@ -149,6 +149,8 @@
   .brush{display:block;width:100%;line-height:0;position:relative;margin:-4px 0;z-index:1;overflow:hidden;}
   .brush svg{display:block;width:100%;height:auto;}
   .section{position:relative;}
+  /* Offset anchor scroll so fixed nav doesn't cover section headings */
+  .section, footer.site{scroll-margin-top:125px;}
 
   /* ---------- ABOUT ---------- */
   .about{background:var(--cream);padding:30px 0 90px;}
@@ -288,30 +290,20 @@
     [style*="width"]{max-width:100%!important;width:auto!important;}
     .sec-head h2{width:auto!important;}
     .foot-grid .tag{width:auto!important;white-space:normal!important;}
-    /* hero mobile: foto arriba, texto abajo */
-    .hero{grid-template-columns:1fr;grid-template-rows:55vw auto;}
-    .hero-photo-panel{order:-1;height:55vw;}
+    /* hero mobile */
+    .hero{grid-template-columns:1fr;grid-template-rows:105vw auto;}
+    .hero-photo-panel{order:-1;clip-path:none;height:105vw;}
     .hero-photo-panel::before,.hero-photo-panel::after{display:none;}
-    .hero-copy-panel{
-      padding:32px 28px 60px;
-      text-align:center;
-      align-items:center;
-    }
-    .hero-name{font-size:clamp(2.8rem,11vw,4.2rem);}
-    .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
-    .hero-actions{justify-content:center;}
-    .scroll-cue{left:50%;bottom:16px;}
-    /* hero mobile: foto arriba a pantalla completa, texto debajo */
-    .hero{grid-template-columns:1fr;grid-template-rows:80vw auto;}
-    .hero-photo-panel{order:-1;clip-path:none;height:80vw;}
-    .hero-photo-panel::before{display:none;}
     .hero-brush-divider{display:none;}
-    .hero-photo-panel img{object-position:center 15%;}
+    .hero-photo-panel img{object-fit:cover;object-position:center top;}
     .hero-copy-panel{
       padding:36px 28px 60px;
       text-align:center;align-items:center;
     }
     .hero-name{font-size:clamp(2.8rem,11vw,4.2rem);}
+    .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
+    .hero-actions{justify-content:center;}
+    .scroll-cue{display:none;}
     .hero-quote{font-size:1.2rem;text-align:center;max-width:100%;}
     .hero-actions{justify-content:center;}
     .scroll-cue{display:none;}
