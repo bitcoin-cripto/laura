@@ -578,7 +578,7 @@ const presencial = [
   {
     id:"leon", img:IMG.leon, tag:"",
     title:"El silencio que ya Eres", date:"12 – 14 septiembre 2026", place:"León",
-    price:"350€",
+    price:"350€", reserveUrl:"https://buy.stripe.com/4gMcMYg9M4l85cn2n7eEo00",
     desc:[
       "Tres días de silencio sostenido en plena montaña de Castilla, donde el ruido habitual se aquieta y lo que permanece se vuelve evidente por sí mismo. Sin nada que alcanzar ni que mejorar, el encuentro consiste en detenerse y mirar con honestidad.",
       "Las jornadas combinan periodos de silencio, encuentros de indagación con Laura y largos espacios de quietud al aire libre. No se trata de adquirir una nueva creencia, sino de soltar las que sostienen la sensación de separación.",
@@ -647,7 +647,7 @@ function cardHTML(r){
         <span><b>Lugar</b>${r.place}</span>
       </div>
       <div class="card-actions">
-        <a href="#reserva" class="btn btn-earth">Reservar</a>
+        <a href="${r.reserveUrl || '#contacto'}" class="btn btn-earth" ${r.reserveUrl ? 'target="_blank" rel="noopener"' : ''}>Reservar</a>
         <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
       </div>
     </div>
