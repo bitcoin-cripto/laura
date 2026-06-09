@@ -72,21 +72,17 @@
   /* ---------- nav ---------- */
   header.nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
-    display:flex;align-items:flex-start;justify-content:space-between;
-    padding:0 clamp(20px,4vw,52px) 10px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px clamp(20px,4vw,52px);
     transition:background .5s ease,box-shadow .5s ease,padding .5s ease;
   }
-  header.nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(45,74,93,.1);padding:8px clamp(20px,4vw,52px);}
-  .nav .logo{display:flex;align-items:flex-start;}
-  .nav-logo-img img{height:185px;width:auto;transition:opacity .5s ease,height .4s ease;}
+  header.nav.scrolled{background:rgba(245,240,232,.92);backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(45,74,93,.1);padding:10px clamp(20px,4vw,52px);}
+  .nav .logo{display:flex;align-items:center;}
+  .nav-logo-img img{height:100px;width:auto;transition:opacity .5s ease;}
   header.nav.scrolled .nav-logo-img img{opacity:.85;}
-  .nav-logo-img .logo-dark{display:none;}
+  .nav-logo-img .logo-gold{display:none;}
   header.nav.scrolled .nav-logo-img .logo-white{display:none;}
-  header.nav.scrolled .nav-logo-img .logo-dark{display:block;}
-  header.nav nav{padding-top:32px;}
-  header.nav.scrolled nav{padding-top:0;}
-  header.nav .nav-toggle{margin-top:28px;}
-  header.nav.scrolled .nav-toggle{margin-top:0;}
+  header.nav.scrolled .nav-logo-img .logo-gold{display:block;}
   header.nav.scrolled .logo{color:var(--sage-dark);}
   .nav nav{display:flex;gap:34px;}
   .nav nav a{
@@ -140,12 +136,17 @@
     background:linear-gradient(to left,var(--sage) 30%,transparent 100%);
     pointer-events:none;
   }
+  .hero-photo-panel::after{
+    content:"";position:absolute;bottom:0;left:0;right:0;height:28%;z-index:2;
+    background:linear-gradient(to bottom,transparent 0%,var(--sage) 100%);
+    pointer-events:none;
+  }
   .scroll-cue{position:absolute;bottom:30px;left:75%;transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,251,246,.7);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;}
   .scroll-cue .line{width:1px;height:46px;background:linear-gradient(rgba(253,251,246,.7),transparent);animation:cue 2.4s ease-in-out infinite;}
   @keyframes cue{0%,100%{opacity:.3;transform:scaleY(.7);}50%{opacity:1;transform:scaleY(1);}}
 
     /* ---------- brush dividers ---------- */
-  .brush{display:block;width:100%;line-height:0;position:relative;margin:-1px 0;z-index:1;}
+  .brush{display:block;width:100%;line-height:0;position:relative;margin:-4px 0;z-index:1;overflow:hidden;}
   .brush svg{display:block;width:100%;height:auto;}
   .section{position:relative;}
 
@@ -341,15 +342,15 @@
   <defs>
     <filter id="bristleA" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.008 0.026" numOctaves="4" seed="6" stitchTiles="stitch" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="58" xChannelSelector="R" yChannelSelector="G"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
     <filter id="bristleB" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.011 0.03" numOctaves="4" seed="19" stitchTiles="stitch" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="48" xChannelSelector="R" yChannelSelector="G"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
     <filter id="bristleC" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency="0.009 0.022" numOctaves="5" seed="33" stitchTiles="stitch" result="n"/>
-      <feDisplacementMap in="SourceGraphic" in2="n" scale="66" xChannelSelector="R" yChannelSelector="G"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </defs>
 </svg>
@@ -359,7 +360,7 @@
 <header class="nav" id="nav">
   <a href="#inicio" class="logo nav-logo-img">
     <img class="logo-white" src="logo_blanco_transp.png" alt="Laura Fernandez" />
-    <img class="logo-dark" src="logo-transp.png" alt="Laura Fernandez" />
+    <img class="logo-gold"  src="logo_dorado_transp.png" alt="Laura Fernandez" />
   </a>
   <nav>
     <a href="#inicio" style="font-size:15px">Inicio</a>
@@ -399,8 +400,8 @@
 </section>
 
 <!-- brush: sage -> cream -->
-<div class="brush" style="background:#f5f0e8" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#7aaec4"><path d="M-110,-70 L1550,-70 L1550,76 C1240,104 1010,70 772,90 C548,108 300,74 -110,98 Z"></path><ellipse cx="150" cy="110" rx="50" ry="7"></ellipse><ellipse cx="470" cy="122" rx="30" ry="5"></ellipse><ellipse cx="835" cy="104" rx="42" ry="6"></ellipse><ellipse cx="1135" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1340" cy="100" rx="24" ry="5"></ellipse></g></svg>
+<div class="brush" style="background:#7aaec4;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#7aaec4" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleA)"><rect fill="#f5f0e8" x="-10" y="70" width="1460" height="100"/></g><rect fill="#f5f0e8" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== SOBRE LAURA ===================== -->
@@ -417,8 +418,8 @@
 </section>
 
 <!-- brush: cream -> white -->
-<div class="brush" style="background:#fdfbf6" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,84 C1260,62 1040,98 800,86 C560,74 320,100 -110,84 Z"></path><ellipse cx="230" cy="108" rx="40" ry="6"></ellipse><ellipse cx="600" cy="100" rx="30" ry="5"></ellipse><ellipse cx="980" cy="112" rx="38" ry="6"></ellipse><ellipse cx="1280" cy="102" rx="28" ry="5"></ellipse></g></svg>
+<div class="brush" style="background:#f5f0e8;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#fdfbf6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#fdfbf6" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== RETIROS PRESENCIALES ===================== -->
@@ -434,8 +435,8 @@
 </section>
 
 <!-- brush: white -> cream-warm -->
-<div class="brush" style="background:#efe6d6" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleC)" fill="#fdfbf6"><path d="M-110,-70 L1550,-70 L1550,80 C1250,106 1030,72 790,92 C560,110 320,76 -110,96 Z"></path><ellipse cx="190" cy="112" rx="44" ry="7"></ellipse><ellipse cx="540" cy="122" rx="30" ry="5"></ellipse><ellipse cx="900" cy="106" rx="40" ry="6"></ellipse><ellipse cx="1210" cy="118" rx="32" ry="6"></ellipse></g></svg>
+<div class="brush" style="background:#fdfbf6;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#fdfbf6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleC)"><rect fill="#efe6d6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#efe6d6" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== RETIROS ONLINE ===================== -->
@@ -450,9 +451,9 @@
   </div>
 </section>
 
-<!-- brush: cream -> sage -->
-<div class="brush" style="background:var(--sage)" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleB)" fill="#f5f0e8"><path d="M-110,-70 L1550,-70 L1550,82 C1270,60 1050,96 810,84 C570,72 330,98 -110,82 Z"></path><ellipse cx="210" cy="106" rx="42" ry="6"></ellipse><ellipse cx="560" cy="118" rx="30" ry="5"></ellipse><ellipse cx="930" cy="102" rx="38" ry="6"></ellipse><ellipse cx="1250" cy="114" rx="30" ry="5"></ellipse></g></svg>
+<!-- brush: cream-warm -> sage -->
+<div class="brush" style="background:#efe6d6;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#efe6d6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#7aaec4" x="-10" y="70" width="1460" height="100"/></g><rect fill="#7aaec4" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== ¿CONVERSAMOS? ===================== -->
@@ -472,14 +473,17 @@
   </div>
 </section>
 
-
+<!-- brush: sage -> cream -->
+<div class="brush" style="background:#7aaec4;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#7aaec4" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleA)"><rect fill="#f5f0e8" x="-10" y="70" width="1460" height="100"/></g><rect fill="#f5f0e8" x="-10" y="115" width="1460" height="60"/></svg>
+</div>
 <!-- ===================== CONTACTO ===================== -->
 <section class="section contacto" id="contacto" data-screen-label="Contacto">
   <div class="wrap">
     <div class="sec-head reveal">
       <span class="eyebrow" style="font-size: 15px">Escríbeme</span>
       <h2 style="color:var(--sage-dark)">Contacto</h2>
-      <p style="font-size: 25px">Para reservas, comprobantes de pago o cualquier consulta.</p>
+      <p style="font-size: 25px">Para reservas o cualquier consulta.</p>
     </div>
     <form class="form-shell reveal" onsubmit="return false">
       <div class="form-row">
@@ -508,14 +512,6 @@
         <label for="mensaje" style="font-size: 14px">Mensaje</label>
         <textarea id="mensaje" name="mensaje" placeholder="Cuéntame en qué puedo acompañarte…"></textarea>
       </div>
-      <div class="field full">
-        <label style="font-size: 14px">Comprobante de pago <span style="text-transform:none;letter-spacing:0;font-weight:400;font-style:italic;color:var(--ink-soft);font-size:1rem">(opcional)</span></label>
-        <label class="file">
-          <span id="file-label">Adjuntar comprobante (PDF o imagen)</span>
-          <span class="badge">Examinar</span>
-          <input type="file" id="comprobante" accept="image/*,application/pdf" />
-        </label>
-      </div>
       <div class="submit-row">
         <button type="submit" class="btn btn-earth">Enviar mensaje</button>
       </div>
@@ -523,9 +519,9 @@
   </div>
 </section>
 
-<!-- brush: sage -> sage-dark -->
-<div class="brush" style="background:#2d4a5d;margin-bottom:-2px" aria-hidden="true">
-  <svg viewBox="0 0 1440 150"><g filter="url(#bristleA)" fill="#7aaec4"><path d="M-110,-70 L1550,-70 L1550,80 C1250,108 1010,70 770,90 C545,110 300,74 -110,100 Z"></path><ellipse cx="160" cy="112" rx="50" ry="7"></ellipse><ellipse cx="500" cy="124" rx="30" ry="5"></ellipse><ellipse cx="860" cy="106" rx="42" ry="6"></ellipse><ellipse cx="1160" cy="120" rx="34" ry="6"></ellipse><ellipse cx="1350" cy="102" rx="24" ry="5"></ellipse></g></svg>
+<!-- brush: cream -> sage-dark -->
+<div class="brush" style="background:#f5f0e8;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleC)"><rect fill="#2d4a5d" x="-10" y="70" width="1460" height="100"/></g><rect fill="#2d4a5d" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== FOOTER ===================== -->
@@ -687,11 +683,7 @@ document.getElementById('m-reserve').addEventListener('click', closeModal);
 modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
 
-/* ---------- file input label ---------- */
-const fileInput = document.getElementById('comprobante');
-fileInput.addEventListener('change', ()=>{
-  document.getElementById('file-label').textContent = fileInput.files.length ? fileInput.files[0].name : 'Adjuntar comprobante (PDF o imagen)';
-});
+
 
 /* ---------- nav scroll state ---------- */
 const nav = document.getElementById('nav');
