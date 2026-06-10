@@ -434,8 +434,20 @@
               <span class="text-xs text-gray-300">JPG, PNG, WEBP · máx. 5 MB</span>
               <input id="portada" name="portada" type="file" accept="image/*" class="sr-only"/>
             </div>
-            <div id="portada-preview" class="hidden mt-3 rounded-lg overflow-hidden border border-gray-100">
+            <div id="portada-preview" class="hidden mt-3 rounded-lg overflow-hidden border border-gray-100 relative group/portada">
               <img id="portada-img" src="" alt="Preview portada" class="w-full h-44 object-cover"/>
+              <div class="absolute inset-0 bg-black/0 group-hover/portada:bg-black/25 transition-colors flex items-start justify-end gap-1.5 p-2">
+                <button type="button" onclick="cambiarPortada()" title="Cambiar imagen"
+                        class="opacity-0 group-hover/portada:opacity-100 transition w-7 h-7 rounded-full
+                               bg-white/90 hover:bg-white text-sage-dark flex items-center justify-center shadow text-base leading-none">
+                  ↺
+                </button>
+                <button type="button" onclick="eliminarPortada()" title="Eliminar imagen"
+                        class="opacity-0 group-hover/portada:opacity-100 transition w-7 h-7 rounded-full
+                               bg-white/90 hover:bg-red-500 hover:text-white text-red-500 flex items-center justify-center shadow text-lg leading-none">
+                  ×
+                </button>
+              </div>
             </div>
 
             <div class="mt-6 space-y-3">
@@ -565,10 +577,67 @@ document.addEventListener('click', (e) => {
 
 // (campo ubicacion eliminado — solo se usa "lugar")
 
+// ── Helpers imagen ─────────────────────────────────────────────────────────────
+function actualizarLabelGaleria() {
+  const urlCount   = (window._galeriaUrlsDirectas || []).length;
+  const localCount = (window._galeriaLocalFiles   || []).length;
+  const total      = urlCount + localCount;
+  const wrap       = document.getElementById('galeria-preview');
+  if (!total) {
+    wrap.classList.add('hidden');
+    document.getElementById('galeria-label').textContent = 'Arrastra imágenes aquí';
+  } else {
+    wrap.classList.remove('hidden');
+    document.getElementById('galeria-label').textContent =
+      `${total} imagen${total !== 1 ? 'es' : ''} seleccionada${total !== 1 ? 's' : ''}`;
+  }
+}
+
+function crearThumbGaleria(src, source) {
+  const div = document.createElement('div');
+  div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100 relative group/thumb';
+  div.dataset.source = source;
+  div.innerHTML = `
+    <img src="${src}" class="w-full h-full object-cover pointer-events-none"/>
+    <button type="button" onclick="eliminarImagenGaleria(this)" title="Eliminar"
+            class="absolute top-0.5 right-0.5 w-5 h-5 rounded-full bg-black/55 hover:bg-red-500
+                   text-white text-base leading-none flex items-center justify-center
+                   opacity-0 group-hover/thumb:opacity-100 transition">×</button>`;
+  return div;
+}
+
+function eliminarImagenGaleria(btn) {
+  const div    = btn.closest('[data-source]');
+  const source = div.dataset.source;
+  const wrap   = document.getElementById('galeria-preview');
+  if (source === 'url') {
+    const idx = Array.from(wrap.querySelectorAll('[data-source="url"]')).indexOf(div);
+    if (idx !== -1) (window._galeriaUrlsDirectas || []).splice(idx, 1);
+  } else {
+    const idx = Array.from(wrap.querySelectorAll('[data-source="local"]')).indexOf(div);
+    if (idx !== -1) (window._galeriaLocalFiles || []).splice(idx, 1);
+  }
+  div.remove();
+  actualizarLabelGaleria();
+}
+
+function eliminarPortada() {
+  window._portadaUrlDirecta = null;
+  document.getElementById('portada').value = '';
+  document.getElementById('portada-preview').classList.add('hidden');
+  document.getElementById('portada-img').src = '';
+  document.getElementById('portada-label').textContent = 'Arrastra aquí la imagen';
+}
+
+function cambiarPortada() {
+  document.getElementById('portada').click();
+}
+
 // ── Preview portada ────────────────────────────────────────────────────────────
 document.getElementById('portada').addEventListener('change', function () {
   const file = this.files[0];
   if (!file) return;
+  window._portadaUrlDirecta = null;   // se usará el archivo local, no URL previa
   document.getElementById('portada-label').textContent = file.name;
   const reader = new FileReader();
   reader.onload = e => {
@@ -583,33 +652,22 @@ document.getElementById('galeria').addEventListener('change', function () {
   const wrap  = document.getElementById('galeria-preview');
   const files = Array.from(this.files);
 
-  // Eliminar sólo previews de archivos locales; conservar los de URL/Unsplash
+  // Reemplazar previews locales anteriores (el usuario eligió nuevos archivos)
   wrap.querySelectorAll('[data-source="local"]').forEach(el => el.remove());
+  window._galeriaLocalFiles = [];
 
-  if (!files.length) {
-    const urlCount = (window._galeriaUrlsDirectas || []).length;
-    if (!urlCount) wrap.classList.add('hidden');
-    return;
-  }
+  if (!files.length) { actualizarLabelGaleria(); return; }
 
+  window._galeriaLocalFiles = [...files];
   wrap.classList.remove('hidden');
 
-  files.forEach(file => {
+  files.forEach((file, i) => {
     const reader = new FileReader();
-    reader.onload = e => {
-      const div = document.createElement('div');
-      div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
-      div.dataset.source = 'local';
-      div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover"/>`;
-      wrap.appendChild(div);
-    };
+    reader.onload = e => wrap.appendChild(crearThumbGaleria(e.target.result, 'local'));
     reader.readAsDataURL(file);
   });
 
-  const urlCount   = (window._galeriaUrlsDirectas || []).length;
-  const total      = urlCount + files.length;
-  document.getElementById('galeria-label').textContent =
-    `${total} imagen${total !== 1 ? 'es' : ''} seleccionada${total !== 1 ? 's' : ''}`;
+  actualizarLabelGaleria();
 });
 
 // ── Drag & drop visual ─────────────────────────────────────────────────────────
@@ -663,6 +721,7 @@ function limpiarFormulario() {
   document.getElementById('unsplash-galeria-grid').innerHTML = '';
   document.getElementById('unsplash-galeria-query').value = '';
   window._galeriaUrlsDirectas = [];
+  window._galeriaLocalFiles   = [];
   galeriaSeleccion = [];
 }
 
@@ -710,13 +769,14 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
 
     // 5. Subir galería a Storage (si se han seleccionado)
     label.textContent = 'Subiendo galería…';
-    // Galería: combinar archivos locales + URLs ya subidas desde Google Images
-    const galeriaFiles = Array.from(document.getElementById('galeria').files);
+    // Galería: combinar archivos locales (ya filtrados por el usuario) + URLs subidas
+    const galeriaFiles = window._galeriaLocalFiles || [];
     const galeriaLocal = galeriaFiles.length
       ? await Promise.all(galeriaFiles.map(f => subirImagen(f, 'retiros/galeria')))
       : [];
     const galeria_imagenes = [...(window._galeriaUrlsDirectas || []), ...galeriaLocal];
     window._galeriaUrlsDirectas = [];
+    window._galeriaLocalFiles   = [];
 
     // 6. Insertar o actualizar en Supabase
     label.textContent = 'Guardando…';
@@ -955,11 +1015,7 @@ function mostrarFormulario(retiro = null) {
       const wrap = document.getElementById('galeria-preview');
       wrap.classList.remove('hidden');
       retiro.galeria_imagenes.forEach(url => {
-        const div = document.createElement('div');
-        div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
-        div.dataset.source = 'url';
-        div.innerHTML = `<img src="${url}" class="w-full h-full object-cover"/>`;
-        wrap.appendChild(div);
+        wrap.appendChild(crearThumbGaleria(url, 'url'));
       });
       const n = retiro.galeria_imagenes.length;
       document.getElementById('galeria-label').textContent =
@@ -1131,11 +1187,7 @@ async function confirmarGaleriaUnsplash() {
     const previewWrap = document.getElementById('galeria-preview');
     previewWrap.classList.remove('hidden');
     urls.forEach((url, i) => {
-      const div = document.createElement('div');
-      div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
-      div.dataset.source = 'url';
-      div.innerHTML = `<img src="${galeriaSeleccion[i]?.urlThumb || url}" class="w-full h-full object-cover"/>`;
-      previewWrap.appendChild(div);
+      previewWrap.appendChild(crearThumbGaleria(galeriaSeleccion[i]?.urlThumb || url, 'url'));
     });
 
     const total = (window._galeriaUrlsDirectas || []).length;
@@ -1378,11 +1430,7 @@ document.getElementById('btn-galeria-url').addEventListener('click', async () =>
 
     const previewWrap = document.getElementById('galeria-preview');
     previewWrap.classList.remove('hidden');
-    const div = document.createElement('div');
-    div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
-    div.dataset.source = 'url';
-    div.innerHTML = `<img src="${publicUrl}" class="w-full h-full object-cover"/>`;
-    previewWrap.appendChild(div);
+    previewWrap.appendChild(crearThumbGaleria(publicUrl, 'url'));
 
     const t = (window._galeriaUrlsDirectas || []).length;
     document.getElementById('galeria-label').textContent =
