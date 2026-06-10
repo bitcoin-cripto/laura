@@ -279,7 +279,7 @@
             <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase mb-3">
               Galería de imágenes
             </label>
-            <label for="galeria"
+            <label for="galeria" onclick="document.getElementById('galeria').click();event.preventDefault();"
                    class="dropzone flex flex-col items-center justify-center gap-2
                           border-2 border-dashed border-gray-200 rounded-xl p-6 cursor-pointer
                           hover:border-sage hover:bg-blue-50/30 transition group">
@@ -410,7 +410,7 @@
             <h3 class="text-xs font-semibold tracking-widest text-gray-500 uppercase border-b border-gray-100 pb-3 mb-5">
               Imagen de portada
             </h3>
-            <label for="portada"
+            <label for="portada" onclick="document.getElementById('portada').click();event.preventDefault();"
                    class="dropzone flex flex-col items-center justify-center gap-2
                           border-2 border-dashed border-gray-200 rounded-xl p-5 cursor-pointer
                           hover:border-sage hover:bg-blue-50/30 transition group">
@@ -571,26 +571,36 @@ document.getElementById('portada').addEventListener('change', function () {
 
 // ── Preview galería ────────────────────────────────────────────────────────────
 document.getElementById('galeria').addEventListener('change', function () {
-  const wrap = document.getElementById('galeria-preview');
-  wrap.innerHTML = '';
+  const wrap  = document.getElementById('galeria-preview');
   const files = Array.from(this.files);
-  document.getElementById('galeria-label').textContent =
-    `${files.length} imagen${files.length !== 1 ? 'es' : ''} seleccionada${files.length !== 1 ? 's' : ''}`;
 
-  if (!files.length) { wrap.classList.add('hidden'); return; }
+  // Eliminar sólo previews de archivos locales; conservar los de URL/Unsplash
+  wrap.querySelectorAll('[data-source="local"]').forEach(el => el.remove());
+
+  if (!files.length) {
+    const urlCount = (window._galeriaUrlsDirectas || []).length;
+    if (!urlCount) wrap.classList.add('hidden');
+    return;
+  }
+
   wrap.classList.remove('hidden');
-  wrap.className = 'grid grid-cols-5 gap-2 mt-2';
 
   files.forEach(file => {
     const reader = new FileReader();
     reader.onload = e => {
       const div = document.createElement('div');
       div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+      div.dataset.source = 'local';
       div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover"/>`;
       wrap.appendChild(div);
     };
     reader.readAsDataURL(file);
   });
+
+  const urlCount   = (window._galeriaUrlsDirectas || []).length;
+  const total      = urlCount + files.length;
+  document.getElementById('galeria-label').textContent =
+    `${total} imagen${total !== 1 ? 'es' : ''} seleccionada${total !== 1 ? 's' : ''}`;
 });
 
 // ── Drag & drop visual ─────────────────────────────────────────────────────────
@@ -938,6 +948,7 @@ function mostrarFormulario(retiro = null) {
       retiro.galeria_imagenes.forEach(url => {
         const div = document.createElement('div');
         div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+        div.dataset.source = 'url';
         div.innerHTML = `<img src="${url}" class="w-full h-full object-cover"/>`;
         wrap.appendChild(div);
       });
@@ -1113,6 +1124,7 @@ async function confirmarGaleriaUnsplash() {
     urls.forEach((url, i) => {
       const div = document.createElement('div');
       div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+      div.dataset.source = 'url';
       div.innerHTML = `<img src="${galeriaSeleccion[i]?.urlThumb || url}" class="w-full h-full object-cover"/>`;
       previewWrap.appendChild(div);
     });
@@ -1359,6 +1371,7 @@ document.getElementById('btn-galeria-url').addEventListener('click', async () =>
     previewWrap.classList.remove('hidden');
     const div = document.createElement('div');
     div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+    div.dataset.source = 'url';
     div.innerHTML = `<img src="${publicUrl}" class="w-full h-full object-cover"/>`;
     previewWrap.appendChild(div);
 
