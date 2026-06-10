@@ -615,17 +615,6 @@ const presencial = [
     ],
     incl:["Tres días de programa completo","Alojamiento en espacio mediterráneo","Comidas vegetarianas incluidas","Diálogos e indagación con Laura","Paseos en silencio junto al mar"]
   },
-  {
-    id:"granada", img:IMG.granada, tag:"",
-    title:"La Naturaleza de lo Real", date:"7 – 9 noviembre 2026", place:"Granada",
-    price:"350€",
-    desc:[
-      "Bajo la luz dorada del atardecer andaluz, con la Alhambra recortada en el horizonte, este retiro propone una mirada serena a la naturaleza de lo que es. Tres días para reconocer la completud atemporal e incondicional que ya somos.",
-      "El programa entreteje silencio, indagación y descanso, dejando que las preguntas se disuelvan en su propia raíz. No hay método que seguir: solo la disposición a ver con claridad lo que siempre ha estado aquí.",
-      "Un cierre cálido del año, en un entorno que invita a la contemplación y al recogimiento."
-    ],
-    incl:["Tres días de programa completo","Alojamiento con vistas a Granada","Comidas vegetarianas incluidas","Encuentros de indagación con Laura","Tiempo libre para la contemplación"]
-  }
 ];
 
 const online = [
@@ -696,15 +685,19 @@ function formatFecha(inicio, fin) {
 function cardHTMLSb(r) {
   const img    = r.imagen_portada ? `background-image:url('${r.imagen_portada}')` : 'background-color:#e8e0d4';
   const fecha  = formatFecha(r.fecha_inicio, r.fecha_fin);
-  const precio = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+  const precio = r.precio        != null ? Number(r.precio).toLocaleString('es-ES')        + '€' : '';
+  const reserva= r.precio_reserva!= null ? Number(r.precio_reserva).toLocaleString('es-ES')+ '€' : '';
+  const precioHtml = precio
+    ? `<span><b>Precio</b>${precio}${reserva ? ` <span style="font-weight:400;color:#888">(reserva ${reserva})</span>` : ''}</span>`
+    : '';
   return `<article class="card reveal">
     <div class="card-img" style="${img}"></div>
     <div class="card-body">
       <h3>${r.titulo}</h3>
       <div class="card-meta">
-        ${fecha   ? `<span><b>Fecha</b>${fecha}</span>`    : ''}
-        ${r.lugar ? `<span><b>Lugar</b>${r.lugar}</span>`  : ''}
-        ${precio  ? `<span><b>Precio</b>${precio}</span>`  : ''}
+        ${fecha      ? `<span><b>Fecha</b>${fecha}</span>`    : ''}
+        ${r.lugar    ? `<span><b>Lugar</b>${r.lugar}</span>`  : ''}
+        ${precioHtml}
       </div>
       <div class="card-actions">
         <a href="#contacto" class="btn btn-earth" style="color:#fff">Reservar</a>
@@ -727,8 +720,9 @@ function cardHTMLSb(r) {
     const dynP = retiros.filter(r => r.tipo === 'presencial');
     const dynO = retiros.filter(r => r.tipo === 'online');
 
-    if (dynP.length) document.getElementById('grid-presencial').innerHTML = dynP.map(cardHTMLSb).join('');
-    if (dynO.length) document.getElementById('grid-online').innerHTML     = dynO.map(cardHTMLSb).join('');
+    // APPEND al final de los hardcodeados, no reemplazar
+    if (dynP.length) document.getElementById('grid-presencial').insertAdjacentHTML('beforeend', dynP.map(cardHTMLSb).join(''));
+    if (dynO.length) document.getElementById('grid-online').insertAdjacentHTML('beforeend',     dynO.map(cardHTMLSb).join(''));
 
     retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
     observeReveals();
@@ -749,7 +743,10 @@ function openModal(id){
     document.getElementById('m-desc').innerHTML    = r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '');
     document.getElementById('m-incl').innerHTML    = '';
     inclSection.style.display = 'none';
-    document.getElementById('m-price').textContent = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+    const precioTexto = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+    const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
+    document.getElementById('m-price').innerHTML = precioTexto
+      + (reservaTexto ? `<br><span style="font-size:.75em;font-weight:400;opacity:.7">Reserva: ${reservaTexto}</span>` : '');
   } else {
     document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
     document.getElementById('m-loc').textContent   = r.tag;
