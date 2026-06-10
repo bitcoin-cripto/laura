@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS retiros (
   fecha_inicio      date          NOT NULL,
   fecha_fin         date,
   precio            numeric(8,2)  NOT NULL,
-  ubicacion         text,
+  lugar             text,                        -- espacio físico o virtual del retiro
+  ubicacion         text,                        -- enlace zoom/meet o ciudad corta (campo dinámico del formulario)
   descripcion_corta text,
   descripcion_larga text,
   portada_url       text,

@@ -213,6 +213,21 @@
         </div>
       </div>
 
+      <!-- Fila 3: Lugar -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+          Lugar
+          <span class="ml-2 text-gray-400 normal-case font-normal tracking-normal">
+            (espacio físico o virtual donde se celebra el retiro)
+          </span>
+        </label>
+        <input id="lugar" name="lugar" type="text"
+               placeholder="Ej: Sierra de Gredos, Madrid · Centro Mandala, Barcelona · Online vía Zoom"
+               class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                      placeholder-gray-300 transition"/>
+      </div>
+
       <!-- Descripción corta -->
       <div class="space-y-1.5">
         <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
@@ -363,7 +378,8 @@
               <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Tipo</th>
               <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha inicio</th>
               <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
-              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Ubicación</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Enlace/Ubic.</th>
               <th class="px-4 py-3"></th>
             </tr>
           </thead>
@@ -628,6 +644,7 @@ async function cargarRetiros() {
           <td class="px-4 py-3">${tipoBadge}</td>
           <td class="px-4 py-3 text-gray-500">${fecha}</td>
           <td class="px-4 py-3 text-gray-700 font-medium">${precio}</td>
+          <td class="px-4 py-3 text-gray-400 text-xs max-w-[140px] truncate">${r.lugar || '—'}</td>
           <td class="px-4 py-3 text-gray-400 text-xs max-w-[140px] truncate">${r.ubicacion || '—'}</td>
           <td class="px-4 py-3 text-right">
             <button onclick="eliminarRetiro('${r.id}', this)"
