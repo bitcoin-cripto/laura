@@ -279,19 +279,23 @@
             <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase mb-3">
               Galería de imágenes
             </label>
-            <label for="galeria" onclick="document.getElementById('galeria').click();event.preventDefault();"
-                   class="dropzone flex flex-col items-center justify-center gap-2
-                          border-2 border-dashed border-gray-200 rounded-xl p-6 cursor-pointer
-                          hover:border-sage hover:bg-blue-50/30 transition group">
+            <div class="dropzone flex flex-col items-center justify-center gap-2
+                        border-2 border-dashed border-gray-200 rounded-xl p-6
+                        hover:border-sage hover:bg-blue-50/30 transition group">
               <svg class="w-8 h-8 text-gray-300 group-hover:text-sage transition" fill="none"
                    stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
               </svg>
-              <span class="text-sm text-gray-400 group-hover:text-sage transition" id="galeria-label">Selecciona hasta 10 imágenes</span>
-              <span class="text-xs text-gray-300">Selección múltiple permitida</span>
+              <span class="text-sm text-gray-400 group-hover:text-sage transition" id="galeria-label">Arrastra imágenes aquí</span>
+              <button type="button"
+                      onclick="document.getElementById('galeria').click()"
+                      class="mt-1 text-xs font-semibold text-sage-dark border border-sage/30
+                             rounded-lg px-4 py-1.5 hover:bg-sage/10 transition cursor-pointer">
+                Seleccionar desde mi PC
+              </button>
               <input id="galeria" name="galeria" type="file" accept="image/*" multiple class="sr-only"/>
-            </label>
+            </div>
             <div id="galeria-preview" class="hidden grid grid-cols-5 gap-2 mt-3"></div>
 
             <div class="mt-6 space-y-3">
@@ -410,21 +414,26 @@
             <h3 class="text-xs font-semibold tracking-widest text-gray-500 uppercase border-b border-gray-100 pb-3 mb-5">
               Imagen de portada
             </h3>
-            <label for="portada" onclick="document.getElementById('portada').click();event.preventDefault();"
-                   class="dropzone flex flex-col items-center justify-center gap-2
-                          border-2 border-dashed border-gray-200 rounded-xl p-5 cursor-pointer
-                          hover:border-sage hover:bg-blue-50/30 transition group">
+            <div class="dropzone flex flex-col items-center justify-center gap-2
+                        border-2 border-dashed border-gray-200 rounded-xl p-5
+                        hover:border-sage hover:bg-blue-50/30 transition group">
               <svg class="w-7 h-7 text-gray-300 group-hover:text-sage transition" fill="none"
                    stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
               <span class="text-sm text-gray-400 group-hover:text-sage transition text-center" id="portada-label">
-                Arrastra o haz clic
+                Arrastra aquí la imagen
               </span>
+              <button type="button"
+                      onclick="document.getElementById('portada').click()"
+                      class="mt-1 text-xs font-semibold text-sage-dark border border-sage/30
+                             rounded-lg px-4 py-1.5 hover:bg-sage/10 transition cursor-pointer">
+                Seleccionar desde mi PC
+              </button>
               <span class="text-xs text-gray-300">JPG, PNG, WEBP · máx. 5 MB</span>
               <input id="portada" name="portada" type="file" accept="image/*" class="sr-only"/>
-            </label>
+            </div>
             <div id="portada-preview" class="hidden mt-3 rounded-lg overflow-hidden border border-gray-100">
               <img id="portada-img" src="" alt="Preview portada" class="w-full h-44 object-cover"/>
             </div>
