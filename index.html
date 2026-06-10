@@ -717,7 +717,7 @@ function cardHTMLSb(r) {
   const precio = r.precio        != null ? Number(r.precio).toLocaleString('es-ES')        + '€' : '';
   const reserva= r.precio_reserva!= null ? Number(r.precio_reserva).toLocaleString('es-ES')+ '€' : '';
   const precioHtml = precio
-    ? `<span><b>Precio</b>${precio}${reserva ? ` <span style="font-weight:400;color:#888">(reserva ${reserva})</span>` : ''}</span>`
+    ? `<span><b>Precio:</b> ${precio}${reserva ? `  <span style="font-weight:400;color:#888">(Reserva: ${reserva})</span>` : ''}</span>`
     : '';
   return `<article class="card reveal">
     <div class="card-img" style="${img}"></div>
@@ -779,11 +779,15 @@ function openModal(id){
     const mGrid    = document.getElementById('m-gallery-grid');
     if (galeria.length) {
       mGrid.innerHTML = galeria.map((url, i) =>
-        `<img src="${url}" alt="Imagen ${i+1}" data-idx="${i}"
-              style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;
-                     cursor:zoom-in;transition:opacity .2s"
-              onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'"
-              onclick="openLightbox(window._lbImages,${i})">`
+        `<div style="position:relative;cursor:pointer;border-radius:6px;overflow:hidden"
+              onclick="openLightbox(window._lbImages,${i})">
+           <img src="${url}" alt="Imagen ${i+1}"
+                style="width:100%;aspect-ratio:1;object-fit:cover;display:block;transition:opacity .2s"
+                onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'"/>
+           <span style="position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.45);
+                        border-radius:4px;padding:2px 4px;line-height:1;font-size:13px;
+                        color:#fff;pointer-events:none">🔍</span>
+         </div>`
       ).join('');
       window._lbImages = galeria;
       mGallery.style.display = 'block';

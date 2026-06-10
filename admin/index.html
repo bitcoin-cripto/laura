@@ -180,7 +180,9 @@
               <th class="text-left px-5 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
               <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Tipo</th>
               <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha inicio</th>
+              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha fin</th>
               <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
               <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
               <th class="px-4 py-3.5"></th>
             </tr>
@@ -874,12 +876,12 @@ async function cargarRetiros() {
     }
 
     tbody.innerHTML = retiros.map(r => {
-      const fecha = r.fecha_inicio
-        ? new Date(r.fecha_inicio).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' })
-        : '—';
-      const precio = r.precio != null
-        ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(r.precio)
-        : '—';
+      const fmtDate = d => d ? new Date(d).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+      const fmtEur  = v => v != null ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(v) : '—';
+      const fecha    = fmtDate(r.fecha_inicio);
+      const fechaFin = fmtDate(r.fecha_fin);
+      const precio   = fmtEur(r.precio);
+      const reserva  = fmtEur(r.precio_reserva);
       const tipoBadge = r.tipo === 'presencial'
         ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
         : '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>';
@@ -894,7 +896,9 @@ async function cargarRetiros() {
           <td class="px-6 py-3 font-medium text-ink max-w-[220px] truncate">${r.titulo}</td>
           <td class="px-4 py-3">${tipoBadge}</td>
           <td class="px-4 py-3 text-gray-500">${fecha}</td>
+          <td class="px-4 py-3 text-gray-500">${fechaFin}</td>
           <td class="px-4 py-3 text-gray-700 font-medium">${precio}</td>
+          <td class="px-4 py-3 text-gray-500">${reserva}</td>
           <td class="px-4 py-3 text-gray-400 text-xs max-w-[180px] truncate">${r.lugar || '—'}</td>
           <td class="px-4 py-3 text-right">
             <div class="flex items-center justify-end gap-2">
