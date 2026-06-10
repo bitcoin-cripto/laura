@@ -1,0 +1,7 @@
+API Key de Google
+AIzaSyBkDacuodOyR2a-Fgr98VB0fpgzCE4Vnak
+
+Search Engine ID
+<script async src="https://cse.google.com/cse.js?cx=92d700bced1aa4006">
+</script>
+<div class="gcse-search"></div>

@@ -281,11 +281,11 @@
                  class="w-full h-48 object-cover"/>
           </div>
 
-          <!-- ── Buscador Unsplash ── -->
-          <div class="mt-3 space-y-2">
-            <p class="text-xs text-gray-400 font-medium">
-              ¿No tienes la imagen? Búscala en internet:
-            </p>
+          <!-- ── Buscador + URL directa portada ── -->
+          <div class="mt-6 space-y-3">
+            <p class="text-xs text-gray-400 font-medium">¿No tienes la imagen? Búscala o pega una URL:</p>
+
+            <!-- Búsqueda Unsplash -->
             <div class="flex gap-2">
               <input id="unsplash-query" type="text" placeholder="Ej: meditación en la naturaleza…"
                      class="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm
@@ -305,10 +305,26 @@
                 Buscar
               </button>
             </div>
-            <!-- Grid de resultados -->
             <div id="unsplash-results" class="hidden">
               <div id="unsplash-grid" class="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto pr-1"></div>
-              <p class="text-xs text-gray-300 mt-1.5 text-right">Resultados de Google Images</p>
+              <p class="text-xs text-gray-300 mt-1.5 text-right">Imágenes de Unsplash</p>
+            </div>
+
+            <!-- URL directa -->
+            <div class="flex gap-2">
+              <input id="portada-url-input" type="url" placeholder="O pega aquí la URL de una imagen…"
+                     class="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm
+                            focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                            placeholder-gray-300 transition"/>
+              <button type="button" id="btn-portada-url"
+                      class="flex items-center gap-1.5 bg-earth hover:bg-earth/80 text-white
+                             text-xs font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                <svg id="portada-url-spinner" class="hidden animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                Usar URL
+              </button>
             </div>
           </div>
         </div>
@@ -336,11 +352,11 @@
           <!-- Preview galería (miniaturas) -->
           <div id="galeria-preview" class="hidden grid grid-cols-5 gap-2 mt-2"></div>
 
-          <!-- ── Buscador Unsplash galería ── -->
-          <div class="mt-4 space-y-2">
-            <p class="text-xs text-gray-400 font-medium">
-              ¿No tienes las imágenes? Búscalas en internet:
-            </p>
+          <!-- ── Buscador + URL directa galería ── -->
+          <div class="mt-6 space-y-3">
+            <p class="text-xs text-gray-400 font-medium">¿No tienes las imágenes? Búscalas o pega una URL:</p>
+
+            <!-- Búsqueda Unsplash -->
             <div class="flex gap-2">
               <input id="unsplash-galeria-query" type="text"
                      placeholder="Ej: retiro de meditación, naturaleza…"
@@ -360,7 +376,6 @@
                 Buscar
               </button>
             </div>
-            <!-- Grid multiselección -->
             <div id="unsplash-galeria-results" class="hidden space-y-2">
               <div id="unsplash-galeria-grid" class="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto pr-1"></div>
               <div class="flex items-center justify-between bg-sage/10 border border-sage/20 rounded-lg px-3 py-2">
@@ -377,7 +392,24 @@
                   <span id="btn-galeria-confirmar-txt">Añadir seleccionadas</span>
                 </button>
               </div>
-              <p class="text-xs text-gray-300 text-right">Resultados de Google Images</p>
+              <p class="text-xs text-gray-300 text-right">Imágenes de Unsplash</p>
+            </div>
+
+            <!-- URL directa galería -->
+            <div class="flex gap-2">
+              <input id="galeria-url-input" type="url" placeholder="O pega aquí la URL de una imagen…"
+                     class="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm
+                            focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                            placeholder-gray-300 transition"/>
+              <button type="button" id="btn-galeria-url"
+                      class="flex items-center gap-1.5 bg-earth hover:bg-earth/80 text-white
+                             text-xs font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                <svg id="galeria-url-spinner" class="hidden animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                Añadir URL
+              </button>
             </div>
           </div>
 
@@ -861,7 +893,7 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
 });
 
 // ═════════════════════════════════════════════════════════════════════════════
-// BUSCADOR GOOGLE IMAGES — GALERÍA (multiselección hasta 10)
+// BUSCADOR UNSPLASH — GALERÍA (multiselección hasta 10)
 // ═════════════════════════════════════════════════════════════════════════════
 let galeriaSeleccion = [];   // array de { urlFull, urlThumb, filename }
 
@@ -875,7 +907,7 @@ function actualizarContadorGaleria() {
   btn.disabled = n === 0;
 }
 
-async function buscarGoogleGaleria() {
+async function buscarUnsplashGaleria() {
   const query   = document.getElementById('unsplash-galeria-query').value.trim();
   if (!query) return;
 
@@ -887,18 +919,23 @@ async function buscarGoogleGaleria() {
   spinner.classList.remove('hidden'); icon.classList.add('hidden');
 
   try {
-    const items = await googleImageSearch(query, 10);
+    const res  = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=12&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } }
+    );
+    if (!res.ok) throw new Error(`Unsplash ${res.status}`);
+    const json = await res.json();
 
-    if (!items.length) {
+    if (!json.results.length) {
       grid.innerHTML = '<p class="col-span-4 text-xs text-gray-400 text-center py-4">Sin resultados.</p>';
       wrap.classList.remove('hidden');
       return;
     }
 
-    grid.innerHTML = items.map((item, i) => {
-      const full  = item.link;
-      const thumb = item.image?.thumbnailLink || item.link;
-      const name  = `google-galeria-${i}.jpg`;
+    grid.innerHTML = json.results.map((foto, i) => {
+      const full  = foto.urls.full;
+      const thumb = foto.urls.small;
+      const name  = `unsplash-galeria-${foto.id}.jpg`;
       const sel   = galeriaSeleccion.some(s => s.urlFull === full);
       const orden = galeriaSeleccion.findIndex(s => s.urlFull === full);
       return `
@@ -907,12 +944,10 @@ async function buscarGoogleGaleria() {
               data-thumb="${encodeURIComponent(thumb)}"
               data-name="${name}"
               onclick="toggleGaleriaFoto(this)"
-              class="relative aspect-video rounded-lg overflow-hidden border-2 transition-all bg-gray-100
+              class="relative aspect-video rounded-lg overflow-hidden border-2 transition-all
                      ${sel ? 'border-sage' : 'border-transparent'}
                      hover:border-sage/60 focus:outline-none">
         <img src="${thumb}" alt=""
-             loading="lazy"
-             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 60%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22100%22 height=%2260%22/%3E%3C/svg%3E'"
              class="w-full h-full object-cover"/>
         <div class="check-overlay absolute inset-0 flex items-center justify-center transition-opacity
                     ${sel ? 'opacity-100 bg-sage/40' : 'opacity-0'}">
@@ -968,7 +1003,7 @@ function toggleGaleriaFoto(btn) {
   actualizarContadorGaleria();
 }
 
-async function confirmarGaleriaGoogle() {
+async function confirmarGaleriaUnsplash() {
   if (!galeriaSeleccion.length) return;
 
   const btn = document.getElementById('btn-galeria-confirmar');
@@ -1011,7 +1046,7 @@ async function confirmarGaleriaGoogle() {
     toast(`${urls.length} imagen${urls.length !== 1 ? 'es' : ''} añadida${urls.length !== 1 ? 's' : ''} a la galería ✓`);
 
   } catch (err) {
-    console.error('[confirmarGaleriaGoogle]', err);
+    console.error('[confirmarGaleriaUnsplash]', err);
     toast(`Error subiendo galería: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
@@ -1020,29 +1055,19 @@ async function confirmarGaleriaGoogle() {
 }
 
 document.getElementById('unsplash-galeria-query').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); buscarGoogleGaleria(); }
+  if (e.key === 'Enter') { e.preventDefault(); buscarUnsplashGaleria(); }
 });
-document.getElementById('btn-unsplash-galeria-search').addEventListener('click', buscarGoogleGaleria);
-document.getElementById('btn-galeria-confirmar').addEventListener('click', confirmarGaleriaGoogle);
+document.getElementById('btn-unsplash-galeria-search').addEventListener('click', buscarUnsplashGaleria);
+document.getElementById('btn-galeria-confirmar').addEventListener('click', confirmarGaleriaUnsplash);
 
 // ── Carga inicial ──────────────────────────────────────────────────────────────
 limpiarFormulario();   // evita que el browser rellene campos al refrescar
 cargarRetiros();
 
 // ═════════════════════════════════════════════════════════════════════════════
-// BUSCADOR GOOGLE IMAGES (portada + galería)
+// BUSCADOR UNSPLASH + URL DIRECTA  (portada + galería)
 // ═════════════════════════════════════════════════════════════════════════════
-const GOOGLE_API_KEY = 'AIzaSyBkDacuodOyR2a-Fgr98VB0fpgzCE4Vnak';
-const GOOGLE_CX      = '92d700bced1aa4006';
-
-// ── Helper: llama a Google Custom Search y devuelve array de items ────────────
-async function googleImageSearch(query, num = 10) {
-  const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${GOOGLE_CX}&q=${encodeURIComponent(query)}&searchType=image&num=${num}&safe=active`;
-  const res  = await fetch(url);
-  const json = await res.json();
-  if (!res.ok) throw new Error(json.error?.message || `Google ${res.status}`);
-  return json.items || [];
-}
+const UNSPLASH_KEY = 'l209KyVnnxqZZ1NtLiDSeh1NBKeMbxcfviXMmv-u9gM';
 
 // ── Helper: descarga imagen como blob (con fallback proxy CORS) ───────────────
 async function descargarBlob(url) {
@@ -1057,10 +1082,10 @@ async function descargarBlob(url) {
 }
 
 // ── Estado del modal de portada ───────────────────────────────────────────────
-let googlePendingUrl = null;
+let unsplashPendingUrl = null;
 
-// ── Buscar portada ────────────────────────────────────────────────────────────
-async function buscarGoogle() {
+// ── Buscar portada (Unsplash) ─────────────────────────────────────────────────
+async function buscarUnsplash() {
   const query   = document.getElementById('unsplash-query').value.trim();
   if (!query) return;
 
@@ -1072,30 +1097,35 @@ async function buscarGoogle() {
   spinner.classList.remove('hidden'); icon.classList.add('hidden');
 
   try {
-    const items = await googleImageSearch(query, 10);
+    const res  = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=12&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } }
+    );
+    if (!res.ok) throw new Error(`Unsplash ${res.status}`);
+    const json = await res.json();
 
-    if (!items.length) {
+    if (!json.results.length) {
       grid.innerHTML = '<p class="col-span-3 text-xs text-gray-400 text-center py-4">Sin resultados. Prueba con otra búsqueda.</p>';
       wrap.classList.remove('hidden');
       return;
     }
 
-    grid.innerHTML = items.map((item, i) => `
+    grid.innerHTML = json.results.map(foto => `
       <button type="button"
-              onclick="abrirModalGoogle('${encodeURIComponent(item.link)}','${encodeURIComponent(item.image?.thumbnailLink || item.link)}','${encodeURIComponent(item.title || '')}')"
+              onclick="abrirModalUnsplash('${foto.urls.full}','${foto.urls.regular}','${(foto.user.name).replace(/'/g,"\\'")}')"
               class="relative aspect-video rounded-lg overflow-hidden group border-2 border-transparent
-                     hover:border-sage transition-all focus:outline-none focus:border-gold bg-gray-100">
-        <img src="${item.image?.thumbnailLink || item.link}" alt="${item.title || ''}"
-             loading="lazy"
-             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 60%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22100%22 height=%2260%22/%3E%3C/svg%3E'"
+                     hover:border-sage transition-all focus:outline-none focus:border-gold">
+        <img src="${foto.urls.small}" alt="${foto.alt_description || ''}"
              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-end p-1.5 opacity-0 group-hover:opacity-100">
+          <span class="text-white text-xs truncate">${foto.user.name}</span>
+        </div>
       </button>`).join('');
 
     wrap.classList.remove('hidden');
 
   } catch (err) {
-    console.error('[Google portada]', err);
+    console.error('[Unsplash portada]', err);
     grid.innerHTML = `<p class="col-span-3 text-xs text-red-400 text-center py-4">Error: ${err.message}</p>`;
     wrap.classList.remove('hidden');
   } finally {
@@ -1104,16 +1134,15 @@ async function buscarGoogle() {
 }
 
 document.getElementById('unsplash-query').addEventListener('keydown', e => {
-  if (e.key === 'Enter') { e.preventDefault(); buscarGoogle(); }
+  if (e.key === 'Enter') { e.preventDefault(); buscarUnsplash(); }
 });
-document.getElementById('btn-unsplash-search').addEventListener('click', buscarGoogle);
+document.getElementById('btn-unsplash-search').addEventListener('click', buscarUnsplash);
 
-// ── Modal portada ─────────────────────────────────────────────────────────────
-function abrirModalGoogle(urlEnc, thumbEnc, titleEnc) {
-  googlePendingUrl = decodeURIComponent(urlEnc);
-  document.getElementById('um-img').src           = decodeURIComponent(thumbEnc);
-  document.getElementById('um-img').dataset.full  = googlePendingUrl;
-  document.getElementById('um-fuente').textContent = decodeURIComponent(titleEnc) || 'Google Images';
+// ── Modal portada (Unsplash) ──────────────────────────────────────────────────
+function abrirModalUnsplash(urlFull, urlPreview, autor) {
+  unsplashPendingUrl = urlFull;
+  document.getElementById('um-img').src            = urlPreview;
+  document.getElementById('um-fuente').textContent = autor;
   document.getElementById('um-progress').style.width = '0%';
   document.getElementById('um-progress').classList.remove('bg-red-400');
   document.getElementById('um-status').textContent = '';
@@ -1121,32 +1150,31 @@ function abrirModalGoogle(urlEnc, thumbEnc, titleEnc) {
   document.body.style.overflow = 'hidden';
 }
 
-function cerrarModalGoogle() {
+function cerrarModalUnsplash() {
   document.getElementById('unsplash-modal').classList.add('hidden');
   document.getElementById('um-img').src = '';
   document.body.style.overflow = '';
 }
 
-async function confirmarGoogle() {
+async function confirmarUnsplash() {
   const btnConfirm  = document.getElementById('um-btn-confirm');
   const btnCancel   = document.getElementById('um-btn-cancel');
   const statusEl    = document.getElementById('um-status');
   const progressBar = document.getElementById('um-progress');
 
-  btnConfirm.disabled = true;
-  btnCancel.disabled  = true;
+  btnConfirm.disabled = true; btnCancel.disabled = true;
   progressBar.classList.remove('bg-red-400');
   statusEl.textContent    = 'Descargando imagen…';
   progressBar.style.width = '25%';
 
   try {
-    const blob     = await descargarBlob(googlePendingUrl);
+    const blob = await descargarBlob(unsplashPendingUrl);
     progressBar.style.width = '55%';
     statusEl.textContent    = 'Subiendo a Supabase…';
 
     const mime = blob.type || 'image/jpeg';
     const ext  = mime.split('/')[1]?.replace('jpeg','jpg') || 'jpg';
-    const file = new File([blob], `google-${Date.now()}.${ext}`, { type: mime });
+    const file = new File([blob], `unsplash-${Date.now()}.${ext}`, { type: mime });
     const publicUrl = await subirImagen(file, 'retiros/portadas');
 
     progressBar.style.width = '100%';
@@ -1158,25 +1186,108 @@ async function confirmarGoogle() {
     window._portadaUrlDirecta = publicUrl;
 
     setTimeout(() => {
-      cerrarModalGoogle();
+      cerrarModalUnsplash();
       document.getElementById('unsplash-results').classList.add('hidden');
       document.getElementById('unsplash-grid').innerHTML = '';
       document.getElementById('unsplash-query').value    = '';
-      toast('Imagen seleccionada ✓');
+      toast('Imagen de Unsplash lista ✓');
     }, 500);
 
   } catch (err) {
-    console.error('[confirmarGoogle]', err);
     statusEl.textContent    = `Error: ${err.message}`;
     progressBar.style.width = '0%';
     progressBar.classList.add('bg-red-400');
-    btnConfirm.disabled = false;
-    btnCancel.disabled  = false;
+    btnConfirm.disabled = false; btnCancel.disabled = false;
   }
 }
+
+// ── URL directa — portada ─────────────────────────────────────────────────────
+document.getElementById('btn-portada-url').addEventListener('click', async () => {
+  const url = document.getElementById('portada-url-input').value.trim();
+  if (!url) return;
+
+  const btn     = document.getElementById('btn-portada-url');
+  const spinner = document.getElementById('portada-url-spinner');
+  btn.disabled  = true;
+  spinner.classList.remove('hidden');
+
+  try {
+    const blob = await descargarBlob(url);
+    const mime = blob.type || 'image/jpeg';
+    const ext  = mime.split('/')[1]?.replace('jpeg','jpg') || 'jpg';
+    const file = new File([blob], `url-portada-${Date.now()}.${ext}`, { type: mime });
+    const publicUrl = await subirImagen(file, 'retiros/portadas');
+
+    document.getElementById('portada-label').textContent = file.name;
+    document.getElementById('portada-img').src           = publicUrl;
+    document.getElementById('portada-preview').classList.remove('hidden');
+    window._portadaUrlDirecta = publicUrl;
+    document.getElementById('portada-url-input').value = '';
+    toast('Imagen añadida ✓');
+
+  } catch (err) {
+    toast(`Error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('hidden');
+  }
+});
+
+document.getElementById('portada-url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-portada-url').click(); }
+});
+
+// ── URL directa — galería ─────────────────────────────────────────────────────
+document.getElementById('btn-galeria-url').addEventListener('click', async () => {
+  const url = document.getElementById('galeria-url-input').value.trim();
+  if (!url) return;
+
+  const total = (window._galeriaUrlsDirectas || []).length +
+                document.querySelectorAll('#galeria-preview > div').length;
+  if (total >= 10) { toast('Máximo 10 imágenes en la galería', 'error'); return; }
+
+  const btn     = document.getElementById('btn-galeria-url');
+  const spinner = document.getElementById('galeria-url-spinner');
+  btn.disabled  = true;
+  spinner.classList.remove('hidden');
+
+  try {
+    const blob = await descargarBlob(url);
+    const mime = blob.type || 'image/jpeg';
+    const ext  = mime.split('/')[1]?.replace('jpeg','jpg') || 'jpg';
+    const file = new File([blob], `url-galeria-${Date.now()}.${ext}`, { type: mime });
+    const publicUrl = await subirImagen(file, 'retiros/galeria');
+
+    window._galeriaUrlsDirectas = (window._galeriaUrlsDirectas || []).concat([publicUrl]);
+
+    const previewWrap = document.getElementById('galeria-preview');
+    previewWrap.classList.remove('hidden');
+    const div = document.createElement('div');
+    div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+    div.innerHTML = `<img src="${publicUrl}" class="w-full h-full object-cover"/>`;
+    previewWrap.appendChild(div);
+
+    const t = (window._galeriaUrlsDirectas || []).length;
+    document.getElementById('galeria-label').textContent =
+      `${t} imagen${t !== 1 ? 'es' : ''} seleccionada${t !== 1 ? 's' : ''}`;
+
+    document.getElementById('galeria-url-input').value = '';
+    toast('Imagen añadida a la galería ✓');
+
+  } catch (err) {
+    toast(`Error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('hidden');
+  }
+});
+
+document.getElementById('galeria-url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('btn-galeria-url').click(); }
+});
 </script>
 
-<!-- ── MODAL GOOGLE IMAGES ────────────────────────────────────────────────── -->
+<!-- ── MODAL IMAGEN (Unsplash) ───────────────────────────────────────────── -->
 <div id="unsplash-modal"
      class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
      style="background:rgba(0,0,0,.75);backdrop-filter:blur(4px)">
@@ -1186,7 +1297,7 @@ async function confirmarGoogle() {
     <div class="relative bg-gray-100">
       <img id="um-img" src="" alt="Vista previa"
            class="w-full max-h-[55vh] object-contain"/>
-      <button type="button" onclick="cerrarModalGoogle()"
+      <button type="button" onclick="cerrarModalUnsplash()"
               class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70
                      text-white flex items-center justify-center transition text-lg leading-none">
         ×
@@ -1208,12 +1319,12 @@ async function confirmarGoogle() {
 
       <!-- Botones -->
       <div class="flex gap-3 justify-end">
-        <button type="button" id="um-btn-cancel" onclick="cerrarModalGoogle()"
+        <button type="button" id="um-btn-cancel" onclick="cerrarModalUnsplash()"
                 class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold
                        text-gray-500 hover:bg-gray-50 transition">
           Cancelar
         </button>
-        <button type="button" id="um-btn-confirm" onclick="confirmarGoogle()"
+        <button type="button" id="um-btn-confirm" onclick="confirmarUnsplash()"
                 class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-sage-dark hover:bg-sage
                        text-white text-sm font-semibold transition shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
