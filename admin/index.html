@@ -280,6 +280,40 @@
             <img id="portada-img" src="" alt="Preview portada"
                  class="w-full h-48 object-cover"/>
           </div>
+
+          <!-- ── Buscador Unsplash ── -->
+          <div class="mt-3 space-y-2">
+            <p class="text-xs text-gray-400 font-medium">
+              ¿No tienes la imagen? Búscala en internet:
+            </p>
+            <div class="flex gap-2">
+              <input id="unsplash-query" type="text" placeholder="Ej: meditación en la naturaleza…"
+                     class="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm
+                            focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                            placeholder-gray-300 transition"/>
+              <button type="button" id="btn-unsplash-search"
+                      class="flex items-center gap-1.5 bg-sage-dark hover:bg-sage text-white
+                             text-xs font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                <svg id="unsplash-spinner" class="hidden animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                <svg id="unsplash-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
+                </svg>
+                Buscar
+              </button>
+            </div>
+            <!-- Grid de resultados -->
+            <div id="unsplash-results" class="hidden">
+              <div id="unsplash-grid" class="grid grid-cols-3 gap-2 max-h-64 overflow-y-auto pr-1"></div>
+              <p class="text-xs text-gray-300 mt-1.5 text-right">
+                Fotos de <a href="https://unsplash.com" target="_blank" rel="noopener"
+                            class="underline hover:text-gray-400">Unsplash</a>
+              </p>
+            </div>
+          </div>
         </div>
 
         <!-- Galería -->
@@ -549,17 +583,21 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
 
   try {
     // 4. Subir portada a Storage (si se ha seleccionado)
-    let portada_url = null;
-    const portadaFile = document.getElementById('portada').files[0];
-    if (portadaFile) {
-      label.textContent = 'Subiendo portada…';
-      portada_url = await subirImagen(portadaFile, 'retiros/portadas');
+    // Portada: usar URL ya subida desde Unsplash, o subir archivo local
+    let imagen_portada = window._portadaUrlDirecta || null;
+    if (!imagen_portada) {
+      const portadaFile = document.getElementById('portada').files[0];
+      if (portadaFile) {
+        label.textContent = 'Subiendo portada…';
+        imagen_portada = await subirImagen(portadaFile, 'retiros/portadas');
+      }
     }
+    window._portadaUrlDirecta = null;   // limpiar tras usar
 
     // 5. Subir galería a Storage (si se han seleccionado)
     label.textContent = 'Subiendo galería…';
     const galeriaFiles = Array.from(document.getElementById('galeria').files);
-    const galeria_urls = galeriaFiles.length
+    const galeria_imagenes = galeriaFiles.length
       ? await Promise.all(galeriaFiles.map(f => subirImagen(f, 'retiros/galeria')))
       : [];
 
@@ -574,8 +612,8 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
       lugar:             form.lugar.value.trim()       || null,
       descripcion_corta: form.descripcion_corta.value.trim() || null,
       descripcion_larga: form.descripcion_larga.value || null,
-      portada_url,
-      galeria_urls,
+      imagen_portada,
+      galeria_imagenes,
     }]);
 
     if (insertError) throw new Error(`Supabase: ${insertError.message}`);
@@ -644,8 +682,8 @@ async function cargarRetiros() {
         ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
         : '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>';
 
-      const portadaHtml = r.portada_url
-        ? `<img src="${r.portada_url}" alt="" class="w-14 h-10 object-cover rounded-lg border border-gray-100"/>`
+      const portadaHtml = r.imagen_portada
+        ? `<img src="${r.imagen_portada}" alt="" class="w-14 h-10 object-cover rounded-lg border border-gray-100"/>`
         : `<div class="w-14 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300 text-xs">—</div>`;
 
       return `
@@ -701,7 +739,7 @@ async function eliminarRetiro(id, btn) {
   try {
     // 1. Obtener URLs de imágenes antes de borrar la fila
     const { data: retiro, error: fetchErr } = await sb
-      .from('retiros').select('portada_url, galeria_urls').eq('id', id).single();
+      .from('retiros').select('imagen_portada, galeria_imagenes').eq('id', id).single();
     if (fetchErr) throw new Error(`Supabase: ${fetchErr.message}`);
 
     // 2. Borrar imágenes del Storage
@@ -711,8 +749,8 @@ async function eliminarRetiro(id, btn) {
       return idx >= 0 ? decodeURIComponent(url.slice(idx + marker.length)) : null;
     };
     const paths = [
-      retiro.portada_url,
-      ...(retiro.galeria_urls || []),
+      retiro.imagen_portada,
+      ...(retiro.galeria_imagenes || []),
     ].map(extractPath).filter(Boolean);
 
     if (paths.length) {
@@ -760,7 +798,214 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
 
 // ── Carga inicial ──────────────────────────────────────────────────────────────
 cargarRetiros();
+
+// ═════════════════════════════════════════════════════════════════════════════
+// BUSCADOR UNSPLASH
+// Clave pública (Access Key) — segura para usar en frontend
+// ═════════════════════════════════════════════════════════════════════════════
+const UNSPLASH_KEY = 'TU_UNSPLASH_ACCESS_KEY';   // ← reemplaza con tu Access Key
+
+// Estado del buscador
+let unsplashPendingUrl  = null;   // URL full-res de la imagen pendiente de confirmar
+let unsplashPendingName = null;   // nombre de archivo sugerido
+
+// ── Buscar imágenes ────────────────────────────────────────────────────────────
+async function buscarUnsplash() {
+  const query   = document.getElementById('unsplash-query').value.trim();
+  if (!query) return;
+
+  const spinner = document.getElementById('unsplash-spinner');
+  const icon    = document.getElementById('unsplash-icon');
+  const grid    = document.getElementById('unsplash-grid');
+  const wrap    = document.getElementById('unsplash-results');
+
+  spinner.classList.remove('hidden');
+  icon.classList.add('hidden');
+
+  try {
+    const res  = await fetch(
+      `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=12&orientation=landscape`,
+      { headers: { Authorization: `Client-ID ${UNSPLASH_KEY}` } }
+    );
+    if (!res.ok) throw new Error(`Unsplash ${res.status}`);
+    const json = await res.json();
+
+    if (!json.results.length) {
+      grid.innerHTML = '<p class="col-span-3 text-xs text-gray-400 text-center py-4">Sin resultados. Prueba con otra búsqueda.</p>';
+      wrap.classList.remove('hidden');
+      return;
+    }
+
+    grid.innerHTML = json.results.map(foto => `
+      <button type="button"
+              onclick="abrirModalUnsplash('${foto.urls.full}','${foto.urls.regular}','unsplash-${foto.id}.jpg','${(foto.user.name).replace(/'/g,"\\'")}','${foto.links.html}')"
+              class="relative aspect-video rounded-lg overflow-hidden group border-2 border-transparent
+                     hover:border-sage transition-all focus:outline-none focus:border-gold">
+        <img src="${foto.urls.small}" alt="${foto.alt_description || ''}"
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-end p-1.5 opacity-0 group-hover:opacity-100">
+          <span class="text-white text-xs truncate">${foto.user.name}</span>
+        </div>
+      </button>`).join('');
+
+    wrap.classList.remove('hidden');
+
+  } catch (err) {
+    console.error('[Unsplash]', err);
+    grid.innerHTML = `<p class="col-span-3 text-xs text-red-400 text-center py-4">Error: ${err.message}</p>`;
+    wrap.classList.remove('hidden');
+  } finally {
+    spinner.classList.add('hidden');
+    icon.classList.remove('hidden');
+  }
+}
+
+// Buscar al pulsar Enter en el input
+document.getElementById('unsplash-query').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); buscarUnsplash(); }
+});
+document.getElementById('btn-unsplash-search').addEventListener('click', buscarUnsplash);
+
+// ── Modal de confirmación ─────────────────────────────────────────────────────
+function abrirModalUnsplash(urlFull, urlPreview, filename, autor, linkAutor) {
+  unsplashPendingUrl  = urlFull;
+  unsplashPendingName = filename;
+
+  document.getElementById('um-img').src             = urlPreview;
+  document.getElementById('um-autor').textContent   = autor;
+  document.getElementById('um-autor').href          = linkAutor;
+  document.getElementById('unsplash-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalUnsplash() {
+  document.getElementById('unsplash-modal').classList.add('hidden');
+  document.getElementById('um-img').src = '';
+  document.body.style.overflow = '';
+}
+
+// ── Confirmar: descargar como Blob y subir a Supabase Storage ─────────────────
+async function confirmarUnsplash() {
+  const btnConfirm  = document.getElementById('um-btn-confirm');
+  const btnCancel   = document.getElementById('um-btn-cancel');
+  const statusEl    = document.getElementById('um-status');
+  const progressBar = document.getElementById('um-progress');
+
+  btnConfirm.disabled = true;
+  btnCancel.disabled  = true;
+  statusEl.textContent = 'Descargando imagen…';
+  progressBar.style.width = '20%';
+
+  try {
+    // 1. Descargar la imagen como Blob a través de un proxy CORS público
+    //    Unsplash permite fetch directo con CORS, pero si falla usamos allorigins
+    let blob;
+    try {
+      const r = await fetch(unsplashPendingUrl);
+      if (!r.ok) throw new Error('fetch directo falló');
+      blob = await r.blob();
+    } catch {
+      // Fallback: proxy CORS
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(unsplashPendingUrl)}`;
+      const r = await fetch(proxyUrl);
+      blob = await r.blob();
+    }
+
+    progressBar.style.width = '55%';
+    statusEl.textContent = 'Subiendo a Supabase…';
+
+    // 2. Convertir Blob a File
+    const mimeType = blob.type || 'image/jpeg';
+    const ext      = mimeType.split('/')[1]?.replace('jpeg','jpg') || 'jpg';
+    const file     = new File([blob], `unsplash-${Date.now()}.${ext}`, { type: mimeType });
+
+    // 3. Subir a Storage usando el helper existente
+    const publicUrl = await subirImagen(file, 'retiros/portadas');
+
+    progressBar.style.width = '100%';
+    statusEl.textContent = '¡Imagen lista!';
+
+    // 4. Mostrar preview en el formulario (igual que si se hubiera seleccionado un archivo local)
+    document.getElementById('portada-label').textContent = file.name;
+    document.getElementById('portada-img').src           = publicUrl;
+    document.getElementById('portada-preview').classList.remove('hidden');
+
+    // 5. Guardar la URL para usarla en el submit (saltamos la subida de nuevo al publicar)
+    window._portadaUrlDirecta = publicUrl;
+
+    // 6. Cerrar modal y limpiar buscador
+    setTimeout(() => {
+      cerrarModalUnsplash();
+      document.getElementById('unsplash-results').classList.add('hidden');
+      document.getElementById('unsplash-grid').innerHTML = '';
+      document.getElementById('unsplash-query').value    = '';
+      toast('Imagen de Unsplash lista ✓');
+    }, 600);
+
+  } catch (err) {
+    console.error('[confirmarUnsplash]', err);
+    statusEl.textContent = `Error: ${err.message}`;
+    progressBar.style.width = '0%';
+    progressBar.classList.add('bg-red-400');
+    btnConfirm.disabled = false;
+    btnCancel.disabled  = false;
+  }
+}
 </script>
+
+<!-- ── MODAL UNSPLASH ─────────────────────────────────────────────────────── -->
+<div id="unsplash-modal"
+     class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
+     style="background:rgba(0,0,0,.75);backdrop-filter:blur(4px)">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+
+    <!-- Imagen a tamaño completo -->
+    <div class="relative bg-gray-100">
+      <img id="um-img" src="" alt="Vista previa"
+           class="w-full max-h-[55vh] object-contain"/>
+      <button type="button" onclick="cerrarModalUnsplash()"
+              class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70
+                     text-white flex items-center justify-center transition text-lg leading-none">
+        ×
+      </button>
+    </div>
+
+    <!-- Pie del modal -->
+    <div class="p-5">
+      <p class="text-xs text-gray-400 mb-4">
+        Foto de
+        <a id="um-autor" href="#" target="_blank" rel="noopener"
+           class="text-earth hover:underline font-medium"></a>
+        en <a href="https://unsplash.com" target="_blank" rel="noopener"
+              class="text-earth hover:underline">Unsplash</a>
+      </p>
+
+      <!-- Barra de progreso -->
+      <div class="h-1.5 bg-gray-100 rounded-full overflow-hidden mb-3">
+        <div id="um-progress" class="h-full bg-sage rounded-full transition-all duration-500"
+             style="width:0%"></div>
+      </div>
+      <p id="um-status" class="text-xs text-gray-400 mb-4 h-4"></p>
+
+      <!-- Botones -->
+      <div class="flex gap-3 justify-end">
+        <button type="button" id="um-btn-cancel" onclick="cerrarModalUnsplash()"
+                class="px-5 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold
+                       text-gray-500 hover:bg-gray-50 transition">
+          Cancelar
+        </button>
+        <button type="button" id="um-btn-confirm" onclick="confirmarUnsplash()"
+                class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-sage-dark hover:bg-sage
+                       text-white text-sm font-semibold transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          Confirmar y usar esta imagen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
