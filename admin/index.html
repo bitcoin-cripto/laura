@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<script>if('scrollRestoration' in history) history.scrollRestoration='manual'; window.scrollTo(0,0);</script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dashboard · Laura Fernández No Dualidad</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          sage:      '#7aaec4',
+          'sage-dark': '#2d4a5d',
+          cream:     '#f5f0e8',
+          gold:      '#cba96b',
+          earth:     '#c4956a',
+          ink:       '#3a3c36',
+        },
+        fontFamily: {
+          serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+<!-- Supabase JS (anon key — solo auth en el cliente) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<!-- Quill.js -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<!-- emoji-mart vía unpkg para el picker de emojis -->
+<script src="https://unpkg.com/emoji-mart@latest/dist/browser.js"></script>
+
+<!-- ── Guard de sesión: se ejecuta ANTES de pintar nada ── -->
+<script>
+  (async () => {
+    const SUPABASE_URL      = 'https://hdsevxevvwjelhorofqc.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_lFiTdaJuo9MBum9bX_VzGA_zyRNlMZT';
+    const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data: { session } } = await _sb.auth.getSession();
+    if (!session) {
+      window.location.replace('./login.html');
+    }
+    // Exponer cliente globalmente para el resto del script
+    window._sb = _sb;
+  })();
+</script>
+
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  h1, h2, h3, .font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+  /* ── Quill editor ── */
+  #quill-editor { min-height: 280px; font-size: 1rem; line-height: 1.7; }
+  .ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; border-color: #d1d5db; background: #f9fafb; }
+  .ql-container.ql-snow { border-radius: 0 0 8px 8px; border-color: #d1d5db; }
+  .ql-editor { min-height: 280px; }
+  .ql-editor.ql-blank::before { color: #9ca3af; font-style: normal; }
+
+  /* ── File drop zones ── */
+  .dropzone { transition: border-color .2s, background .2s; }
+  .dropzone.dragover { border-color: #7aaec4; background: #eff7fb; }
+
+  /* ── Estado del botón submit ── */
+  #btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
+  /* ── Toast ── */
+  #toast { transition: opacity .3s ease, transform .3s ease; }
+  #toast.hide { opacity: 0; transform: translateY(12px); pointer-events: none; }
+
+  /* ── Tabla de retiros ── */
+  #tabla-retiros tr:hover td { background: #f0f9ff; }
+
+  /* ── Emoji picker ── */
+  #emoji-picker-wrapper {
+    position: absolute; z-index: 999;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15);
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+  }
+  #emoji-picker-wrapper.open { display: block; }
+</style>
+</head>
+
+<body class="bg-gray-50 text-ink min-h-screen">
+
+<!-- ── NAV ─────────────────────────────────────────────────────────────────── -->
+<header class="bg-sage-dark shadow-sm sticky top-0 z-40">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-gold/30 flex items-center justify-center">
+        <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>
+      </div>
+      <span class="font-serif text-xl text-white tracking-wide">Laura Fernández</span>
+      <span class="text-sage/60 text-sm font-medium">· Admin</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="../index.html" target="_blank"
+         class="text-xs text-sage/80 hover:text-gold transition-colors flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        Ver web pública
+      </a>
+      <button id="btn-logout"
+              class="text-xs font-semibold text-sage/70 hover:text-red-400 transition-colors
+                     flex items-center gap-1 border border-white/10 hover:border-red-400/30
+                     px-3 py-1.5 rounded-lg">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+        </svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ── TOAST ────────────────────────────────────────────────────────────────── -->
+<div id="toast" class="hide fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5
+     rounded-xl shadow-lg text-sm font-medium text-white min-w-[260px]">
+  <span id="toast-icon" class="text-lg"></span>
+  <span id="toast-msg"></span>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+
+  <!-- ── FORMULARIO ──────────────────────────────────────────────────────────── -->
+  <section>
+    <div class="mb-7">
+      <p class="text-xs font-semibold tracking-widest text-earth uppercase mb-1">Panel de administración</p>
+      <h1 class="font-serif text-4xl text-sage-dark font-light">Nuevo retiro</h1>
+    </div>
+
+    <form id="form-retiro" novalidate
+          class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-8">
+
+      <!-- Fila 1: Título + Tipo -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Título <span class="text-red-400">*</span>
+          </label>
+          <input id="titulo" name="titulo" type="text" required
+                 placeholder="Ej: El silencio es lo que eres"
+                 class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                        placeholder-gray-300 transition"/>
+        </div>
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Tipo <span class="text-red-400">*</span>
+          </label>
+          <select id="tipo" name="tipo" required
+                  class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                         focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                         bg-white transition cursor-pointer">
+            <option value="">— Selecciona —</option>
+            <option value="presencial">Presencial</option>
+            <option value="online">Online</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Fila 2: Fechas + Precio + Ubicación -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Fecha inicio <span class="text-red-400">*</span>
+          </label>
+          <input id="fecha_inicio" name="fecha_inicio" type="date" required
+                 class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage transition"/>
+        </div>
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Fecha fin
+          </label>
+          <input id="fecha_fin" name="fecha_fin" type="date"
+                 class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage transition"/>
+        </div>
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Precio (€) <span class="text-red-400">*</span>
+          </label>
+          <input id="precio" name="precio" type="number" min="0" step="0.01" required
+                 placeholder="0.00"
+                 class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                        placeholder-gray-300 transition"/>
+        </div>
+        <div class="space-y-1.5">
+          <label id="ubicacion-label"
+                 class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Ubicación
+          </label>
+          <input id="ubicacion" name="ubicacion" type="text"
+                 placeholder="Ciudad, espacio…"
+                 class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                        placeholder-gray-300 transition"/>
+        </div>
+      </div>
+
+      <!-- Descripción corta -->
+      <div class="space-y-1.5">
+        <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+          Descripción corta
+          <span class="ml-2 text-gray-400 normal-case font-normal tracking-normal">
+            (aparece en la tarjeta del retiro, máx. ~160 caracteres recomendados)
+          </span>
+        </label>
+        <textarea id="descripcion_corta" name="descripcion_corta" rows="2"
+                  placeholder="Una frase breve que invite a explorar…"
+                  class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                         focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                         placeholder-gray-300 resize-none transition"></textarea>
+      </div>
+
+      <!-- Descripción larga (Quill) -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Descripción larga
+            <span class="ml-2 text-gray-400 normal-case font-normal tracking-normal">(editor enriquecido)</span>
+          </label>
+          <!-- Botón emoji -->
+          <div class="relative" id="emoji-anchor">
+            <button type="button" id="btn-emoji"
+                    class="flex items-center gap-1.5 text-xs text-gray-400 hover:text-earth
+                           transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50 border border-gray-200">
+              😊 Emoji
+            </button>
+            <div id="emoji-picker-wrapper"></div>
+          </div>
+        </div>
+        <!-- Quill -->
+        <div id="quill-editor"></div>
+        <!-- Campo oculto que recibe el HTML -->
+        <input type="hidden" id="descripcion_larga" name="descripcion_larga"/>
+      </div>
+
+      <!-- Subida de archivos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Portada -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Imagen de portada
+          </label>
+          <label for="portada"
+                 class="dropzone flex flex-col items-center justify-center gap-2
+                        border-2 border-dashed border-gray-200 rounded-xl p-6 cursor-pointer
+                        hover:border-sage hover:bg-blue-50/30 transition group">
+            <svg class="w-8 h-8 text-gray-300 group-hover:text-sage transition" fill="none"
+                 stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-sm text-gray-400 group-hover:text-sage transition" id="portada-label">
+              Arrastra o haz clic para seleccionar
+            </span>
+            <span class="text-xs text-gray-300">JPG, PNG, WEBP · máx. 5 MB</span>
+            <input id="portada" name="portada" type="file" accept="image/*" class="sr-only"/>
+          </label>
+          <!-- Preview portada -->
+          <div id="portada-preview" class="hidden mt-2 rounded-lg overflow-hidden border border-gray-100">
+            <img id="portada-img" src="" alt="Preview portada"
+                 class="w-full h-48 object-cover"/>
+          </div>
+        </div>
+
+        <!-- Galería -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+            Galería de imágenes
+          </label>
+          <label for="galeria"
+                 class="dropzone flex flex-col items-center justify-center gap-2
+                        border-2 border-dashed border-gray-200 rounded-xl p-6 cursor-pointer
+                        hover:border-sage hover:bg-blue-50/30 transition group">
+            <svg class="w-8 h-8 text-gray-300 group-hover:text-sage transition" fill="none"
+                 stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+            <span class="text-sm text-gray-400 group-hover:text-sage transition" id="galeria-label">
+              Selecciona hasta 10 imágenes
+            </span>
+            <span class="text-xs text-gray-300">Selección múltiple permitida</span>
+            <input id="galeria" name="galeria" type="file" accept="image/*" multiple class="sr-only"/>
+          </label>
+          <!-- Preview galería (miniaturas) -->
+          <div id="galeria-preview" class="hidden grid grid-cols-5 gap-2 mt-2"></div>
+        </div>
+
+      </div>
+
+      <!-- Botón submit -->
+      <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+        <p class="text-xs text-gray-400">Los campos marcados con <span class="text-red-400">*</span> son obligatorios.</p>
+        <button id="btn-submit" type="submit"
+                class="flex items-center gap-2 bg-sage-dark hover:bg-sage text-white
+                       font-semibold text-sm px-8 py-3 rounded-xl transition-colors shadow-sm">
+          <svg id="submit-spinner" class="hidden animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+          </svg>
+          <span id="submit-text">Publicar retiro</span>
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+  <!-- ── LISTADO DE RETIROS ──────────────────────────────────────────────────── -->
+  <section>
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <p class="text-xs font-semibold tracking-widest text-earth uppercase mb-1">Gestión</p>
+        <h2 class="font-serif text-3xl text-sage-dark font-light">Retiros publicados</h2>
+      </div>
+      <button id="btn-refresh" onclick="cargarRetiros()"
+              class="flex items-center gap-1.5 text-xs font-semibold text-sage-dark
+                     hover:text-earth transition-colors px-3 py-2 rounded-lg
+                     border border-gray-200 hover:border-earth bg-white">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Actualizar
+      </button>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <!-- Estado vacío / cargando -->
+      <div id="tabla-estado" class="flex flex-col items-center justify-center py-16 text-gray-400 gap-3">
+        <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        <p class="text-sm">Cargando retiros…</p>
+      </div>
+
+      <!-- Tabla -->
+      <div id="tabla-wrap" class="hidden overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="text-left px-6 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Tipo</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Ubicación</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-retiros" class="divide-y divide-gray-50"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+const API = 'http://localhost:4000/api';
+
+// ── Quill ──────────────────────────────────────────────────────────────────────
+const quill = new Quill('#quill-editor', {
+  theme: 'snow',
+  placeholder: 'Describe el retiro con detalle: qué se va a explorar, cómo será el espacio, qué incluye…',
+  modules: {
+    toolbar: [
+      [{ header: [2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ align: [] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['blockquote'],
+      ['clean'],
+    ],
+  },
+});
+
+// ── Emoji picker ───────────────────────────────────────────────────────────────
+const emojiWrapper = document.getElementById('emoji-picker-wrapper');
+const btnEmoji     = document.getElementById('btn-emoji');
+
+let pickerMounted = false;
+
+btnEmoji.addEventListener('click', (e) => {
+  e.stopPropagation();
+  emojiWrapper.classList.toggle('open');
+
+  if (!pickerMounted) {
+    const picker = new EmojiMart.Picker({
+      locale: 'es',
+      theme: 'light',
+      previewPosition: 'none',
+      skinTonePosition: 'none',
+      onEmojiSelect(emoji) {
+        const range = quill.getSelection(true);
+        quill.insertText(range.index, emoji.native);
+        quill.setSelection(range.index + emoji.native.length);
+        emojiWrapper.classList.remove('open');
+      },
+    });
+    emojiWrapper.appendChild(picker);
+    pickerMounted = true;
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('emoji-anchor').contains(e.target)) {
+    emojiWrapper.classList.remove('open');
+  }
+});
+
+// ── Campo ubicación dinámico según tipo ───────────────────────────────────────
+const tipoSel       = document.getElementById('tipo');
+const ubicInput     = document.getElementById('ubicacion');
+const ubicLabel     = document.getElementById('ubicacion-label');
+
+tipoSel.addEventListener('change', () => {
+  if (tipoSel.value === 'online') {
+    ubicLabel.textContent = 'Enlace de Zoom/Meet';
+    ubicInput.placeholder = 'https://zoom.us/j/…';
+    ubicInput.type        = 'url';
+  } else {
+    ubicLabel.textContent = 'Ubicación';
+    ubicInput.placeholder = 'Ciudad, espacio…';
+    ubicInput.type        = 'text';
+  }
+});
+
+// ── Preview portada ────────────────────────────────────────────────────────────
+document.getElementById('portada').addEventListener('change', function () {
+  const file = this.files[0];
+  if (!file) return;
+  document.getElementById('portada-label').textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('portada-img').src = e.target.result;
+    document.getElementById('portada-preview').classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+});
+
+// ── Preview galería ────────────────────────────────────────────────────────────
+document.getElementById('galeria').addEventListener('change', function () {
+  const wrap = document.getElementById('galeria-preview');
+  wrap.innerHTML = '';
+  const files = Array.from(this.files);
+  document.getElementById('galeria-label').textContent =
+    `${files.length} imagen${files.length !== 1 ? 'es' : ''} seleccionada${files.length !== 1 ? 's' : ''}`;
+
+  if (!files.length) { wrap.classList.add('hidden'); return; }
+  wrap.classList.remove('hidden');
+  wrap.className = 'grid grid-cols-5 gap-2 mt-2';
+
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const div = document.createElement('div');
+      div.className = 'aspect-square rounded-lg overflow-hidden border border-gray-100';
+      div.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover"/>`;
+      wrap.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+// ── Drag & drop visual ─────────────────────────────────────────────────────────
+document.querySelectorAll('.dropzone').forEach(zone => {
+  zone.addEventListener('dragover',  e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop',      e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const input = zone.querySelector('input[type="file"]');
+    if (input && e.dataTransfer.files.length) {
+      input.files = e.dataTransfer.files;
+      input.dispatchEvent(new Event('change'));
+    }
+  });
+});
+
+// ── Toast ──────────────────────────────────────────────────────────────────────
+function toast(msg, tipo = 'ok') {
+  const el   = document.getElementById('toast');
+  const icon = document.getElementById('toast-icon');
+  const text = document.getElementById('toast-msg');
+
+  el.className = el.className.replace(/bg-\S+/, '');
+  el.classList.remove('hide');
+  el.classList.add(tipo === 'ok' ? 'bg-sage-dark' : 'bg-red-500');
+  icon.textContent = tipo === 'ok' ? '✅' : '❌';
+  text.textContent = msg;
+
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.add('hide'), 4000);
+}
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────────
+document.getElementById('form-retiro').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+
+  // 1. Volcar HTML del editor en el campo oculto
+  const html = quill.root.innerHTML.trim();
+  document.getElementById('descripcion_larga').value =
+    html === '<p><br></p>' ? '' : html;
+
+  // 2. Validación básica
+  const titulo      = form.titulo.value.trim();
+  const tipo        = form.tipo.value;
+  const fechaInicio = form.fecha_inicio.value;
+  const precio      = form.precio.value;
+
+  if (!titulo || !tipo || !fechaInicio || !precio) {
+    toast('Rellena los campos obligatorios (*)', 'error');
+    return;
+  }
+
+  // 3. FormData
+  const fd = new FormData(form);
+
+  // 4. UI: estado enviando
+  const btn     = document.getElementById('btn-submit');
+  const spinner = document.getElementById('submit-spinner');
+  const label   = document.getElementById('submit-text');
+  btn.disabled   = true;
+  spinner.classList.remove('hidden');
+  label.textContent = 'Publicando…';
+
+  try {
+    const res  = await fetch(`${API}/retiros`, { method: 'POST', body: fd });
+    const json = await res.json();
+
+    if (!res.ok || !json.ok) throw new Error(json.error || json.errores?.join(', '));
+
+    toast('¡Retiro publicado correctamente! 🎉');
+    form.reset();
+    quill.setContents([]);
+    document.getElementById('portada-preview').classList.add('hidden');
+    document.getElementById('galeria-preview').classList.add('hidden');
+    document.getElementById('portada-label').textContent  = 'Arrastra o haz clic para seleccionar';
+    document.getElementById('galeria-label').textContent  = 'Selecciona hasta 10 imágenes';
+    ubicLabel.textContent = 'Ubicación';
+    ubicInput.type        = 'text';
+    await cargarRetiros();
+
+  } catch (err) {
+    toast(`Error: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.add('hidden');
+    label.textContent = 'Publicar retiro';
+  }
+});
+
+// ── CARGAR RETIROS ─────────────────────────────────────────────────────────────
+async function cargarRetiros() {
+  const estado = document.getElementById('tabla-estado');
+  const wrap   = document.getElementById('tabla-wrap');
+  const tbody  = document.getElementById('tabla-retiros');
+
+  estado.innerHTML = `
+    <svg class="animate-spin w-6 h-6 text-sage" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+    </svg>
+    <p class="text-sm text-gray-400">Cargando…</p>`;
+  estado.classList.remove('hidden');
+  wrap.classList.add('hidden');
+
+  try {
+    const res  = await fetch(`${API}/retiros`);
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error);
+
+    const retiros = json.data;
+
+    if (!retiros.length) {
+      estado.innerHTML = `
+        <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        <p class="text-sm">Todavía no hay retiros publicados.</p>`;
+      return;
+    }
+
+    tbody.innerHTML = retiros.map(r => {
+      const fecha = r.fecha_inicio
+        ? new Date(r.fecha_inicio).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' })
+        : '—';
+      const precio = r.precio != null
+        ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(r.precio)
+        : '—';
+      const tipoBadge = r.tipo === 'presencial'
+        ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
+        : '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>';
+
+      const portadaHtml = r.portada_url
+        ? `<img src="${r.portada_url}" alt="" class="w-14 h-10 object-cover rounded-lg border border-gray-100"/>`
+        : `<div class="w-14 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300 text-xs">—</div>`;
+
+      return `
+        <tr>
+          <td class="px-6 py-3">${portadaHtml}</td>
+          <td class="px-6 py-3 font-medium text-ink max-w-[220px] truncate">${r.titulo}</td>
+          <td class="px-4 py-3">${tipoBadge}</td>
+          <td class="px-4 py-3 text-gray-500">${fecha}</td>
+          <td class="px-4 py-3 text-gray-700 font-medium">${precio}</td>
+          <td class="px-4 py-3 text-gray-400 text-xs max-w-[140px] truncate">${r.ubicacion || '—'}</td>
+          <td class="px-4 py-3 text-right">
+            <button onclick="eliminarRetiro('${r.id}', this)"
+                    class="inline-flex items-center gap-1 text-xs font-semibold text-red-400
+                           hover:text-white hover:bg-red-500 border border-red-200 hover:border-red-500
+                           px-3 py-1.5 rounded-lg transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Eliminar
+            </button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    estado.classList.add('hidden');
+    wrap.classList.remove('hidden');
+
+  } catch (err) {
+    estado.innerHTML = `<p class="text-sm text-red-400">Error al cargar: ${err.message}</p>`;
+  }
+}
+
+// ── ELIMINAR RETIRO ────────────────────────────────────────────────────────────
+async function eliminarRetiro(id, btn) {
+  if (!confirm('¿Seguro que quieres eliminar este retiro? También se borrarán sus imágenes.')) return;
+
+  const fila = btn.closest('tr');
+  btn.disabled = true;
+  btn.textContent = 'Eliminando…';
+
+  try {
+    const res  = await fetch(`${API}/retiros/${id}`, { method: 'DELETE' });
+    const json = await res.json();
+    if (!res.ok || !json.ok) throw new Error(json.error);
+
+    fila.style.transition = 'opacity .3s';
+    fila.style.opacity    = '0';
+    setTimeout(() => { fila.remove(); sincronizarEstado(); }, 300);
+    toast('Retiro eliminado correctamente');
+
+  } catch (err) {
+    toast(`Error al eliminar: ${err.message}`, 'error');
+    btn.disabled = false;
+    btn.textContent = 'Eliminar';
+  }
+}
+
+// Si la tabla queda vacía tras borrar, mostrar estado vacío
+function sincronizarEstado() {
+  const tbody = document.getElementById('tabla-retiros');
+  if (!tbody.children.length) {
+    document.getElementById('tabla-wrap').classList.add('hidden');
+    document.getElementById('tabla-estado').innerHTML = `
+      <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+      </svg>
+      <p class="text-sm">Todavía no hay retiros publicados.</p>`;
+    document.getElementById('tabla-estado').classList.remove('hidden');
+  }
+}
+
+// ── Cerrar sesión ──────────────────────────────────────────────────────────────
+document.getElementById('btn-logout').addEventListener('click', async () => {
+  if (!confirm('¿Cerrar sesión?')) return;
+  await window._sb.auth.signOut();
+  window.location.replace('./login.html');
+});
+
+// ── Carga inicial ──────────────────────────────────────────────────────────────
+cargarRetiros();
+</script>
+
+</body>
+</html>
