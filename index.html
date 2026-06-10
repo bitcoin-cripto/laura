@@ -223,6 +223,12 @@
   .field .file .badge{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;font-style:normal;color:var(--earth-deep);border:1px solid var(--earth);border-radius:30px;padding:.4em 1em;}
   .form-shell .submit-row{margin-top:8px;display:flex;justify-content:center;}
   .form-shell .submit-row .btn-earth{padding:1em 3em;font-size:1rem;}
+  .privacy-layer{margin-top:4px;}
+  .privacy-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+  .privacy-check input[type="checkbox"]{margin-top:3px;flex-shrink:0;accent-color:var(--sage-dark);width:15px;height:15px;}
+  .privacy-check span{font-size:.8rem;color:var(--ink-soft);line-height:1.55;letter-spacing:.02em;}
+  .privacy-check a{color:var(--earth-deep);}
+  .privacy-check a:hover{color:var(--sage-dark);}
 
   /* ---------- FOOTER ---------- */
   footer.site{background:var(--sage-dark);color:rgba(253,251,246,.78);padding:80px 0 40px;position:relative;}
@@ -233,6 +239,9 @@
   .foot-links a{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(253,251,246,.7);transition:color .3s ease;}
   .foot-links a:hover{color:var(--gold);}
   .foot-rule{display:none;}
+  .foot-legal{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px;}
+  .foot-legal a{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:rgba(253,251,246,.45);text-decoration:none;transition:color .3s ease;}
+  .foot-legal a:hover{color:var(--gold);}
   .copyright{font-size:.9rem;letter-spacing:.1em;color:rgba(253,251,246,.5);}
 
   /* ---------- MODAL ---------- */
@@ -506,6 +515,12 @@
         <label for="mensaje" style="font-size: 14px">Mensaje</label>
         <textarea id="mensaje" name="mensaje" placeholder="Cuéntame en qué puedo acompañarte…"></textarea>
       </div>
+      <div class="field full privacy-layer">
+        <label class="privacy-check">
+          <input type="checkbox" name="privacidad" required/>
+          <span>He leído y acepto la <a href="legal/politica-privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>. Mis datos serán tratados por Laura Fernández con la finalidad de gestionar tu consulta y no serán cedidos a terceros salvo obligación legal.</span>
+        </label>
+      </div>
       <div class="submit-row">
         <button type="submit" class="btn btn-earth">Enviar mensaje</button>
       </div>
@@ -531,6 +546,12 @@
       <a href="#contacto">Contacto</a>
     </div>
     <span class="foot-rule"></span>
+    <div class="foot-legal">
+      <a href="legal/aviso-legal.html">Aviso Legal</a>
+      <a href="legal/politica-privacidad.html">Política de Privacidad</a>
+      <a href="legal/terminos-condiciones.html">Términos y Condiciones</a>
+      <a href="legal/politica-cookies.html">Política de Cookies</a>
+    </div>
     <p class="copyright">© 2026 Laura Fernández</p>
   </div>
 </footer>
