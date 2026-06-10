@@ -795,9 +795,10 @@ function openModal(id){
       mGrid.innerHTML = '';
       mGallery.style.display = 'none';
     }
-    const precioTexto = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+    const precioTexto  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
     const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
-    document.getElementById('m-price').innerHTML = precioTexto
+    document.getElementById('m-price').innerHTML =
+      (precioTexto  ? `Precio: ${precioTexto}`  : '')
       + (reservaTexto ? `<br><span style="font-size:.75em;font-weight:400;opacity:.7">Reserva: ${reservaTexto}</span>` : '');
     const mReserve = document.getElementById('m-reserve');
     if (r.stripe_url) {
