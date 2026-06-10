@@ -1283,10 +1283,22 @@ async function confirmarUnsplash() {
   }
 }
 
+// ── Helper: extrae URL real de imagen (soporta URLs de Google Images) ─────────
+function extraerUrlImagen(rawUrl) {
+  try {
+    const parsed = new URL(rawUrl);
+    // URL de Google Images: contiene parámetro "imgurl"
+    const imgurl = parsed.searchParams.get('imgurl');
+    if (imgurl) return imgurl;
+  } catch {}
+  return rawUrl;
+}
+
 // ── URL directa — portada ─────────────────────────────────────────────────────
 document.getElementById('btn-portada-url').addEventListener('click', async () => {
-  const url = document.getElementById('portada-url-input').value.trim();
-  if (!url) return;
+  const raw = document.getElementById('portada-url-input').value.trim();
+  if (!raw) return;
+  const url = extraerUrlImagen(raw);
 
   const btn     = document.getElementById('btn-portada-url');
   const spinner = document.getElementById('portada-url-spinner');
@@ -1321,8 +1333,9 @@ document.getElementById('portada-url-input').addEventListener('keydown', e => {
 
 // ── URL directa — galería ─────────────────────────────────────────────────────
 document.getElementById('btn-galeria-url').addEventListener('click', async () => {
-  const url = document.getElementById('galeria-url-input').value.trim();
-  if (!url) return;
+  const raw = document.getElementById('galeria-url-input').value.trim();
+  if (!raw) return;
+  const url = extraerUrlImagen(raw);
 
   const total = (window._galeriaUrlsDirectas || []).length +
                 document.querySelectorAll('#galeria-preview > div').length;
