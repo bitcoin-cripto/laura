@@ -567,6 +567,11 @@
       <h3 id="m-title"></h3>
       <div class="modal-meta"><span id="m-date"></span><span id="m-place"></span></div>
       <div id="m-desc"></div>
+      <div id="m-gallery" style="display:none;margin:1.25rem 0 0">
+        <p style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+                  color:#999;margin:0 0 .6rem">Imágenes del retiro</p>
+        <div id="m-gallery-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;"></div>
+      </div>
       <div class="modal-incl">
         <h4>Qué incluye</h4>
         <ul id="m-incl"></ul>
@@ -580,6 +585,30 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ===================== LIGHTBOX ===================== -->
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:300;
+     background:rgba(0,0,0,.93);align-items:center;justify-content:center;cursor:zoom-out;">
+  <button onclick="closeLightbox()" aria-label="Cerrar"
+          style="position:absolute;top:14px;right:18px;background:none;border:none;
+                 color:#fff;font-size:2.2rem;line-height:1;cursor:pointer;opacity:.8">×</button>
+  <button id="lb-prev" onclick="lbNav(-1)" aria-label="Anterior"
+          style="position:absolute;left:14px;top:50%;transform:translateY(-50%);
+                 background:rgba(255,255,255,.15);border:none;color:#fff;font-size:2rem;
+                 line-height:1;width:44px;height:44px;border-radius:50%;cursor:pointer;
+                 display:flex;align-items:center;justify-content:center">‹</button>
+  <img id="lb-img" src="" alt=""
+       style="max-width:92vw;max-height:88vh;object-fit:contain;border-radius:6px;
+              cursor:default;user-select:none;" onclick="event.stopPropagation()"/>
+  <button id="lb-next" onclick="lbNav(1)" aria-label="Siguiente"
+          style="position:absolute;right:14px;top:50%;transform:translateY(-50%);
+                 background:rgba(255,255,255,.15);border:none;color:#fff;font-size:2rem;
+                 line-height:1;width:44px;height:44px;border-radius:50%;cursor:pointer;
+                 display:flex;align-items:center;justify-content:center">›</button>
+  <span id="lb-counter"
+        style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+               color:rgba(255,255,255,.55);font-size:.8rem;letter-spacing:.05em"></span>
 </div>
 
 <script>
@@ -744,6 +773,24 @@ function openModal(id){
     document.getElementById('m-desc').innerHTML    = r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '');
     document.getElementById('m-incl').innerHTML    = '';
     inclSection.style.display = 'none';
+    // Galería de imágenes
+    const galeria = r.galeria_imagenes || [];
+    const mGallery = document.getElementById('m-gallery');
+    const mGrid    = document.getElementById('m-gallery-grid');
+    if (galeria.length) {
+      mGrid.innerHTML = galeria.map((url, i) =>
+        `<img src="${url}" alt="Imagen ${i+1}" data-idx="${i}"
+              style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;
+                     cursor:zoom-in;transition:opacity .2s"
+              onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'"
+              onclick="openLightbox(window._lbImages,${i})">`
+      ).join('');
+      window._lbImages = galeria;
+      mGallery.style.display = 'block';
+    } else {
+      mGrid.innerHTML = '';
+      mGallery.style.display = 'none';
+    }
     const precioTexto = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
     const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
     document.getElementById('m-price').innerHTML = precioTexto
@@ -769,6 +816,8 @@ function openModal(id){
     document.getElementById('m-incl').innerHTML    = r.incl.map(i=>`<li>${i}</li>`).join('');
     inclSection.style.display = '';
     document.getElementById('m-price').textContent = r.price;
+    document.getElementById('m-gallery').style.display = 'none';
+    document.getElementById('m-gallery-grid').innerHTML = '';
     const mReserveS = document.getElementById('m-reserve');
     if (r.reserveUrl) {
       mReserveS.href = r.reserveUrl; mReserveS.target = '_blank'; mReserveS.rel = 'noopener';
@@ -814,6 +863,43 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:.16, rootMargin:'0px 0px -8% 0px'});
 function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
 observeReveals();
+
+/* ---------- lightbox ---------- */
+let _lbIdx = 0;
+function openLightbox(imgs, idx) {
+  window._lbImages = imgs;
+  _lbIdx = idx;
+  _lbShow();
+  const lb = document.getElementById('lightbox');
+  lb.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function _lbShow() {
+  const imgs = window._lbImages || [];
+  document.getElementById('lb-img').src = imgs[_lbIdx] || '';
+  document.getElementById('lb-prev').style.display  = imgs.length > 1 ? 'flex' : 'none';
+  document.getElementById('lb-next').style.display  = imgs.length > 1 ? 'flex' : 'none';
+  document.getElementById('lb-counter').textContent = imgs.length > 1 ? `${_lbIdx + 1} / ${imgs.length}` : '';
+}
+function lbNav(dir) {
+  const imgs = window._lbImages || [];
+  _lbIdx = (_lbIdx + dir + imgs.length) % imgs.length;
+  _lbShow();
+}
+function closeLightbox() {
+  document.getElementById('lightbox').style.display = 'none';
+  document.body.style.overflow = document.getElementById('modal').classList.contains('open') ? 'hidden' : '';
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('lightbox');
+  if (lb.style.display === 'none') return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
 </script>
 </body>
 </html>
