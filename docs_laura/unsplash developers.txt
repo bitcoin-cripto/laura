@@ -1,0 +1,67 @@
+
+Aplicación: Laura Fernandez
+Demo
+
+We're excited to see what you'll build.
+Don't forget to apply for production once your application is ready.
+‹ Back to dashboard
+🚀 Apply for production
+
+Here's what needs to be done in order to gain access to production-level rate limits (1.000 requests/hour). Before applying, review the guidelines in full to ensure your application isn't rejected.
+Checklist
+Hotlink photos Photos must be hotlinked to the original image URL on Unsplash
+Trigger downloads When a user in your application uses a photo, it triggers an event to the download endpoint
+Your app does not use the Unsplash logo and is not named similarly to Unsplash Your app must look visually dinstinct from Unsplash and not use ‘Unsplash’ in the name (ex: Unsplasher)
+The application description and name included here are accurate We should be able to know what you're building just by reading the name and description of your application
+Attribute photographer and Unsplash (Add screenshots below) Photographer’s full name and Unsplash are properly attributed and linked (ex: Photo by Annie Spratt on Unsplash)
+Add screenshot or video
+
+Have a question or need help? Get in touch with our team.
+📈 Requests & Usage
+50/50 requests remaining this hour
+Requests (7 days)
+
+0
+Views (30 days)
+
+0
+Downloads (30 days)
+
+0
+Note: Views and downloads metrics updated every 20 minutes.
+🔑 Keys
+Application ID
+Access Key
+Secret key
+
+Note: both your Access Key and Secret Key must remain confidential.
+📝 Application information
+Application name
+Description
+Laura
+🔒 Redirect URI & Permissions
+Redirect URI (optional for applications that are only using the 'Public' permissions)
+urn:ietf:wg:oauth:2.0:oob
+
+White-listed addresses to redirect to after authentication success OR failure (e.g. https://mysite.com/callback)
+Use one line per URI
+Use urn:ietf:wg:oauth:2.0:oob for local tests
+urn:ietf:wg:oauth:2.0:oob (Authorize)
+Acceso público
+Acceder a los datos públicos de los usuarios
+Leer acceso de usuario
+Accede a los datos privados de los usuarios
+Escribir el acceso del usuario
+Editar y crear datos de usuario
+Leer el acceso a las fotos
+Acceder a información privada de fotos de usuarios
+Escribir el acceso a fotos
+Editar fotos para los usuarios
+Escribir acceso similar
+Archivos similares para el usuario
+Escribir el acceso de los seguidores
+Usuarios seguidores para el usuario
+Leer el acceso a las colecciones
+Recuperar colecciones privadas para el usuario
+Escribir el acceso a las colecciones
+Crear y actualizar coleccio
