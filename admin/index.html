@@ -142,7 +142,7 @@
       <h1 class="font-serif text-4xl text-sage-dark font-light">Nuevo retiro</h1>
     </div>
 
-    <form id="form-retiro" novalidate
+    <form id="form-retiro" novalidate autocomplete="off"
           class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-8">
 
       <!-- Fila 1: Título + Tipo -->
@@ -552,6 +552,24 @@ function toast(msg, tipo = 'ok') {
   el._timer = setTimeout(() => el.classList.add('hide'), 4000);
 }
 
+// ── Limpiar formulario completo ───────────────────────────────────────────────
+function limpiarFormulario() {
+  document.getElementById('form-retiro').reset();
+  // Limpiar campos que reset() no toca
+  quill.setContents([]);
+  document.getElementById('descripcion_larga').value = '';
+  document.getElementById('portada-preview').classList.add('hidden');
+  document.getElementById('portada-img').src = '';
+  document.getElementById('portada-label').textContent = 'Arrastra o haz clic para seleccionar';
+  document.getElementById('galeria-preview').classList.add('hidden');
+  document.getElementById('galeria-preview').innerHTML = '';
+  document.getElementById('galeria-label').textContent = 'Selecciona hasta 10 imágenes';
+  document.getElementById('unsplash-results').classList.add('hidden');
+  document.getElementById('unsplash-grid').innerHTML = '';
+  document.getElementById('unsplash-query').value = '';
+  window._portadaUrlDirecta = null;
+}
+
 // ── SUBMIT ─────────────────────────────────────────────────────────────────────
 document.getElementById('form-retiro').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -619,12 +637,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
     if (insertError) throw new Error(`Supabase: ${insertError.message}`);
 
     toast('¡Retiro publicado correctamente! 🎉');
-    form.reset();
-    quill.setContents([]);
-    document.getElementById('portada-preview').classList.add('hidden');
-    document.getElementById('galeria-preview').classList.add('hidden');
-    document.getElementById('portada-label').textContent = 'Arrastra o haz clic para seleccionar';
-    document.getElementById('galeria-label').textContent = 'Selecciona hasta 10 imágenes';
+    limpiarFormulario();
     await cargarRetiros();
 
   } catch (err) {
@@ -797,6 +810,7 @@ document.getElementById('btn-logout').addEventListener('click', async () => {
 });
 
 // ── Carga inicial ──────────────────────────────────────────────────────────────
+limpiarFormulario();   // evita que el browser rellene campos al refrescar
 cargarRetiros();
 
 // ═════════════════════════════════════════════════════════════════════════════
