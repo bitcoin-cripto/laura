@@ -395,7 +395,23 @@
 <!-- SCRIPTS                                                                    -->
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <script>
-const API = 'http://localhost:4000/api';
+// ── Cliente Supabase (100 % serverless — sin Node, sin localhost) ──────────────
+const SUPABASE_URL      = 'https://hdsevxevvwjelhorofqc.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_lFiTdaJuo9MBum9bX_VzGA_zyRNlMZT';
+const sb = window._sb || supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ── Helper: sube un File al bucket "imgs" y devuelve la URL pública ────────────
+async function subirImagen(file, carpeta) {
+  const ext      = file.name.split('.').pop();
+  const path     = `${carpeta}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await sb.storage.from('imgs').upload(path, file, {
+    contentType:  file.type,
+    cacheControl: '3600',
+    upsert:       false,
+  });
+  if (error) throw new Error(`Storage: ${error.message}`);
+  return sb.storage.from('imgs').getPublicUrl(path).data.publicUrl;
+}
 
 // ── Quill ──────────────────────────────────────────────────────────────────────
 const quill = new Quill('#quill-editor', {
@@ -553,10 +569,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
     return;
   }
 
-  // 3. FormData
-  const fd = new FormData(form);
-
-  // 4. UI: estado enviando
+  // 3. UI: estado enviando
   const btn     = document.getElementById('btn-submit');
   const spinner = document.getElementById('submit-spinner');
   const label   = document.getElementById('submit-text');
@@ -565,23 +578,52 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
   label.textContent = 'Publicando…';
 
   try {
-    const res  = await fetch(`${API}/retiros`, { method: 'POST', body: fd });
-    const json = await res.json();
+    // 4. Subir portada a Storage (si se ha seleccionado)
+    let portada_url = null;
+    const portadaFile = document.getElementById('portada').files[0];
+    if (portadaFile) {
+      label.textContent = 'Subiendo portada…';
+      portada_url = await subirImagen(portadaFile, 'retiros/portadas');
+    }
 
-    if (!res.ok || !json.ok) throw new Error(json.error || json.errores?.join(', '));
+    // 5. Subir galería a Storage (si se han seleccionado)
+    label.textContent = 'Subiendo galería…';
+    const galeriaFiles = Array.from(document.getElementById('galeria').files);
+    const galeria_urls = galeriaFiles.length
+      ? await Promise.all(galeriaFiles.map(f => subirImagen(f, 'retiros/galeria')))
+      : [];
+
+    // 6. Insertar fila en la tabla retiros
+    label.textContent = 'Guardando…';
+    const { error: insertError } = await sb.from('retiros').insert([{
+      titulo:            form.titulo.value.trim(),
+      tipo:              form.tipo.value,
+      fecha_inicio:      form.fecha_inicio.value,
+      fecha_fin:         form.fecha_fin.value         || null,
+      precio:            parseFloat(form.precio.value),
+      lugar:             form.lugar.value.trim()       || null,
+      ubicacion:         form.ubicacion.value.trim()   || null,
+      descripcion_corta: form.descripcion_corta.value.trim() || null,
+      descripcion_larga: form.descripcion_larga.value || null,
+      portada_url,
+      galeria_urls,
+    }]);
+
+    if (insertError) throw new Error(`Supabase: ${insertError.message}`);
 
     toast('¡Retiro publicado correctamente! 🎉');
     form.reset();
     quill.setContents([]);
     document.getElementById('portada-preview').classList.add('hidden');
     document.getElementById('galeria-preview').classList.add('hidden');
-    document.getElementById('portada-label').textContent  = 'Arrastra o haz clic para seleccionar';
-    document.getElementById('galeria-label').textContent  = 'Selecciona hasta 10 imágenes';
+    document.getElementById('portada-label').textContent = 'Arrastra o haz clic para seleccionar';
+    document.getElementById('galeria-label').textContent = 'Selecciona hasta 10 imágenes';
     ubicLabel.textContent = 'Ubicación';
     ubicInput.type        = 'text';
     await cargarRetiros();
 
   } catch (err) {
+    console.error('[submit]', err);
     toast(`Error: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
@@ -606,11 +648,13 @@ async function cargarRetiros() {
   wrap.classList.add('hidden');
 
   try {
-    const res  = await fetch(`${API}/retiros`);
-    const json = await res.json();
-    if (!json.ok) throw new Error(json.error);
+    // GET directo a Supabase — funciona tanto en local como en producción
+    const { data: retiros, error } = await sb
+      .from('retiros')
+      .select('*')
+      .order('fecha_inicio', { ascending: true });
 
-    const retiros = json.data;
+    if (error) throw new Error(`Supabase: ${error.message}`);
 
     if (!retiros.length) {
       estado.innerHTML = `
@@ -665,7 +709,18 @@ async function cargarRetiros() {
     wrap.classList.remove('hidden');
 
   } catch (err) {
-    estado.innerHTML = `<p class="text-sm text-red-400">Error al cargar: ${err.message}</p>`;
+    console.error('[cargarRetiros]', err);
+    estado.innerHTML = `
+      <div class="flex flex-col items-center gap-2 text-red-400">
+        <svg class="w-8 h-8 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+        </svg>
+        <p class="text-sm font-medium">Error al cargar los retiros</p>
+        <p class="text-xs text-red-300 font-mono">${err.message}</p>
+        <button onclick="cargarRetiros()"
+                class="mt-1 text-xs text-red-400 underline hover:text-red-600">Reintentar</button>
+      </div>`;
   }
 }
 
@@ -678,9 +733,30 @@ async function eliminarRetiro(id, btn) {
   btn.textContent = 'Eliminando…';
 
   try {
-    const res  = await fetch(`${API}/retiros/${id}`, { method: 'DELETE' });
-    const json = await res.json();
-    if (!res.ok || !json.ok) throw new Error(json.error);
+    // 1. Obtener URLs de imágenes antes de borrar la fila
+    const { data: retiro, error: fetchErr } = await sb
+      .from('retiros').select('portada_url, galeria_urls').eq('id', id).single();
+    if (fetchErr) throw new Error(`Supabase: ${fetchErr.message}`);
+
+    // 2. Borrar imágenes del Storage
+    const extractPath = url => {
+      const marker = '/object/public/imgs/';
+      const idx    = url?.indexOf(marker);
+      return idx >= 0 ? decodeURIComponent(url.slice(idx + marker.length)) : null;
+    };
+    const paths = [
+      retiro.portada_url,
+      ...(retiro.galeria_urls || []),
+    ].map(extractPath).filter(Boolean);
+
+    if (paths.length) {
+      const { error: storageErr } = await sb.storage.from('imgs').remove(paths);
+      if (storageErr) console.warn('Storage cleanup parcial:', storageErr.message);
+    }
+
+    // 3. Borrar la fila
+    const { error } = await sb.from('retiros').delete().eq('id', id);
+    if (error) throw new Error(`Supabase: ${error.message}`);
 
     fila.style.transition = 'opacity .3s';
     fila.style.opacity    = '0';
