@@ -418,6 +418,16 @@
                               placeholder-gray-300 transition"/>
               </div>
             </div>
+            <div class="space-y-1.5 mt-4">
+              <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+                Enlace de pago Stripe
+              </label>
+              <input id="stripe_url" name="stripe_url" type="url"
+                     placeholder="https://buy.stripe.com/…"
+                     class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                            focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                            placeholder-gray-300 transition"/>
+            </div>
           </div>
 
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -797,6 +807,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
       fecha_fin:         form.fecha_fin.value              || null,
       precio:            parseFloat(form.precio.value),
       precio_reserva:    form.precio_reserva.value ? parseFloat(form.precio_reserva.value) : null,
+      stripe_url:        form.stripe_url.value.trim()       || null,
       lugar:             form.lugar.value.trim()            || null,
       descripcion_corta: form.descripcion_corta.value.trim() || null,
       descripcion_larga: form.descripcion_larga.value       || null,
@@ -1013,6 +1024,7 @@ function mostrarFormulario(retiro = null) {
     document.getElementById('fecha_fin').value         = retiro.fecha_fin         || '';
     document.getElementById('precio').value            = retiro.precio         != null ? retiro.precio         : '';
     document.getElementById('precio_reserva').value   = retiro.precio_reserva != null ? retiro.precio_reserva : '';
+    document.getElementById('stripe_url').value       = retiro.stripe_url       || '';
     document.getElementById('descripcion_corta').value = retiro.descripcion_corta || '';
     if (retiro.descripcion_larga) quill.root.innerHTML = retiro.descripcion_larga;
 

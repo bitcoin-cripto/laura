@@ -700,7 +700,8 @@ function cardHTMLSb(r) {
         ${precioHtml}
       </div>
       <div class="card-actions">
-        <a href="#contacto" class="btn btn-earth" style="color:#fff">Reservar</a>
+        <a href="${r.stripe_url || '#contacto'}" ${r.stripe_url ? 'target="_blank" rel="noopener"' : ''}
+           class="btn btn-earth" style="color:#fff">Reservar</a>
         <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
       </div>
     </div>
@@ -747,6 +748,17 @@ function openModal(id){
     const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
     document.getElementById('m-price').innerHTML = precioTexto
       + (reservaTexto ? `<br><span style="font-size:.75em;font-weight:400;opacity:.7">Reserva: ${reservaTexto}</span>` : '');
+    const mReserve = document.getElementById('m-reserve');
+    if (r.stripe_url) {
+      mReserve.href = r.stripe_url;
+      mReserve.target = '_blank';
+      mReserve.rel = 'noopener';
+      mReserve.onclick = null;
+    } else {
+      mReserve.href = '#contacto';
+      mReserve.target = '';
+      mReserve.rel = '';
+    }
   } else {
     document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
     document.getElementById('m-loc').textContent   = r.tag;
@@ -757,6 +769,12 @@ function openModal(id){
     document.getElementById('m-incl').innerHTML    = r.incl.map(i=>`<li>${i}</li>`).join('');
     inclSection.style.display = '';
     document.getElementById('m-price').textContent = r.price;
+    const mReserveS = document.getElementById('m-reserve');
+    if (r.reserveUrl) {
+      mReserveS.href = r.reserveUrl; mReserveS.target = '_blank'; mReserveS.rel = 'noopener';
+    } else {
+      mReserveS.href = '#contacto';  mReserveS.target = '';       mReserveS.rel = '';
+    }
   }
   modal.classList.add('open');
   document.body.style.overflow='hidden';
