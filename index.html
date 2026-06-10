@@ -676,18 +676,91 @@ const allRetreats = {};
 document.getElementById('grid-presencial').innerHTML = presencial.map(cardHTML).join('');
 document.getElementById('grid-online').innerHTML = online.map(cardHTML).join('');
 
+/* ---------- Supabase: carga dinámica ---------- */
+const SB_URL  = 'https://hdsevxevvwjelhorofqc.supabase.co';
+const SB_KEY  = 'sb_publishable_lFiTdaJuo9MBum9bX_VzGA_zyRNlMZT';
+
+function formatFecha(inicio, fin) {
+  if (!inicio) return '';
+  const loc = 'es-ES';
+  const d1  = new Date(inicio + 'T12:00:00');
+  const fmt  = { day:'numeric', month:'long', year:'numeric' };
+  const fmtM = { day:'numeric', month:'long' };
+  if (!fin || fin === inicio) return d1.toLocaleDateString(loc, fmt);
+  const d2 = new Date(fin + 'T12:00:00');
+  if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth())
+    return `${d1.getDate()} – ${d2.toLocaleDateString(loc, fmt)}`;
+  return `${d1.toLocaleDateString(loc, fmtM)} – ${d2.toLocaleDateString(loc, fmt)}`;
+}
+
+function cardHTMLSb(r) {
+  const img    = r.imagen_portada ? `background-image:url('${r.imagen_portada}')` : 'background-color:#e8e0d4';
+  const fecha  = formatFecha(r.fecha_inicio, r.fecha_fin);
+  const precio = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+  return `<article class="card reveal">
+    <div class="card-img" style="${img}"></div>
+    <div class="card-body">
+      <h3>${r.titulo}</h3>
+      <div class="card-meta">
+        ${fecha   ? `<span><b>Fecha</b>${fecha}</span>`    : ''}
+        ${r.lugar ? `<span><b>Lugar</b>${r.lugar}</span>`  : ''}
+        ${precio  ? `<span><b>Precio</b>${precio}</span>`  : ''}
+      </div>
+      <div class="card-actions">
+        <a href="#contacto" class="btn btn-earth" style="color:#fff">Reservar</a>
+        <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+(async function cargarRetiros() {
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/retiros?select=*&order=fecha_inicio.asc`,
+      { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+    );
+    if (!res.ok) return;
+    const retiros = await res.json();
+    if (!Array.isArray(retiros) || !retiros.length) return;
+
+    const dynP = retiros.filter(r => r.tipo === 'presencial');
+    const dynO = retiros.filter(r => r.tipo === 'online');
+
+    if (dynP.length) document.getElementById('grid-presencial').innerHTML = dynP.map(cardHTMLSb).join('');
+    if (dynO.length) document.getElementById('grid-online').innerHTML     = dynO.map(cardHTMLSb).join('');
+
+    retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
+    observeReveals();
+  } catch(e) { /* fallback silencioso a datos estáticos */ }
+})();
+
 /* ---------- modal ---------- */
 const modal = document.getElementById('modal');
 function openModal(id){
   const r = allRetreats[id]; if(!r) return;
-  document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
-  document.getElementById('m-loc').textContent = r.tag;
-  document.getElementById('m-title').textContent = r.title;
-  document.getElementById('m-date').textContent = r.date;
-  document.getElementById('m-place').textContent = r.place;
-  document.getElementById('m-desc').innerHTML = r.desc.map(p=>`<p>${p}</p>`).join('');
-  document.getElementById('m-incl').innerHTML = r.incl.map(i=>`<li>${i}</li>`).join('');
-  document.getElementById('m-price').textContent = r.price;
+  const inclSection = document.getElementById('m-incl').closest('.modal-incl');
+  if (r._sb) {
+    document.getElementById('m-img').style.backgroundImage = r.imagen_portada ? `url('${r.imagen_portada}')` : '';
+    document.getElementById('m-loc').textContent   = r.tipo === 'presencial' ? 'Retiro presencial' : 'Retiro online';
+    document.getElementById('m-title').textContent = r.titulo;
+    document.getElementById('m-date').textContent  = formatFecha(r.fecha_inicio, r.fecha_fin);
+    document.getElementById('m-place').textContent = r.lugar || '';
+    document.getElementById('m-desc').innerHTML    = r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '');
+    document.getElementById('m-incl').innerHTML    = '';
+    inclSection.style.display = 'none';
+    document.getElementById('m-price').textContent = r.precio != null ? Number(r.precio).toLocaleString('es-ES') + '€' : '';
+  } else {
+    document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
+    document.getElementById('m-loc').textContent   = r.tag;
+    document.getElementById('m-title').textContent = r.title;
+    document.getElementById('m-date').textContent  = r.date;
+    document.getElementById('m-place').textContent = r.place;
+    document.getElementById('m-desc').innerHTML    = r.desc.map(p=>`<p>${p}</p>`).join('');
+    document.getElementById('m-incl').innerHTML    = r.incl.map(i=>`<li>${i}</li>`).join('');
+    inclSection.style.display = '';
+    document.getElementById('m-price').textContent = r.price;
+  }
   modal.classList.add('open');
   document.body.style.overflow='hidden';
 }
