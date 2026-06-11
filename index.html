@@ -261,9 +261,22 @@
   .modal-close{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(253,251,246,.92);color:var(--sage-dark);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s ease,transform .3s ease;z-index:2;}
   .modal-close:hover{background:var(--white);transform:rotate(90deg);}
   .modal-content{padding:34px clamp(26px,4vw,44px) 40px;}
-  .modal-content .eyebrow{color:var(--earth-deep);}
-  .modal-content h3{font-size:2.2rem;font-weight:400;color:var(--sage-dark);line-height:1.1;margin:.3em 0 .15em;}
-  .modal-meta{display:flex;gap:22px;flex-wrap:wrap;color:var(--ink-soft);font-style:italic;margin-bottom:20px;font-size:1.05rem;}
+  .modal-content .eyebrow{color:var(--earth-deep);font-family:"Inter",sans-serif;}
+  .modal-content h3{font-family:"Inter",sans-serif;font-size:2rem;font-weight:700;color:var(--sage-dark);line-height:1.15;margin:.3em 0 .15em;}
+  .modal-meta{display:flex;gap:1em 2.5em;flex-wrap:wrap;margin:1.2em 0 1.4em;
+              padding:1em 0;border-top:1px solid var(--cream-warm);border-bottom:1px solid var(--cream-warm);}
+  .modal-meta-item{display:flex;flex-direction:column;gap:.2em;}
+  .modal-meta-item .mk{font-family:"Inter",sans-serif;font-size:.65rem;letter-spacing:.22em;
+                       text-transform:uppercase;font-weight:700;color:var(--earth);}
+  .modal-meta-item .mv{font-family:"Inter",sans-serif;font-size:.95rem;color:var(--ink);font-weight:500;}
+  .modal-precio-blk{display:inline-flex;align-items:center;gap:.5em;flex-wrap:wrap;
+                    background:var(--cream);border:1px solid var(--cream-warm);
+                    border-radius:10px;padding:.65em 1.2em;margin-bottom:1.4em;}
+  .modal-precio-blk .plbl,.modal-precio-blk .rlbl{font-family:"Inter",sans-serif;
+                                                   font-size:.85rem;font-weight:600;color:var(--ink-soft);}
+  .modal-precio-blk .pamt,.modal-precio-blk .ramt{font-family:"Inter",sans-serif;
+                                                   font-size:.85rem;font-weight:700;color:var(--sage-dark);}
+  .modal-precio-blk .psep{color:var(--cream-warm);font-size:1.1rem;margin:0 .15em;}
   .modal-content p{font-size:1.15rem;color:var(--ink-soft);margin-bottom:1em;}
   .modal-incl{background:rgba(122,174,196,.14);border-radius:14px;padding:22px 26px;margin:6px 0 26px;}
   .modal-incl h4{font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sage-deep);margin-bottom:12px;font-weight:600;}
@@ -584,9 +597,11 @@
     <div class="logo">Laura Fernández</div>
     <p class="tag" style="font-weight: 500; width: 500px; font-size: 25px; height: 50px; line-height: 1.6; text-align: center; white-space: nowrap">Señalando lo que siempre ha estado aquí</p>
     <div class="foot-links">
-      <a href="#inicio" style="font-size: 15px">Inicio</a>
-      <a href="#retiros" style="font-size: 15px">Retiros</a>
-      <a href="#contacto" style="font-size: 15px">Contacto</a>
+      <a href="#inicio" style="font-size:15px">Inicio</a>
+      <a href="#sobre" style="font-size:15px">Laura</a>
+      <a href="#retiros" style="font-size:15px">Retiros</a>
+      <a href="#conversamos" style="font-size:15px">¿Conversamos?</a>
+      <a href="#contacto" style="font-size:15px">Escríbeme</a>
     </div>
     <span class="foot-rule"></span>
     <div class="foot-legal">
@@ -607,7 +622,8 @@
     <div class="modal-content">
       <span class="eyebrow" id="m-loc"></span>
       <h3 id="m-title"></h3>
-      <div class="modal-meta"><span id="m-date"></span><span id="m-place"></span></div>
+      <div class="modal-meta" id="m-meta-grid"></div>
+      <div id="m-precio-blk" class="modal-precio-blk" style="display:none"></div>
       <div id="m-desc"></div>
       <div id="m-gallery" style="display:none;margin:1.25rem 0 0">
         <p style="font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
@@ -619,10 +635,6 @@
         <ul id="m-incl"></ul>
       </div>
       <div class="modal-foot">
-        <div class="modal-price">
-          <span class="amt" id="m-price"></span>
-          <span class="lbl">por persona</span>
-        </div>
         <a href="#reserva" class="btn btn-earth" id="m-reserve">Reservar plaza</a>
       </div>
     </div>
@@ -810,8 +822,22 @@ function openModal(id){
     document.getElementById('m-img').style.backgroundImage = r.imagen_portada ? `url('${r.imagen_portada}')` : '';
     document.getElementById('m-loc').textContent   = r.tipo === 'presencial' ? 'Retiro presencial' : 'Retiro online';
     document.getElementById('m-title').textContent = r.titulo;
-    document.getElementById('m-date').textContent  = formatFecha(r.fecha_inicio, r.fecha_fin);
-    document.getElementById('m-place').textContent = r.lugar || '';
+    // Meta items con etiquetas (Fecha inicio/fin + Lugar + Modalidad)
+    const fmtOpts = { day:'numeric', month:'long', year:'numeric' };
+    let metaItems = '';
+    if (r.fecha_inicio) {
+      const d1s = new Date(r.fecha_inicio+'T12:00:00').toLocaleDateString('es-ES', fmtOpts);
+      if (r.fecha_fin && r.fecha_fin !== r.fecha_inicio) {
+        const d2s = new Date(r.fecha_fin+'T12:00:00').toLocaleDateString('es-ES', fmtOpts);
+        metaItems += `<div class="modal-meta-item"><span class="mk">Fecha inicio</span><span class="mv">${d1s}</span></div>`;
+        metaItems += `<div class="modal-meta-item"><span class="mk">Fecha fin</span><span class="mv">${d2s}</span></div>`;
+      } else {
+        metaItems += `<div class="modal-meta-item"><span class="mk">Fecha</span><span class="mv">${d1s}</span></div>`;
+      }
+    }
+    if (r.lugar) metaItems += `<div class="modal-meta-item"><span class="mk">Lugar</span><span class="mv">${r.lugar}</span></div>`;
+    if (r.tipo)  metaItems += `<div class="modal-meta-item"><span class="mk">Modalidad</span><span class="mv">${r.tipo === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
+    document.getElementById('m-meta-grid').innerHTML = metaItems;
     document.getElementById('m-desc').innerHTML    = r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '');
     document.getElementById('m-incl').innerHTML    = '';
     inclSection.style.display = 'none';
@@ -839,9 +865,14 @@ function openModal(id){
     }
     const precioTexto  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
     const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
-    document.getElementById('m-price').innerHTML =
-      (precioTexto  ? `Precio: ${precioTexto}`   : '')
-      + (reservaTexto ? `<br>Reserva: ${reservaTexto}` : '');
+    const pBlk = document.getElementById('m-precio-blk');
+    if (precioTexto) {
+      pBlk.style.display = '';
+      pBlk.innerHTML = `<span class="plbl">Precio:</span><span class="pamt">${precioTexto}</span>`
+        + (reservaTexto ? `<span class="psep">|</span><span class="rlbl">Reserva:</span><span class="ramt">${reservaTexto}</span>` : '');
+    } else {
+      pBlk.style.display = 'none';
+    }
     const mReserve = document.getElementById('m-reserve');
     if (r.stripe_url) {
       mReserve.href = r.stripe_url;
@@ -857,12 +888,18 @@ function openModal(id){
     document.getElementById('m-img').style.backgroundImage = `url('${r.img}')`;
     document.getElementById('m-loc').textContent   = r.tag;
     document.getElementById('m-title').textContent = r.title;
-    document.getElementById('m-date').textContent  = r.date;
-    document.getElementById('m-place').textContent = r.place;
+    let smeta = '';
+    if (r.date)  smeta += `<div class="modal-meta-item"><span class="mk">Fecha</span><span class="mv">${r.date}</span></div>`;
+    if (r.place) smeta += `<div class="modal-meta-item"><span class="mk">Lugar</span><span class="mv">${r.place}</span></div>`;
+    document.getElementById('m-meta-grid').innerHTML = smeta;
     document.getElementById('m-desc').innerHTML    = r.desc.map(p=>`<p>${p}</p>`).join('');
     document.getElementById('m-incl').innerHTML    = r.incl.map(i=>`<li>${i}</li>`).join('');
     inclSection.style.display = '';
-    document.getElementById('m-price').textContent = r.price;
+    const spBlk = document.getElementById('m-precio-blk');
+    if (r.price) {
+      spBlk.style.display = '';
+      spBlk.innerHTML = `<span class="plbl">Precio:</span><span class="pamt">${r.price}</span>`;
+    } else { spBlk.style.display = 'none'; }
     document.getElementById('m-gallery').style.display = 'none';
     document.getElementById('m-gallery-grid').innerHTML = '';
     const mReserveS = document.getElementById('m-reserve');
