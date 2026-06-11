@@ -243,6 +243,7 @@
   .privacy-check input[type="checkbox"]{margin-top:3px;flex-shrink:0;accent-color:var(--sage-dark);width:15px;height:15px;}
   .privacy-check span{font-size:.8rem;color:var(--ink-soft);line-height:1.55;letter-spacing:.02em;}
   .privacy-check a{color:var(--earth-deep);}
+  .field-error{display:block;font-family:"Inter",sans-serif;font-size:.78rem;color:#c0392b;margin-top:5px;}
   .privacy-check a:hover{color:var(--sage-dark);}
 
   /* ---------- FOOTER ---------- */
@@ -1010,7 +1011,17 @@ navToggle.addEventListener('click', ()=> toggleMenu());
 document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', ()=> toggleMenu(false)));
 
 /* ---------- formulario de contacto ---------- */
-const FORMSPREE_URL = 'https://formspree.io/f/xyzxyzyz'; // ← reemplaza con tu endpoint de Formspree
+function setFieldError(id, msg) {
+  const field = document.getElementById(id);
+  let err = field.parentElement.querySelector('.field-error');
+  if (!err) { err = document.createElement('span'); err.className = 'field-error'; field.parentElement.appendChild(err); }
+  err.textContent = msg;
+  field.style.borderColor = '#c0392b';
+}
+function clearFieldErrors(form) {
+  form.querySelectorAll('.field-error').forEach(e => e.remove());
+  form.querySelectorAll('input,select,textarea').forEach(e => e.style.borderColor = '');
+}
 
 document.getElementById('contacto-form').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -1022,23 +1033,28 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   const mensaje= form.mensaje.value.trim();
   const priv   = form.privacidad.checked;
 
-  if (!nombre || !email || !asunto || !mensaje) {
-    alert('Por favor rellena todos los campos.');
-    return;
-  }
+  clearFieldErrors(form);
+  let hasError = false;
+  if (!nombre)  { setFieldError('nombre',  'Por favor escribe tu nombre.');           hasError = true; }
+  if (!email)   { setFieldError('email',   'Por favor escribe tu email.');             hasError = true; }
+  if (!asunto)  { setFieldError('asunto',  'Selecciona un retiro o tema.');            hasError = true; }
+  if (!mensaje) { setFieldError('mensaje', 'Por favor escribe tu mensaje.');           hasError = true; }
   if (!priv) {
-    alert('Debes aceptar la política de privacidad.');
-    return;
+    let err = form.querySelector('.privacy-check .field-error');
+    if (!err) { err = document.createElement('span'); err.className = 'field-error'; form.querySelector('.privacy-check').appendChild(err); }
+    err.textContent = 'Debes aceptar la política de privacidad.';
+    hasError = true;
   }
+  if (hasError) return;
 
   btn.disabled = true;
   btn.textContent = 'Enviando…';
 
   try {
-    const res = await fetch(FORMSPREE_URL, {
+    const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email, asunto, mensaje })
+      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: `Nuevo mensaje web: ${asunto}` })
     });
     if (res.ok) {
       btn.textContent = '¡Mensaje enviado!';
@@ -1046,12 +1062,12 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
       form.reset();
       setTimeout(() => { btn.disabled = false; btn.textContent = 'Enviar mensaje'; btn.style.background = ''; }, 4000);
     } else {
-      throw new Error('Error al enviar');
+      throw new Error();
     }
   } catch {
     btn.disabled = false;
     btn.textContent = 'Enviar mensaje';
-    alert('No se pudo enviar el mensaje. Por favor escríbeme directamente a info@laurafernandeznodualidad.com');
+    setFieldError('mensaje', 'No se pudo enviar. Escríbeme a info@laurafernandeznodualidad.com');
   }
 });
 
