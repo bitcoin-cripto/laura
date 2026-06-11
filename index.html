@@ -189,7 +189,8 @@
     transition:transform .5s ease,box-shadow .5s ease;
   }
   .card:hover{transform:translateY(-6px);box-shadow:0 34px 60px -30px rgba(45,74,93,.55);}
-  .card-img{height:210px;background-size:cover;background-position:center;position:relative;background-color:var(--sage-deep);}
+  .card-img{height:210px;background-size:cover;background-position:center;position:relative;background-color:var(--sage-deep);overflow:hidden;transition:transform .5s ease;}
+  .card:hover .card-img{transform:scale(1.05);}
   .card-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(46,59,53,.35));}
   .card-tag{position:absolute;top:14px;left:14px;z-index:2;background:rgba(253,251,246,.92);color:var(--earth-deep);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;padding:.45em 1em;border-radius:30px;}
   .card-tag:empty{display:none;}
