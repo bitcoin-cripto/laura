@@ -206,7 +206,7 @@
   .pago{background:linear-gradient(180deg,var(--sage-wash),#b8d9ea);padding:40px 0 90px;}
   .pay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:880px;margin:0 auto 36px;}
   .pay-card{background:var(--white);border-radius:18px;padding:38px 34px;box-shadow:0 24px 50px -34px rgba(45,74,93,.5);border:1px solid rgba(255,255,255,.6);}
-  .pay-card h3{font-size:1.5rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-dark);margin-bottom:.2em;}
+  .pay-card h3{font-size:1rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-dark);margin-bottom:.2em;}
   .pay-card .pay-sub{font-style:italic;color:var(--ink-soft);margin-bottom:22px;}
   .pay-row{padding:14px 0;border-top:1px solid rgba(122,174,196,.3);}
   .pay-row .k{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--earth-deep);margin-bottom:3px;}
@@ -690,7 +690,7 @@
         <ul id="m-incl"></ul>
       </div>
       <div class="modal-foot">
-        <a href="#reserva" class="btn btn-earth" id="m-reserve">Reservar plaza</a>
+        <a href="#reserva" class="btn btn-earth" id="m-reserve">Reserva ahora</a>
       </div>
     </div>
   </div>
@@ -839,7 +839,7 @@ function cardHTMLSb(r) {
       </div>
       <div class="card-actions">
         <a href="${r.stripe_url || '#contacto'}" ${r.stripe_url ? 'target="_blank" rel="noopener"' : ''}
-           class="btn btn-earth" style="color:#fff">Reservar</a>
+           class="btn btn-earth" style="color:#fff">Reserva ahora</a>
         <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
       </div>
     </div>
@@ -927,7 +927,7 @@ function openModal(id){
       pBlk.style.display = '';
       pBlk.innerHTML = `<span class="precios"><span class="plbl">Precio:</span><span class="pamt">${precioTexto}</span>`
         + (reservaTexto ? `<span class="psep">|</span><span class="rlbl">Reserva:</span><span class="ramt">${reservaTexto}</span>` : '')
-        + `</span><a href="${reserveHref}" ${reserveExtra} class="btn btn-earth">Reservar plaza</a>`;
+        + `</span><a href="${reserveHref}" ${reserveExtra} class="btn btn-earth">Reserva ahora</a>`;
     } else {
       pBlk.style.display = 'none';
     }
@@ -949,7 +949,7 @@ function openModal(id){
     if (r.price) {
       spBlk.style.display = '';
       spBlk.innerHTML = `<span class="precios"><span class="plbl">Precio:</span><span class="pamt">${r.price}</span></span>`
-        + `<a href="${sReserveHref}" ${sReserveExtra} class="btn btn-earth">Reservar plaza</a>`;
+        + `<a href="${sReserveHref}" ${sReserveExtra} class="btn btn-earth">Reserva ahora</a>`;
     } else { spBlk.style.display = 'none'; }
     document.getElementById('m-gallery').style.display = 'none';
     document.getElementById('m-gallery-grid').innerHTML = '';

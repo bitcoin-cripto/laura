@@ -310,8 +310,8 @@ function renderRetiro(r) {
   const precioStr  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
   const reservaStr = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
   const reservaBtn = r.stripe_url
-    ? `<a href="${r.stripe_url}" target="_blank" rel="noopener" class="btn btn-earth">Reservar plaza</a>`
-    : `<a href="index.html#contacto" class="btn btn-earth">Reservar plaza</a>`;
+    ? `<a href="${r.stripe_url}" target="_blank" rel="noopener" class="btn btn-earth">Reserva ahora</a>`
+    : `<a href="index.html#contacto" class="btn btn-earth">Reserva ahora</a>`;
 
   const precioHtml = precioStr
     ? `<div class="precio-block">
