@@ -268,6 +268,15 @@
   .modal-price .amt{font-size:2rem;color:var(--sage-dark);line-height:1.3;}
   .modal-price .lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);}
 
+  /* #m-desc: misma base que el editor Quill del admin */
+  #m-desc{
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  #m-desc p { margin: 0 0 .4em; }
+
   /* Quill: alineación en modal */
   #m-desc .ql-align-center{text-align:center!important;}
   #m-desc .ql-align-right{text-align:right!important;}
@@ -291,10 +300,8 @@
   #m-desc .ql-font-lato      {font-family:"Lato",sans-serif!important;}
   #m-desc .ql-font-josefin   {font-family:"Josefin Sans",sans-serif!important;}
 
-  /* Font Inter en tarjetas online (incluyendo botones) */
-  #grid-online .card,
-  #grid-online .card h3,
-  #grid-online .card .btn{font-family:"Inter",sans-serif;}
+  /* Font Inter en todas las tarjetas (presencial y online) — solo cambia la tipografía */
+  .card-body, .card-body h3, .card-body .btn { font-family: "Inter", sans-serif; }
 
   /* ---------- CONVERSAMOS ---------- */
   .conversamos{background:var(--sage);padding:80px 0 90px;}
