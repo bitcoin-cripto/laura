@@ -57,9 +57,10 @@
   .meta-item .v{font-family:"Inter",sans-serif;font-size:1rem;color:var(--ink);font-weight:500;}
 
   /* ── PRECIO ───────────────────────────────────────────── */
-  .precio-block{display:inline-flex;align-items:center;gap:.5em;flex-wrap:wrap;
+  .precio-block{display:flex;align-items:center;justify-content:space-between;gap:1em;flex-wrap:wrap;
                 background:var(--cream);border:1px solid var(--cream-warm);
                 border-radius:12px;padding:.75em 1.4em;margin-bottom:2em;}
+  .precio-block .precios{display:inline-flex;align-items:center;gap:.5em;flex-wrap:wrap;}
   .precio-block .precio-lbl,
   .precio-block .reserva-lbl{font-family:"Inter",sans-serif;font-size:.9rem;
                               font-weight:600;color:var(--ink-soft);}
@@ -284,13 +285,20 @@ function renderRetiro(r) {
   // Precio — mismo tamaño para importe y reserva
   const precioStr  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
   const reservaStr = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
+  const reservaBtn = r.stripe_url
+    ? `<a href="${r.stripe_url}" target="_blank" rel="noopener" class="btn btn-earth">Reservar plaza</a>`
+    : `<a href="index.html#contacto" class="btn btn-earth">Reservar plaza</a>`;
+
   const precioHtml = precioStr
     ? `<div class="precio-block">
-        <span class="precio-lbl">Precio:</span>
-        <span class="precio-amt">${precioStr}</span>
-        ${reservaStr
-          ? `<span class="sep">|</span><span class="reserva-lbl">Reserva:</span><span class="reserva-amt">${reservaStr}</span>`
-          : ''}
+        <span class="precios">
+          <span class="precio-lbl">Precio:</span>
+          <span class="precio-amt">${precioStr}</span>
+          ${reservaStr
+            ? `<span class="sep">|</span><span class="reserva-lbl">Reserva:</span><span class="reserva-amt">${reservaStr}</span>`
+            : ''}
+        </span>
+        ${reservaBtn}
        </div>`
     : '';
 
@@ -320,11 +328,6 @@ function renderRetiro(r) {
     galeriaHtml = `<div class="galeria"><h2>Galería de imágenes</h2><div class="galeria-grid">${imgs}</div></div>`;
   }
 
-  // CTA
-  const reservaBtn = r.stripe_url
-    ? `<a href="${r.stripe_url}" target="_blank" rel="noopener" class="btn btn-earth">Reservar plaza</a>`
-    : `<a href="index.html#contacto" class="btn btn-earth">Reservar plaza</a>`;
-
   document.getElementById('skeleton').style.display = 'none';
   document.getElementById('retiro-body').style.display = 'block';
   document.getElementById('retiro-body').innerHTML = `
@@ -335,7 +338,6 @@ function renderRetiro(r) {
     <div class="desc">${r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '')}</div>
     ${galeriaHtml}
     <div class="cta">
-      ${reservaBtn}
       <a href="index.html#retiros" class="btn btn-ghost">Ver todos los retiros</a>
     </div>
   `;
