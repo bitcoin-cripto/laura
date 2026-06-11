@@ -1057,12 +1057,21 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   btn.textContent = 'Enviando…';
 
   try {
+    const fd = new FormData();
+    fd.append('nombre', nombre);
+    fd.append('email', email);
+    fd.append('asunto', asunto);
+    fd.append('mensaje', mensaje);
+    fd.append('_replyto', email);
+    fd.append('_subject', 'Nuevo mensaje web: ' + asunto);
+    fd.append('_captcha', 'false');
     const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
       method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: 'Nuevo mensaje web: ' + asunto })
+      headers: { 'Accept': 'application/json' },
+      body: fd
     });
-    if (res.ok) {
+    const data = await res.json();
+    if (data.success === 'true' || data.success === true) {
       btn.textContent = '¡Mensaje enviado!';
       btn.style.background = 'var(--sage-dark)';
       form.reset();
