@@ -141,7 +141,7 @@
   .site-footer{background:var(--sage-dark);color:rgba(253,251,246,.78);padding:56px 0 40px;margin-top:0;}
   .foot-grid{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
   .foot-logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:2.8rem;color:var(--gold);}
-  .foot-tag{font-size:1.3rem;font-style:italic;color:rgba(253,251,246,.85);
+  .foot-tag{font-size:.95rem;font-style:italic;color:rgba(253,251,246,.85);
             font-weight:500;line-height:1.6;}
   .foot-legal{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px;}
   .foot-legal a{font-family:"Inter",sans-serif;font-size:.58rem;letter-spacing:.12em;
@@ -157,7 +157,7 @@
 <!-- NAV: logo imagen en lugar de texto -->
 <header class="nav">
   <a href="index.html">
-    <img src="assets/logo_dorado_transp.png" alt="Laura Fernández" class="logo-img"/>
+    <img src="imgs/logo_dorado_transp.png" alt="Laura Fernández" class="logo-img"/>
   </a>
   <a href="index.html#retiros" class="nav-back">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
@@ -270,10 +270,20 @@ function renderRetiro(r) {
        </div>`
     : '';
 
-  // Meta
-  const fecha = formatFecha(r.fecha_inicio, r.fecha_fin);
+  // Meta — fechas
+  const fmt = { day:'numeric', month:'long', year:'numeric' };
+  const loc = 'es-ES';
   let metaHtml = '';
-  if (fecha)   metaHtml += `<div class="meta-item"><span class="k">Fecha</span><span class="v">${fecha}</span></div>`;
+  if (r.fecha_inicio) {
+    const d1str = new Date(r.fecha_inicio + 'T12:00:00').toLocaleDateString(loc, fmt);
+    if (r.fecha_fin && r.fecha_fin !== r.fecha_inicio) {
+      const d2str = new Date(r.fecha_fin + 'T12:00:00').toLocaleDateString(loc, fmt);
+      metaHtml += `<div class="meta-item"><span class="k">Fecha inicio</span><span class="v">${d1str}</span></div>`;
+      metaHtml += `<div class="meta-item"><span class="k">Fecha fin</span><span class="v">${d2str}</span></div>`;
+    } else {
+      metaHtml += `<div class="meta-item"><span class="k">Fecha</span><span class="v">${d1str}</span></div>`;
+    }
+  }
   if (r.lugar) metaHtml += `<div class="meta-item"><span class="k">Lugar</span><span class="v">${r.lugar}</span></div>`;
   if (r.tipo)  metaHtml += `<div class="meta-item"><span class="k">Modalidad</span><span class="v">${r.tipo === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
 
