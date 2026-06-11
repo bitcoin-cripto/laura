@@ -1057,19 +1057,12 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   btn.textContent = 'Enviando…';
 
   try {
-    const res = await fetch('https://api.web3forms.com/submit', {
+    const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        access_key: 'TU_ACCESS_KEY_WEB3FORMS',
-        from_name: nombre,
-        email,
-        subject: 'Nuevo mensaje web: ' + asunto,
-        message: 'Asunto: ' + asunto + '\n\n' + mensaje
-      })
+      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: 'Nuevo mensaje web: ' + asunto })
     });
-    const data = await res.json();
-    if (data.success) {
+    if (res.ok) {
       btn.textContent = '¡Mensaje enviado!';
       btn.style.background = 'var(--sage-dark)';
       form.reset();
