@@ -1040,8 +1040,9 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   if (!asunto)  { setFieldError('asunto',  'Selecciona un retiro o tema.');            hasError = true; }
   if (!mensaje) { setFieldError('mensaje', 'Por favor escribe tu mensaje.');           hasError = true; }
   if (!priv) {
-    let err = form.querySelector('.privacy-check .field-error');
-    if (!err) { err = document.createElement('span'); err.className = 'field-error'; form.querySelector('.privacy-check').appendChild(err); }
+    const privLayer = form.querySelector('.privacy-layer');
+    let err = privLayer.querySelector('.field-error');
+    if (!err) { err = document.createElement('span'); err.className = 'field-error'; privLayer.appendChild(err); }
     err.textContent = 'Debes aceptar la política de privacidad.';
     hasError = true;
   }
@@ -1051,10 +1052,10 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   btn.textContent = 'Enviando…';
 
   try {
-    const res = await fetch('enviar.php', {
+    const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ nombre, email, asunto, mensaje })
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: 'Nuevo mensaje web: ' + asunto })
     });
     if (res.ok) {
       btn.textContent = '¡Mensaje enviado!';
