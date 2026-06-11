@@ -241,7 +241,7 @@
   .privacy-layer{margin-top:4px;}
   .privacy-check{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
   .privacy-check input[type="checkbox"]{margin-top:3px;flex-shrink:0;accent-color:var(--sage-dark);width:15px;height:15px;}
-  .privacy-check span{font-size:.8rem;color:var(--ink-soft);line-height:1.55;letter-spacing:.02em;}
+  .privacy-check span{font-size:.8rem;color:var(--ink-soft);line-height:1.55;letter-spacing:.02em;font-weight:normal;}
   .privacy-check a{color:var(--earth-deep);}
   .field-error{display:block;font-family:"Inter",sans-serif;font-size:.78rem;color:#c0392b;margin-top:5px;}
   .privacy-check a:hover{color:var(--sage-dark);}
@@ -583,7 +583,7 @@
       <h2 style="color:var(--sage-dark)">Contacto</h2>
       <p style="font-size: 16px">Para reservas o cualquier consulta</p>
     </div>
-    <form class="form-shell reveal" id="contacto-form" novalidate>
+    <form class="form-shell reveal" id="contacto-form" novalidate autocomplete="off">
       <div class="form-row">
         <div class="field">
           <label for="nombre" style="font-size: 14px">Nombre</label>
@@ -1051,10 +1051,10 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   btn.textContent = 'Enviando…';
 
   try {
-    const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
+    const res = await fetch('enviar.php', {
       method: 'POST',
-      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: `Nuevo mensaje web: ${asunto}` })
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ nombre, email, asunto, mensaje })
     });
     if (res.ok) {
       btn.textContent = '¡Mensaje enviado!';
