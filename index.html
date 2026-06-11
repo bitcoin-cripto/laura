@@ -264,9 +264,26 @@
   .modal-incl li{position:relative;padding-left:24px;font-size:1.08rem;color:var(--ink);}
   .modal-incl li::before{content:"";position:absolute;left:2px;top:.6em;width:8px;height:8px;border-radius:50%;background:var(--earth);}
   .modal-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(122,174,196,.3);padding-top:24px;}
-  .modal-price{display:flex;flex-direction:column;}
-  .modal-price .amt{font-size:2.6rem;color:var(--sage-dark);line-height:1;}
+  .modal-price{display:flex;flex-direction:column;gap:2px;}
+  .modal-price .amt{font-size:2rem;color:var(--sage-dark);line-height:1.3;}
   .modal-price .lbl{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);}
+
+  /* Quill alignment & fonts rendered inside modal */
+  #m-desc .ql-align-center{text-align:center;}
+  #m-desc .ql-align-right{text-align:right;}
+  #m-desc .ql-align-justify{text-align:justify;}
+  #m-desc .ql-font-arial{font-family:Arial,Helvetica,sans-serif;}
+  #m-desc .ql-font-garamond{font-family:"Cormorant Garamond","EB Garamond",Georgia,serif;}
+  #m-desc .ql-font-courier{font-family:"Courier New",Courier,monospace;}
+  #m-desc .ql-font-georgia{font-family:Georgia,serif;}
+  #m-desc .ql-font-verdana{font-family:Verdana,Geneva,sans-serif;}
+  #m-desc .ql-font-trebuchet{font-family:"Trebuchet MS",sans-serif;}
+  #m-desc .ql-font-inter{font-family:"Inter",sans-serif;}
+  #m-desc .ql-font-opensans{font-family:"Open Sans",sans-serif;}
+
+  /* Font Inter en tarjetas online */
+  #grid-online .card{font-family:"Inter",sans-serif;}
+  #grid-online .card h3{font-family:"Inter",sans-serif;}
 
   /* ---------- CONVERSAMOS ---------- */
   .conversamos{background:var(--sage);padding:80px 0 90px;}
@@ -717,7 +734,7 @@ function cardHTMLSb(r) {
   const precio = r.precio        != null ? Number(r.precio).toLocaleString('es-ES')        + '€' : '';
   const reserva= r.precio_reserva!= null ? Number(r.precio_reserva).toLocaleString('es-ES')+ '€' : '';
   const precioHtml = precio
-    ? `<span><b>Precio:</b> ${precio}${reserva ? `  <span style="font-weight:400;color:#888">(Reserva: ${reserva})</span>` : ''}</span>`
+    ? `<span><b>Precio:</b> ${precio}</span>${reserva ? `<span><b>Reserva:</b> ${reserva}</span>` : ''}`
     : '';
   return `<article class="card reveal">
     <div class="card-img" style="${img}"></div>
@@ -798,8 +815,8 @@ function openModal(id){
     const precioTexto  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
     const reservaTexto = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
     document.getElementById('m-price').innerHTML =
-      (precioTexto  ? `Precio: ${precioTexto}`  : '')
-      + (reservaTexto ? `<br><span style="font-size:.75em;font-weight:400;opacity:.7">Reserva: ${reservaTexto}</span>` : '');
+      (precioTexto  ? `Precio: ${precioTexto}`   : '')
+      + (reservaTexto ? `<br>Reserva: ${reservaTexto}` : '');
     const mReserve = document.getElementById('m-reserve');
     if (r.stripe_url) {
       mReserve.href = r.stripe_url;
