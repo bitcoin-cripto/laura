@@ -878,7 +878,14 @@ function openModal(id){
 function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
 document.addEventListener('click', e=>{
   const t = e.target.closest('[data-modal]');
-  if(t){ openModal(t.getAttribute('data-modal')); }
+  if(!t) return;
+  const id = t.getAttribute('data-modal');
+  const r  = allRetreats[id];
+  if(r?._sb && r?.visualizacion === 'pagina_completa'){
+    window.location.href = `retiro.html?id=${id}`;
+  } else {
+    openModal(id);
+  }
 });
 document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('m-reserve').addEventListener('click', closeModal);
