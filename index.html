@@ -226,7 +226,7 @@
   .field.full{grid-column:1/-1;}
   .field label{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--sage-deep);margin-bottom:8px;}
   .field input,.field select,.field textarea{
-    font-family:"Cormorant Garamond",serif;font-size:1.15rem;color:var(--ink);
+    font-family:"Inter",sans-serif;font-size:1rem;color:var(--ink);
     background:var(--cream);border:1px solid rgba(122,174,196,.4);border-radius:12px;
     padding:13px 16px;transition:border .3s ease,box-shadow .3s ease;width:100%;
   }
@@ -582,7 +582,7 @@
       <h2 style="color:var(--sage-dark)">Contacto</h2>
       <p style="font-size: 16px">Para reservas o cualquier consulta</p>
     </div>
-    <form class="form-shell reveal" onsubmit="return false">
+    <form class="form-shell reveal" id="contacto-form" novalidate>
       <div class="form-row">
         <div class="field">
           <label for="nombre" style="font-size: 14px">Nombre</label>
@@ -597,12 +597,7 @@
         <label for="asunto" style="font-size: 14px">Asunto</label>
         <select id="asunto" name="asunto">
           <option value="">Selecciona un retiro o tema…</option>
-          <option>Retiro de Silencio Interior — León</option>
-          <option>Encuentro con el Ser — Barcelona</option>
-          <option>La Naturaleza de lo Real — Granada</option>
-          <option>Satsang Semanal Online</option>
-          <option>Sesión Individual por Videollamada</option>
-          <option>Consulta general</option>
+          <option value="Consulta general">Consulta general</option>
         </select>
       </div>
       <div class="field full">
@@ -612,7 +607,7 @@
       <div class="field full privacy-layer">
         <label class="privacy-check">
           <input type="checkbox" name="privacidad" required/>
-          <span style="text-transform:none">he leído y acepto la <a href="legal/politica-privacidad.html" target="_blank" rel="noopener">política de privacidad</a>. mis datos serán tratados por laura fernández con la finalidad de gestionar tu consulta y no serán cedidos a terceros salvo obligación legal.</span>
+          <span style="text-transform:none">He leído y acepto la <a href="legal/politica-privacidad.html" target="_blank" rel="noopener">política de privacidad</a>. Mis datos serán tratados por Laura Fernández con la finalidad de gestionar mi consulta y no serán cedidos a terceros salvo obligación legal.</span>
         </label>
       </div>
       <div class="submit-row">
@@ -873,6 +868,17 @@ function cardHTMLSb(r) {
     if (dynO.length) document.getElementById('grid-online').insertAdjacentHTML('beforeend',     dynO.map(cardHTMLSb).join(''));
 
     retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
+
+    // Poblar select de asunto con los retiros reales
+    const sel = document.getElementById('asunto');
+    const consulta = sel.querySelector('option[value="Consulta general"]');
+    retiros.forEach(r => {
+      const opt = document.createElement('option');
+      opt.value = r.titulo;
+      opt.textContent = r.titulo;
+      sel.insertBefore(opt, consulta);
+    });
+
     observeReveals();
   } catch(e) { /* fallback silencioso a datos estáticos */ }
 })();
@@ -1002,6 +1008,52 @@ function toggleMenu(force){
 }
 navToggle.addEventListener('click', ()=> toggleMenu());
 document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', ()=> toggleMenu(false)));
+
+/* ---------- formulario de contacto ---------- */
+const FORMSPREE_URL = 'https://formspree.io/f/xyzxyzyz'; // ← reemplaza con tu endpoint de Formspree
+
+document.getElementById('contacto-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form   = e.target;
+  const btn    = form.querySelector('button[type="submit"]');
+  const nombre = form.nombre.value.trim();
+  const email  = form.email.value.trim();
+  const asunto = form.asunto.value;
+  const mensaje= form.mensaje.value.trim();
+  const priv   = form.privacidad.checked;
+
+  if (!nombre || !email || !asunto || !mensaje) {
+    alert('Por favor rellena todos los campos.');
+    return;
+  }
+  if (!priv) {
+    alert('Debes aceptar la política de privacidad.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando…';
+
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, asunto, mensaje })
+    });
+    if (res.ok) {
+      btn.textContent = '¡Mensaje enviado!';
+      btn.style.background = 'var(--sage-dark)';
+      form.reset();
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Enviar mensaje'; btn.style.background = ''; }, 4000);
+    } else {
+      throw new Error('Error al enviar');
+    }
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Enviar mensaje';
+    alert('No se pudo enviar el mensaje. Por favor escríbeme directamente a info@laurafernandeznodualidad.com');
+  }
+});
 
 /* ---------- reveal on scroll ---------- */
 const io = new IntersectionObserver((entries)=>{
