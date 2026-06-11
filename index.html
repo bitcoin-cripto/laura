@@ -2,7 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<script>if('scrollRestoration' in history) history.scrollRestoration='manual'; window.scrollTo(0,0);</script>
+<script>
+  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  // Elimina el hash de la URL antes de que el navegador salte al anchor
+  if(location.hash) history.replaceState(null, '', location.pathname + location.search);
+  // Garantiza scroll al inicio una vez cargado el DOM
+  document.addEventListener('DOMContentLoaded', function(){ window.scrollTo(0, 0); });
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="Laura Fernández — Retiros, sesiones individuales y encuentros online para explorar la naturaleza de la realidad." />
 <title>Laura Fernández</title>
