@@ -74,6 +74,14 @@
   .ql-font-trebuchet { font-family: "Trebuchet MS", sans-serif; }
   .ql-font-inter     { font-family: "Inter", sans-serif; }
   .ql-font-opensans  { font-family: "Open Sans", sans-serif; }
+  .ql-font-times     { font-family: "Times New Roman", Times, serif; }
+  .ql-font-helvetica { font-family: Helvetica, Arial, sans-serif; }
+  .ql-font-tahoma    { font-family: Tahoma, Geneva, sans-serif; }
+  .ql-font-palatino  { font-family: Palatino, "Palatino Linotype", Georgia, serif; }
+  .ql-font-impact    { font-family: Impact, Charcoal, sans-serif; }
+  .ql-font-roboto    { font-family: "Roboto", sans-serif; }
+  .ql-font-lato      { font-family: "Lato", sans-serif; }
+  .ql-font-josefin   { font-family: "Josefin Sans", sans-serif; }
 
   /* Etiquetas legibles en el desplegable */
   .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=arial]::before,
@@ -92,6 +100,22 @@
   .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=inter]::before     { content: 'Inter'; font-family: "Inter", sans-serif; }
   .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=opensans]::before,
   .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=opensans]::before  { content: 'Open Sans'; font-family: "Open Sans", sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=times]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=times]::before     { content: 'Times New Roman'; font-family: "Times New Roman", serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=helvetica]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=helvetica]::before { content: 'Helvetica'; font-family: Helvetica, sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=tahoma]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=tahoma]::before    { content: 'Tahoma'; font-family: Tahoma, sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=palatino]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=palatino]::before  { content: 'Palatino'; font-family: Palatino, serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=impact]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=impact]::before    { content: 'Impact'; font-family: Impact, sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=roboto]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=roboto]::before    { content: 'Roboto'; font-family: "Roboto", sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=lato]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=lato]::before      { content: 'Lato'; font-family: "Lato", sans-serif; }
+  .ql-snow .ql-picker.ql-font .ql-picker-label[data-value=josefin]::before,
+  .ql-snow .ql-picker.ql-font .ql-picker-item[data-value=josefin]::before   { content: 'Josefin Sans'; font-family: "Josefin Sans", sans-serif; }
   .ql-container.ql-snow { border-radius: 0 0 8px 8px; border-color: #d1d5db; }
   .ql-editor { min-height: 280px; }
   .ql-editor.ql-blank::before { color: #9ca3af; font-style: normal; }
@@ -577,7 +601,7 @@ async function subirImagen(file, carpeta) {
 
 // ── Quill: registrar fuentes ───────────────────────────────────────────────────
 const Font = Quill.import('formats/font');
-Font.whitelist = ['arial','garamond','courier','georgia','verdana','trebuchet','inter','opensans'];
+Font.whitelist = ['arial','garamond','courier','georgia','verdana','trebuchet','inter','opensans','times','helvetica','tahoma','palatino','impact','roboto','lato','josefin'];
 Quill.register(Font, true);
 
 const quill = new Quill('#quill-editor', {
