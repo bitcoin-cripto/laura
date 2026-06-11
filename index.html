@@ -243,7 +243,8 @@
   .privacy-check input[type="checkbox"]{margin-top:3px;flex-shrink:0;accent-color:var(--sage-dark);width:15px;height:15px;}
   .privacy-check span{font-size:.8rem;color:var(--ink-soft);line-height:1.55;letter-spacing:.02em;font-weight:normal;}
   .privacy-check a{color:var(--earth-deep);}
-  .field-error{display:block;font-family:"Inter",sans-serif;font-size:.78rem;color:#c0392b;margin-top:5px;}
+  .field-error{display:block;font-family:"Inter",sans-serif;font-size:.78rem;color:#c0392b;margin-top:5px;text-transform:none!important;letter-spacing:0!important;font-weight:normal!important;}
+  .field select.placeholder{color:var(--ink-soft);}
   .privacy-check a:hover{color:var(--sage-dark);}
 
   /* ---------- FOOTER ---------- */
@@ -879,6 +880,10 @@ function cardHTMLSb(r) {
       opt.textContent = r.titulo;
       sel.insertBefore(opt, consulta);
     });
+    // Color placeholder del select
+    function syncSelColor(){ sel.classList.toggle('placeholder', !sel.value); }
+    syncSelColor();
+    sel.addEventListener('change', syncSelColor);
 
     observeReveals();
   } catch(e) { /* fallback silencioso a datos estáticos */ }
@@ -1052,12 +1057,19 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
   btn.textContent = 'Enviando…';
 
   try {
-    const res = await fetch('https://formsubmit.co/ajax/info@laurafernandeznodualidad.com', {
+    const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, email, asunto, mensaje, _subject: 'Nuevo mensaje web: ' + asunto })
+      body: JSON.stringify({
+        access_key: 'TU_ACCESS_KEY_WEB3FORMS',
+        from_name: nombre,
+        email,
+        subject: 'Nuevo mensaje web: ' + asunto,
+        message: 'Asunto: ' + asunto + '\n\n' + mensaje
+      })
     });
-    if (res.ok) {
+    const data = await res.json();
+    if (data.success) {
       btn.textContent = '¡Mensaje enviado!';
       btn.style.background = 'var(--sage-dark)';
       form.reset();
