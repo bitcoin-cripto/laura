@@ -1013,7 +1013,7 @@ async function cargarRetiros() {
     }
 
     tbody.innerHTML = retiros.map(r => {
-      const fmtDate = d => d ? new Date(d).toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+      const fmtDate = d => { if (!d) return '—'; const dt = new Date(d + 'T12:00:00'); const dm = dt.toLocaleDateString('es-ES', { day:'2-digit', month:'short' }); return `<span class="block">${dm}</span><span class="block text-xs text-gray-400">${dt.getFullYear()}</span>`; };
       const fmtEur  = v => v != null ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(v) : '—';
       const fecha    = fmtDate(r.fecha_inicio);
       const fechaFin = fmtDate(r.fecha_fin);
