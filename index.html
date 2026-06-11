@@ -55,7 +55,7 @@
   .btn{
     display:inline-flex;align-items:center;gap:.55em;cursor:pointer;
     font-family:"Inter",sans-serif;font-size:1.05rem;
-    letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+    letter-spacing:.06em;text-transform:none;font-weight:600;
     padding:.85em 2em;border:none;border-radius:40px;
     transition:transform .35s ease,background .35s ease,color .35s ease,box-shadow .35s ease;
   }
@@ -209,7 +209,10 @@
   .pay-note{max-width:720px;margin:0 auto;text-align:center;font-size:1.18rem;font-style:italic;color:var(--sage-dark);background:rgba(253,251,246,.55);border-radius:16px;padding:26px 34px;}
 
   /* ---------- CONTACTO ---------- */
-  .contacto{background:var(--cream);padding:40px 0 100px;}
+  .contacto{background:var(--cream);padding:40px 0 100px;font-family:"Inter",sans-serif;}
+  .contacto .sec-head h2, .contacto .sec-head p, .contacto .eyebrow,
+  .contacto label, .contacto input, .contacto select, .contacto textarea,
+  .contacto .btn { font-family:"Inter",sans-serif; }
   .form-shell{max-width:760px;margin:0 auto;background:var(--white);border-radius:22px;padding:clamp(30px,5vw,56px);box-shadow:0 30px 60px -40px rgba(45,74,93,.55);}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
   .field{display:flex;flex-direction:column;margin-bottom:22px;}
@@ -241,13 +244,13 @@
   .foot-grid .logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:2.8rem;color:var(--gold);}
   .foot-grid .tag{font-size:1.3rem;font-style:italic;color:rgba(253,251,246,.85);max-width:30ch;}
   .foot-links{display:flex;gap:30px;margin:14px 0 4px;flex-wrap:wrap;justify-content:center;}
-  .foot-links a{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(253,251,246,.7);transition:color .3s ease;}
+  .foot-links a{font-family:"Inter",sans-serif;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:rgba(253,251,246,.7);transition:color .3s ease;}
   .foot-links a:hover{color:var(--gold);}
   .foot-rule{display:none;}
   .foot-legal{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:10px 0 2px;}
-  .foot-legal a{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:rgba(253,251,246,.45);text-decoration:none;transition:color .3s ease;}
+  .foot-legal a{font-family:"Inter",sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:rgba(253,251,246,.45);text-decoration:none;transition:color .3s ease;}
   .foot-legal a:hover{color:var(--gold);}
-  .copyright{font-size:.9rem;letter-spacing:.1em;color:rgba(253,251,246,.5);}
+  .copyright{font-family:"Inter",sans-serif;font-size:.9rem;letter-spacing:.1em;color:rgba(253,251,246,.5);}
 
   /* ---------- MODAL ---------- */
   .modal-backdrop{position:fixed;inset:0;z-index:100;background:rgba(46,59,53,.55);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s ease;}
@@ -453,9 +456,9 @@
     <div class="about-text reveal d1" style="direction:ltr;max-width:720px;margin:0 auto">
       <span class="eyebrow" style="font-size: 15px">Sobre Laura</span>
       <h2 style="text-align: left">Un señalamiento directo<br />e impersonal</h2>
-      <p class="lead" style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">Desde muy joven busqué alivio en la espiritualidad y exploré multitud de vías en profundidad durante años.</p>
-      <p style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">En algún momento se hizo evidente que las enseñanzas dirigidas a la persona confirmaban de un modo u otro la separación que es origen de la insatisfacción y de la búsqueda.</p>
-      <p style="font-family:&quot;Cormorant Garamond&quot;,Georgia,serif;font-size:1.55rem;font-style:italic;text-align:left">En mis encuentros online, retiros y sesiones individuales señalo de forma directa e impersonal los asideros y trampas que siguen sosteniendo la ilusión de separación y que, aparentemente, velan la completud atemporal e incondicional que ya es.</p>
+      <p class="lead" style="font-family:&quot;Inter&quot;,sans-serif;font-size:1.55rem;font-style:italic;text-align:left">Desde muy joven busqué alivio en la espiritualidad y exploré multitud de vías en profundidad durante años.</p>
+      <p style="font-family:&quot;Inter&quot;,sans-serif;font-size:1.55rem;font-style:italic;text-align:left">En algún momento se hizo evidente que las enseñanzas dirigidas a la persona confirmaban de un modo u otro la separación que es origen de la insatisfacción y de la búsqueda.</p>
+      <p style="font-family:&quot;Inter&quot;,sans-serif;font-size:1.55rem;font-style:italic;text-align:left">En mis encuentros online, retiros y sesiones individuales señalo de forma directa e impersonal los asideros y trampas que siguen sosteniendo la ilusión de separación y que, aparentemente, velan la completud atemporal e incondicional que ya es.</p>
     </div>
   </div>
 </section>
@@ -471,7 +474,7 @@
     <div class="sec-head reveal">
       <span class="eyebrow" style="font-size: 15px">Encuentros en silencio</span>
       <h2>Retiros presenciales</h2>
-      <p style="font-size: 25px">Unos días de detención y mirada honesta en lugares que invitan al silencio.</p>
+      <p style="font-size: 25px">Unos días de detención y mirada honesta en lugares que invitan al silencio</p>
     </div>
     <div class="card-grid" id="grid-presencial"></div>
   </div>
@@ -488,7 +491,7 @@
     <div class="sec-head reveal">
       <span class="eyebrow" style="font-size: 15px">Desde donde estés</span>
       <h2>Retiros online</h2>
-      <p style="font-size: 25px">El encuentro no precisa desplazamiento: la atención está siempre aquí.</p>
+      <p style="font-size: 18px">El encuentro no precisa desplazamiento: la atención está siempre aquí</p>
     </div>
     <div class="card-grid two" id="grid-online"></div>
   </div>
@@ -526,7 +529,7 @@
     <div class="sec-head reveal">
       <span class="eyebrow" style="font-size: 15px">Escríbeme</span>
       <h2 style="color:var(--sage-dark)">Contacto</h2>
-      <p style="font-size: 25px">Para reservas o cualquier consulta.</p>
+      <p style="font-size: 25px">Para reservas o cualquier consulta</p>
     </div>
     <form class="form-shell reveal" onsubmit="return false">
       <div class="form-row">
@@ -583,7 +586,7 @@
     <div class="foot-links">
       <a href="#inicio" style="font-size: 15px">Inicio</a>
       <a href="#retiros" style="font-size: 15px">Retiros</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#contacto" style="font-size: 15px">Contacto</a>
     </div>
     <span class="foot-rule"></span>
     <div class="foot-legal">
