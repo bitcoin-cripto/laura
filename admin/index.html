@@ -502,8 +502,8 @@
                               focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage transition"/>
               </div>
               <div class="space-y-1.5">
-                <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">Fecha fin</label>
-                <input id="fecha_fin" name="fecha_fin" type="date"
+                <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">Fecha fin <span class="text-red-400">*</span></label>
+                <input id="fecha_fin" name="fecha_fin" type="date" required
                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
                               focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage transition"/>
               </div>
@@ -877,10 +877,31 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
   const titulo      = form.titulo.value.trim();
   const tipo        = form.tipo.value;
   const fechaInicio = form.fecha_inicio.value;
+  const fechaFin    = form.fecha_fin.value;
   const precio      = form.precio.value;
 
-  if (!titulo || !tipo || !fechaInicio || !precio) {
+  if (!titulo || !tipo || !precio) {
     toast('Rellena los campos obligatorios (*)', 'error');
+    return;
+  }
+  if (!fechaInicio && fechaFin) {
+    toast('Indica la fecha de inicio del retiro', 'error');
+    document.getElementById('fecha_inicio').focus();
+    return;
+  }
+  if (fechaInicio && !fechaFin) {
+    toast('Indica la fecha de fin del retiro', 'error');
+    document.getElementById('fecha_fin').focus();
+    return;
+  }
+  if (!fechaInicio && !fechaFin) {
+    toast('Las fechas de inicio y fin son obligatorias', 'error');
+    document.getElementById('fecha_inicio').focus();
+    return;
+  }
+  if (fechaFin < fechaInicio) {
+    toast('La fecha de fin no puede ser anterior a la de inicio', 'error');
+    document.getElementById('fecha_fin').focus();
     return;
   }
 
