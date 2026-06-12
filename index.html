@@ -642,8 +642,8 @@
 </section>
 
 <!-- brush: white -> sage -->
-<div class="brush" style="background:#fdfbf6;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#fdfbf6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#7aaec4" x="-10" y="70" width="1460" height="100"/></g><rect fill="#7aaec4" x="-10" y="115" width="1460" height="60"/></svg>
+<div class="brush" style="background:#f5f0e8;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#7aaec4" x="-10" y="70" width="1460" height="100"/></g><rect fill="#7aaec4" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== ¿CONVERSAMOS? ===================== -->
@@ -972,12 +972,24 @@ function hubRetiroHTML() {
   const cardsP = [...presencial.map(cardHTML), ...sbPresencial.map(cardHTMLSb)];
   const cardsO = [...online.map(cardHTML),     ...sbOnline.map(cardHTMLSb)];
   const secPresencial = cardsP.length ? `
-    <h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Presenciales</h3>
+    <div class="w-full mt-16 mb-8 max-w-7xl mx-auto px-4">
+      <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:4px;">Modalidad</p>
+      <div class="flex items-center gap-4">
+        <h3 class="font-serif text-2xl text-stone-800 tracking-wide font-normal whitespace-nowrap">Retiros Presenciales</h3>
+        <div class="h-px w-full bg-stone-200/80"></div>
+      </div>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-presencial">
       ${cardsP.join('')}
     </div>` : '';
   const secOnline = cardsO.length ? `
-    <h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Online</h3>
+    <div class="w-full mt-20 mb-8 max-w-7xl mx-auto px-4">
+      <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:4px;">Modalidad</p>
+      <div class="flex items-center gap-4">
+        <h3 class="font-serif text-2xl text-stone-800 tracking-wide font-normal whitespace-nowrap">Retiros Online</h3>
+        <div class="h-px w-full bg-stone-200/80"></div>
+      </div>
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-online">
       ${cardsO.join('')}
     </div>` : '';
