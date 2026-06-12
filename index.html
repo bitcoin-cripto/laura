@@ -938,7 +938,8 @@ function cardHTMLSb(r) {
   const precio  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
   const reserva = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
   const precioRow = precio
-    ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>PRECIO</span><span class="text-stone-700 normal-case font-normal">${precio}${reserva ? ` · reserva ${reserva}` : ''}</span></p>`
+    ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>PRECIO</span><span class="text-stone-700 normal-case font-normal">${precio}</span></p>`
+    + (reserva ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>RESERVA</span><span class="text-stone-700 normal-case font-normal">${reserva}</span></p>` : '')
     : '';
   const accionHref = r.stripe_url || '#contacto';
   const accionTarget = r.stripe_url ? 'target="_blank" rel="noopener"' : '';
