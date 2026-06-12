@@ -473,9 +473,14 @@
     grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
     max-width:1060px;margin:0 auto;
   }
+  .hub-cards-grid.two-col{grid-template-columns:repeat(2,1fr);max-width:820px;}
   .hub-content-head{text-align:center;max-width:680px;margin:0 auto 48px;}
   .hub-content-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);margin:.5em 0 .35em;}
   .hub-content-head p{font-size:1.18rem;color:var(--ink-soft);font-style:italic;}
+  .hub-sub-section{margin-bottom:56px;}
+  .hub-sub-section:last-child{margin-bottom:0;}
+  .hub-sub-head{font-family:"Inter",sans-serif;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--earth-deep);margin:0 auto 24px;max-width:820px;padding-bottom:10px;border-bottom:1px solid rgba(122,174,196,.25);}
+  @media(max-width:660px){.hub-cards-grid.two-col{grid-template-columns:1fr;}}
   @media(max-width:900px){.hub-grid{grid-template-columns:repeat(3,1fr);}}
   @media(max-width:560px){
     .hub-grid{grid-template-columns:repeat(2,1fr)!important;}
@@ -579,8 +584,12 @@
 </div>
 
 <!-- ===================== HUB TARJETERO ===================== -->
-<section class="section hub-section" id="retiros" data-screen-label="Servicios">
+<section class="section hub-section" id="retiros" data-screen-label="Eventos">
   <div class="wrap">
+    <div class="hub-head reveal" style="text-align:center;margin-bottom:36px;">
+      <span class="eyebrow" style="color:rgba(201,169,110,.75);font-size:.78rem;letter-spacing:.32em;">Encuentra tu encuentro</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:300;color:#fff;margin:.15em 0 0;letter-spacing:.05em;">Eventos</h2>
+    </div>
     <div class="hub-grid">
 
       <!-- Retiros -->
@@ -830,6 +839,17 @@ const IMG = {
   sesion:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1100&q=80"
 };
 
+// Imágenes de fallback por categoría (cuando la tarjeta de Supabase no tiene portada)
+const CAT_IMG = {
+  presencial: IMG.leon,
+  online:     IMG.satsang,
+  Retiro:     IMG.leon,
+  Curso:      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1100&q=80",
+  Webminar:   "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1100&q=80",
+  Sesion:     "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1100&q=80",
+  Intensivo:  "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1100&q=80",
+};
+
 const presencial = [
   {
     id:"leon", img:IMG.leon, tag:"",
@@ -920,7 +940,10 @@ function formatFecha(inicio, fin) {
 }
 
 function cardHTMLSb(r) {
-  const img    = r.imagen_portada ? `background-image:url('${r.imagen_portada}')` : 'background-color:#e8e0d4';
+  const fallback = CAT_IMG[r.tipo] || CAT_IMG[r.tipo_retiro] || '';
+  const img    = r.imagen_portada
+    ? `background-image:url('${r.imagen_portada}')`
+    : fallback ? `background-image:url('${fallback}')` : 'background-color:#e8e0d4';
   const fecha  = formatFecha(r.fecha_inicio, r.fecha_fin);
   const precio = r.precio        != null ? Number(r.precio).toLocaleString('es-ES')        + '€' : '';
   const reserva= r.precio_reserva!= null ? Number(r.precio_reserva).toLocaleString('es-ES')+ '€' : '';
@@ -949,17 +972,27 @@ function cardHTMLSb(r) {
 let sbRetiros = []; // caché de items cargados desde Supabase
 
 function hubRetiroHTML() {
-  const sbItems = sbRetiros.filter(r => r.tipo_retiro === 'presencial' || r.tipo_retiro === 'online');
+  const sbPresencial = sbRetiros.filter(r => r.tipo_retiro === 'presencial');
+  const sbOnline     = sbRetiros.filter(r => r.tipo_retiro === 'online');
   return `
     <div class="hub-content-head reveal">
       <span class="eyebrow" style="font-size:15px">Encuentros</span>
       <h2>Retiros</h2>
-      <p>Presenciales y online — unas jornadas de silencio y mirada honesta</p>
+      <p>Jornadas de silencio y mirada honesta — presenciales y online</p>
     </div>
-    <div class="hub-cards-grid" id="hub-cards-grid">
-      ${presencial.map(cardHTML).join('')}
-      ${online.map(cardHTML).join('')}
-      ${sbItems.map(cardHTMLSb).join('')}
+    <div class="hub-sub-section reveal">
+      <p class="hub-sub-head">Presenciales</p>
+      <div class="hub-cards-grid two-col" id="hub-grid-presencial">
+        ${presencial.map(cardHTML).join('')}
+        ${sbPresencial.map(cardHTMLSb).join('')}
+      </div>
+    </div>
+    <div class="hub-sub-section reveal d1">
+      <p class="hub-sub-head">Online</p>
+      <div class="hub-cards-grid two-col" id="hub-grid-online">
+        ${online.map(cardHTML).join('')}
+        ${sbOnline.map(cardHTMLSb).join('')}
+      </div>
     </div>`;
 }
 
@@ -1033,11 +1066,19 @@ document.querySelectorAll('.hub-card').forEach(btn =>
     <div class="hub-content-head reveal">
       <span class="eyebrow" style="font-size:15px">Encuentros</span>
       <h2>Retiros</h2>
-      <p>Presenciales y online — unas jornadas de silencio y mirada honesta</p>
+      <p>Jornadas de silencio y mirada honesta — presenciales y online</p>
     </div>
-    <div class="hub-cards-grid" id="hub-cards-grid">
-      ${presencial.map(cardHTML).join('')}
-      ${online.map(cardHTML).join('')}
+    <div class="hub-sub-section reveal">
+      <p class="hub-sub-head">Presenciales</p>
+      <div class="hub-cards-grid two-col" id="hub-grid-presencial">
+        ${presencial.map(cardHTML).join('')}
+      </div>
+    </div>
+    <div class="hub-sub-section reveal d1">
+      <p class="hub-sub-head">Online</p>
+      <div class="hub-cards-grid two-col" id="hub-grid-online">
+        ${online.map(cardHTML).join('')}
+      </div>
     </div>`;
   observeReveals();
 
@@ -1053,17 +1094,15 @@ document.querySelectorAll('.hub-card').forEach(btn =>
     sbRetiros = retiros;
     retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
 
-    // Añadir los de Supabase al grid de Retiros si sigue activa esa pestaña
+    // Añadir los de Supabase a los grids correctos si sigue activa la pestaña Retiros
     const activeCard = document.querySelector('.hub-card.active');
     if (activeCard?.dataset.cat === 'Retiros') {
-      const grid = document.getElementById('hub-cards-grid');
-      if (grid) {
-        const sbItems = retiros.filter(r => r.tipo_retiro === 'presencial' || r.tipo_retiro === 'online');
-        if (sbItems.length) {
-          grid.insertAdjacentHTML('beforeend', sbItems.map(cardHTMLSb).join(''));
-          observeReveals();
-        }
-      }
+      const gridP = document.getElementById('hub-grid-presencial');
+      const gridO = document.getElementById('hub-grid-online');
+      const sbP = retiros.filter(r => r.tipo_retiro === 'presencial');
+      const sbO = retiros.filter(r => r.tipo_retiro === 'online');
+      if (gridP && sbP.length) { gridP.insertAdjacentHTML('beforeend', sbP.map(cardHTMLSb).join('')); observeReveals(); }
+      if (gridO && sbO.length) { gridO.insertAdjacentHTML('beforeend', sbO.map(cardHTMLSb).join('')); observeReveals(); }
     }
 
     // Poblar select de asunto del formulario
