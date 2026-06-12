@@ -927,32 +927,34 @@ function formatFecha(inicio, fin) {
 }
 
 function cardHTMLSb(r) {
-  const fallback = CAT_IMG[r.tipo] || CAT_IMG[r.tipo_retiro] || '';
-  const img    = r.imagen_portada
-    ? `background-image:url('${r.imagen_portada}')`
-    : fallback ? `background-image:url('${fallback}')` : 'background-color:#e8e0d4';
-  const fecha  = formatFecha(r.fecha_inicio, r.fecha_fin);
-  const precio = r.precio        != null ? Number(r.precio).toLocaleString('es-ES')        + '€' : '';
-  const reserva= r.precio_reserva!= null ? Number(r.precio_reserva).toLocaleString('es-ES')+ '€' : '';
-  const precioHtml = precio
-    ? `<span><b>Precio:</b> ${precio}</span>${reserva ? `<span><b>Reserva:</b> ${reserva}</span>` : ''}`
+  const fallback = CAT_IMG[r.tipo] || CAT_IMG[r.tipo_retiro] || 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80';
+  const imgSrc  = r.imagen_portada || fallback;
+  const fecha   = formatFecha(r.fecha_inicio, r.fecha_fin);
+  const precio  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
+  const reserva = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
+  const precioRow = precio
+    ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>PRECIO</span><span class="text-stone-700 normal-case font-normal">${precio}${reserva ? ` · reserva ${reserva}` : ''}</span></p>`
     : '';
-  return `<article class="card reveal">
-    <div class="card-img" style="${img}"></div>
-    <div class="card-body">
-      <h3>${r.titulo}</h3>
-      <div class="card-meta">
-        ${fecha      ? `<span><b>Fecha</b>${fecha}</span>`    : ''}
-        ${r.lugar    ? `<span><b>Lugar</b>${r.lugar}</span>`  : ''}
-        ${precioHtml}
+  const accionHref = r.stripe_url || '#contacto';
+  const accionTarget = r.stripe_url ? 'target="_blank" rel="noopener"' : '';
+  return `
+    <div class="flex flex-col bg-[#fbf9f4] rounded-3xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 hover:shadow-md reveal">
+      <div class="w-full h-48 sm:h-52 overflow-hidden">
+        <img src="${imgSrc}" alt="${r.titulo}" class="w-full h-full object-cover">
       </div>
-      <div class="card-actions">
-        <a href="${r.stripe_url || '#contacto'}" ${r.stripe_url ? 'target="_blank" rel="noopener"' : ''}
-           class="btn btn-earth" style="color:#fff">Reserva ahora</a>
-        <button class="btn btn-ghost" data-modal="${r.id}">Más información</button>
+      <div class="flex flex-col flex-grow p-6" style="font-family:'Inter',sans-serif;">
+        <h4 class="text-xl font-bold text-[#1e293b] text-center mb-4 tracking-wide">${r.titulo}</h4>
+        <div class="space-y-2 mb-6 text-xs text-[#9a7b56] tracking-wider uppercase font-medium">
+          ${fecha    ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>FECHA</span><span class="text-stone-700 normal-case font-normal">${fecha}</span></p>` : ''}
+          ${r.lugar  ? `<p class="flex justify-between border-b border-stone-200/60 pb-1"><span>LUGAR</span><span class="text-stone-700 normal-case font-normal">${r.lugar}</span></p>` : ''}
+          ${precioRow}
+        </div>
+        <div class="mt-auto flex flex-col gap-2">
+          <a href="${accionHref}" ${accionTarget} class="block w-full text-center bg-[#b59975] text-white py-2.5 rounded-full text-sm font-medium hover:bg-[#a48864] transition-colors shadow-sm">Reservar</a>
+          <button data-modal="${r.id}" class="block w-full text-center bg-transparent text-[#1e293b] border border-[#cbd5e1] py-2.5 rounded-full text-sm font-medium hover:bg-stone-50 transition-colors cursor-pointer">Más información</button>
+        </div>
       </div>
-    </div>
-  </article>`;
+    </div>`;
 }
 
 /* ---------- Hub de servicios ---------- */
@@ -961,26 +963,20 @@ let sbRetiros = []; // caché de items cargados desde Supabase
 function hubRetiroHTML() {
   const sbPresencial = sbRetiros.filter(r => r.tipo_retiro === 'presencial');
   const sbOnline     = sbRetiros.filter(r => r.tipo_retiro === 'online');
-  return `
-    <div class="hub-content-head reveal">
-      <span class="eyebrow" style="font-size:15px">Encuentros</span>
-      <h2>Retiros</h2>
-      <p>Jornadas de silencio y mirada honesta — presenciales y online</p>
-    </div>
-    <div class="hub-sub-section reveal">
-      <p class="hub-sub-head">Presenciales</p>
-      <div class="hub-cards-grid" id="hub-grid-presencial">
-        ${presencial.map(cardHTML).join('')}
-        ${sbPresencial.map(cardHTMLSb).join('')}
-      </div>
-    </div>
-    <div class="hub-sub-section reveal d1">
-      <p class="hub-sub-head">Online</p>
-      <div class="hub-cards-grid" id="hub-grid-online">
-        ${online.map(cardHTML).join('')}
-        ${sbOnline.map(cardHTMLSb).join('')}
-      </div>
-    </div>`;
+  const cardsP = [...presencial.map(cardHTML), ...sbPresencial.map(cardHTMLSb)];
+  const cardsO = [...online.map(cardHTML),     ...sbOnline.map(cardHTMLSb)];
+  const secPresencial = cardsP.length ? `
+    <h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Presenciales</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-presencial">
+      ${cardsP.join('')}
+    </div>` : '';
+  const secOnline = cardsO.length ? `
+    <h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Online</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-online">
+      ${cardsO.join('')}
+    </div>` : '';
+  return secPresencial + secOnline ||
+    `<div class="hub-empty">Próximamente retiros disponibles.<br>¡Vuelve pronto!</div>`;
 }
 
 const HUB_LABELS = {
@@ -1018,12 +1014,8 @@ async function cargarCategoria(cat) {
         if (items.length) {
           const lbl = HUB_LABELS[cat] || { eyebrow: cat, title: cat, desc: '' };
           html = `
-            <div class="hub-content-head reveal">
-              <span class="eyebrow" style="font-size:15px">${lbl.eyebrow}</span>
-              <h2>${lbl.title}</h2>
-              ${lbl.desc ? `<p>${lbl.desc}</p>` : ''}
-            </div>
-            <div class="hub-cards-grid">
+            <h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">${lbl.title}</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12">
               ${items.map(cardHTMLSb).join('')}
             </div>`;
         }
@@ -1049,24 +1041,14 @@ document.querySelectorAll('.hub-card').forEach(btn =>
 // Carga inicial: render estático inmediato + Supabase async
 (async function initHub() {
   const hub = document.getElementById('hub-dynamic');
+  const initP = presencial.map(cardHTML).join('');
+  const initO = online.map(cardHTML).join('');
   hub.innerHTML = `
-    <div class="hub-content-head reveal">
-      <span class="eyebrow" style="font-size:15px">Encuentros</span>
-      <h2>Retiros</h2>
-      <p>Jornadas de silencio y mirada honesta — presenciales y online</p>
-    </div>
-    <div class="hub-sub-section reveal">
-      <p class="hub-sub-head">Presenciales</p>
-      <div class="hub-cards-grid" id="hub-grid-presencial">
-        ${presencial.map(cardHTML).join('')}
-      </div>
-    </div>
-    <div class="hub-sub-section reveal d1">
-      <p class="hub-sub-head">Online</p>
-      <div class="hub-cards-grid" id="hub-grid-online">
-        ${online.map(cardHTML).join('')}
-      </div>
-    </div>`;
+    ${initP ? `<h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Presenciales</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-presencial">${initP}</div>` : '<div id="hub-grid-presencial" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12"></div>'}
+    ${initO ? `<h3 class="font-serif text-2xl text-stone-800 mb-6 px-4">Online</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12" id="hub-grid-online">${initO}</div>` : '<div id="hub-grid-online" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12"></div>'}
+  `;
   observeReveals();
 
   try {
