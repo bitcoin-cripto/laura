@@ -1067,44 +1067,45 @@ document.querySelectorAll('.hub-card').forEach(btn =>
     todos.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
     sbRetiros = todos;
 
-    // Poblar select de asunto del formulario
-    const sel = document.getElementById('asunto');
-    const consulta = sel.querySelector('option[value="Consulta general"]');
-    todos.forEach(r => {
-      const opt = document.createElement('option');
-      opt.value = r.titulo;
-      opt.textContent = r.titulo;
-      sel.insertBefore(opt, consulta);
-    });
-    function syncSelColor(){ sel.classList.toggle('placeholder', !sel.value); }
-    syncSelColor();
-    sel.addEventListener('change', syncSelColor);
-
-    // Renderizar retiros en los grids solo si la pestaña Retiros sigue activa
+    // — Grids de retiros (primero, para que un fallo en el select no lo bloquee) —
     const activeCard = document.querySelector('.hub-card.active');
-    if (activeCard?.dataset.cat !== 'Retiros') return;
+    if (activeCard?.dataset.cat === 'Retiros') {
+      const retiros = todos.filter(r => r.tipo === 'Retiro');
+      const sbP = retiros.filter(r => (r.tipo_retiro || '').toLowerCase() === 'presencial');
+      const sbO = retiros.filter(r => (r.tipo_retiro || '').toLowerCase() === 'online');
 
-    const retiros = todos.filter(r => r.tipo === 'Retiro');
-    const sbP = retiros.filter(r => (r.tipo_retiro || '').toLowerCase() === 'presencial');
-    const sbO = retiros.filter(r => (r.tipo_retiro || '').toLowerCase() === 'online');
-
-    function insertarEnGrid(gridId, labelHeading, cards) {
-      if (!cards.length) return;
-      let grid = document.getElementById(gridId);
-      if (!grid) return;
-      // Si el grid estaba vacío, añadir el h3 antes del grid
-      if (!grid.children.length) {
-        const h3 = document.createElement('h3');
-        h3.className = 'font-serif text-2xl text-stone-800 mb-6 px-4';
-        h3.textContent = labelHeading;
-        grid.parentNode.insertBefore(h3, grid);
+      function insertarEnGrid(gridId, labelHeading, cards) {
+        if (!cards.length) return;
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
+        if (!grid.children.length) {
+          const h3 = document.createElement('h3');
+          h3.className = 'font-serif text-2xl text-stone-800 mb-6 px-4';
+          h3.textContent = labelHeading;
+          grid.parentNode.insertBefore(h3, grid);
+        }
+        grid.insertAdjacentHTML('beforeend', cards.map(cardHTMLSb).join(''));
+        observeReveals();
       }
-      grid.insertAdjacentHTML('beforeend', cards.map(cardHTMLSb).join(''));
-      observeReveals();
+
+      insertarEnGrid('hub-grid-presencial', 'Presenciales', sbP);
+      insertarEnGrid('hub-grid-online',     'Online',       sbO);
     }
 
-    insertarEnGrid('hub-grid-presencial', 'Presenciales', sbP);
-    insertarEnGrid('hub-grid-online',     'Online',       sbO);
+    // — Poblar select de asunto del formulario —
+    const sel = document.getElementById('asunto');
+    if (sel) {
+      const consulta = sel.querySelector('option[value="Consulta general"]');
+      todos.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r.titulo;
+        opt.textContent = r.titulo;
+        sel.insertBefore(opt, consulta);
+      });
+      function syncSelColor(){ sel.classList.toggle('placeholder', !sel.value); }
+      syncSelColor();
+      sel.addEventListener('change', syncSelColor);
+    }
 
   } catch(e) { /* fallback silencioso */ }
 })();
