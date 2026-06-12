@@ -1042,6 +1042,12 @@ document.querySelectorAll('.hub-card').forEach(btn =>
   btn.addEventListener('click', () => cargarCategoria(btn.dataset.cat))
 );
 
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
+},{threshold:.16, rootMargin:'0px 0px -8% 0px'});
+function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
+
 // Carga inicial: render estático inmediato + Supabase async
 (async function initHub() {
   const hub = document.getElementById('hub-dynamic');
@@ -1293,13 +1299,6 @@ document.getElementById('contacto-form').addEventListener('submit', async functi
     setFieldError('mensaje', 'No se pudo enviar. Escríbeme a info@laurafernandeznodualidad.com');
   }
 });
-
-/* ---------- reveal on scroll ---------- */
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
-},{threshold:.16, rootMargin:'0px 0px -8% 0px'});
-function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
-observeReveals();
 
 /* ---------- lightbox ---------- */
 let _lbIdx = 0;
