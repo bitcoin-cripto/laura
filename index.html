@@ -1001,7 +1001,7 @@ function hubRetiroHTML() {
       ${cardsO.join('')}
     </div>` : '';
   return secPresencial + secOnline ||
-    `<div class="hub-empty">Próximamente retiros disponibles.</div>`;
+    `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente retiros disponibles.</p>`;
 }
 
 const HUB_LABELS = {
@@ -1050,7 +1050,7 @@ async function cargarCategoria(cat) {
 
     if (!html) {
       const nombres = { 'Curso':'cursos','Webminar':'webinars','Sesión individual':'sesiones individuales','Intensivo':'intensivos' };
-      html = `<div class="hub-empty">Próximamente ${nombres[cat] || cat} disponibles.</div>`;
+      html = `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente ${nombres[cat] || cat} disponibles.</p>`;
     }
   }
 
