@@ -1057,6 +1057,7 @@ const io = new IntersectionObserver((entries)=>{
   entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target);} });
 },{threshold:.16, rootMargin:'0px 0px -8% 0px'});
 function observeReveals(){ document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el)); }
+observeReveals();
 
 // Precarga Supabase en background — no renderiza nada hasta que el usuario haga click
 (async function initHub() {
