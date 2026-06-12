@@ -217,7 +217,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
       <div>
         <p class="text-xs font-semibold tracking-widest text-earth uppercase mb-1">Panel de administración</p>
-        <h1 class="text-4xl text-sage-dark font-light">Servicios publicados</h1>
+        <h1 class="text-4xl text-sage-dark font-light">Eventos publicados</h1>
       </div>
       <div class="flex items-center gap-3">
         <button onclick="cargarRetiros()"
@@ -236,7 +236,7 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
-          Nuevo servicio
+          Nuevo evento
         </button>
       </div>
     </div>
@@ -403,7 +403,7 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
           </svg>
-          <span id="submit-text">Publicar servicio</span>
+          <span id="submit-text">Publicar evento</span>
         </button>
       </div>
     </div>
@@ -570,12 +570,12 @@
 
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-xs font-semibold tracking-widest text-gray-500 uppercase border-b border-gray-100 pb-3 mb-5">
-              Datos del servicio
+              Datos del evento
             </h3>
             <div class="space-y-5">
               <div class="space-y-1.5">
                 <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
-                  Tipo de servicio <span class="text-red-400">*</span>
+                  Tipo de evento <span class="text-red-400">*</span>
                 </label>
                 <select id="tipo_categoria" name="tipo_categoria" required
                         onchange="actualizarTipoRetiroVisibility()"
@@ -1095,7 +1095,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
   } finally {
     btn.disabled = false;
     spinner.classList.add('hidden');
-    label.textContent = editandoId ? 'Guardar cambios' : 'Publicar servicio';
+    label.textContent = editandoId ? 'Guardar cambios' : 'Publicar evento';
   }
 });
 
@@ -1202,7 +1202,7 @@ async function cargarRetiros() {
 
 // ── ELIMINAR RETIRO ────────────────────────────────────────────────────────────
 async function eliminarRetiro(id) {
-  if (!confirm('¿Seguro que quieres eliminar este servicio? También se borrarán sus imágenes.')) return;
+  if (!confirm('¿Seguro que quieres eliminar este evento? También se borrarán sus imágenes.')) return;
 
   try {
     // 1. Obtener URLs de imágenes antes de borrar la fila
@@ -1230,7 +1230,7 @@ async function eliminarRetiro(id) {
     const { error } = await sb.from('retiros').delete().eq('id', id);
     if (error) throw new Error(`Supabase: ${error.message}`);
 
-    toast('Servicio eliminado correctamente');
+    toast('Evento eliminado correctamente');
     await cargarRetiros();
 
   } catch (err) {
@@ -1296,13 +1296,13 @@ function mostrarFormulario(retiro = null) {
       document.getElementById('galeria-label').textContent =
         `${n} imagen${n !== 1 ? 'es' : ''} existentes`;
     }
-    document.getElementById('form-titulo-label').textContent = 'Editar servicio';
+    document.getElementById('form-titulo-label').textContent = 'Editar evento';
     document.getElementById('submit-text').textContent       = 'Guardar cambios';
     document.getElementById('btn-submit').className = document.getElementById('btn-submit').className
       .replace('bg-sage-dark hover:bg-sage', 'bg-green-600 hover:bg-green-500');
   } else {
-    document.getElementById('form-titulo-label').textContent = 'Nuevo servicio';
-    document.getElementById('submit-text').textContent       = 'Publicar servicio';
+    document.getElementById('form-titulo-label').textContent = 'Nuevo evento';
+    document.getElementById('submit-text').textContent       = 'Publicar evento';
     document.getElementById('btn-submit').className = document.getElementById('btn-submit').className
       .replace('bg-green-600 hover:bg-green-500', 'bg-sage-dark hover:bg-sage');
   }
