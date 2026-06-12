@@ -1097,6 +1097,10 @@ observeReveals();
     sbRetiros = retiros;
     retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
 
+    // Si venimos de retiro.html con ?cat=, auto-seleccionar esa categoría
+    const urlCat = new URLSearchParams(window.location.search).get('cat');
+    if (urlCat) cargarCategoria(urlCat);
+
     // sbRetiros ya cargado — cargarCategoria() lo usará cuando el usuario haga click
 
     // Poblar select de asunto del formulario
@@ -1214,7 +1218,9 @@ document.addEventListener('click', e=>{
   const id = t.getAttribute('data-modal');
   const r  = allRetreats[id];
   if(r?._sb && r?.visualizacion === 'pagina_completa'){
-    window.location.href = `retiro.html?id=${id}`;
+    const activeCard = document.querySelector('.hub-card.active');
+    const cat = activeCard ? activeCard.dataset.cat : 'Retiros';
+    window.location.href = `retiro.html?id=${id}&cat=${encodeURIComponent(cat)}`;
   } else {
     openModal(id);
   }

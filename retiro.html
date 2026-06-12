@@ -192,9 +192,9 @@
   <a href="index.html">
     <img src="imgs/logo_dorado_transp.png" alt="Laura Fernández" class="logo-img"/>
   </a>
-  <a href="index.html#retiros" class="nav-back">
+  <a id="nav-back" href="index.html?cat=Retiros" class="nav-back">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-    Volver a retiros
+    <span id="nav-back-label">Volver a retiros</span>
   </a>
 </header>
 
@@ -295,6 +295,15 @@
 const SB_URL = 'https://hdsevxevvwjelhorofqc.supabase.co';
 const SB_KEY = 'sb_publishable_lFiTdaJuo9MBum9bX_VzGA_zyRNlMZT';
 
+const _catParam = new URLSearchParams(window.location.search).get('cat') || 'Retiros';
+const _catNames = { 'Retiros':'retiros', 'Curso':'cursos', 'Webminar':'webinars', 'Meditacion':'meditaciones', 'Conferencia':'conferencias' };
+const catLabel = _catNames[_catParam] || _catParam.toLowerCase();
+const backUrl  = `index.html?cat=${encodeURIComponent(_catParam)}`;
+
+// Actualizar botón de volver
+document.getElementById('nav-back').href = backUrl;
+document.getElementById('nav-back-label').textContent = `Volver a ${catLabel}`;
+
 function formatFecha(inicio, fin) {
   if (!inicio) return '';
   const loc = 'es-ES';
@@ -372,7 +381,7 @@ function renderRetiro(r) {
     <div class="desc">${r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '')}</div>
     ${galeriaHtml}
     <div class="cta">
-      <a href="index.html#retiros" class="btn btn-ghost">Ver todos los retiros</a>
+      <a href="${backUrl}" class="btn btn-ghost">Ver todos los ${catLabel}</a>
     </div>
   `;
 }
@@ -384,7 +393,7 @@ function mostrarError(msg) {
     <div class="error-box">
       <h2>Retiro no encontrado</h2>
       <p>${msg}</p>
-      <a href="index.html#retiros" class="btn btn-ghost">Ver todos los retiros</a>
+      <a href="${backUrl}" class="btn btn-ghost">Ver todos los ${catLabel}</a>
     </div>`;
 }
 
