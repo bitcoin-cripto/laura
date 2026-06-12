@@ -217,7 +217,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
       <div>
         <p class="text-xs font-semibold tracking-widest text-earth uppercase mb-1">Panel de administración</p>
-        <h1 class="text-4xl text-sage-dark font-light">Retiros publicados</h1>
+        <h1 class="text-4xl text-sage-dark font-light">Servicios publicados</h1>
       </div>
       <div class="flex items-center gap-3">
         <button onclick="cargarRetiros()"
@@ -236,36 +236,138 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
-          Nuevo retiro
+          Nuevo servicio
         </button>
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div id="tabla-estado" class="flex flex-col items-center justify-center py-16 text-gray-400 gap-3">
-        <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-        <p class="text-sm">Cargando retiros…</p>
+    <!-- Sección: Retiros -->
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold tracking-widest text-earth uppercase mb-3">Retiros</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="estado-Retiro" class="flex flex-col items-center justify-center py-10 text-gray-400 gap-2">
+          <p class="text-sm">Cargando…</p>
+        </div>
+        <div id="wrap-Retiro" class="hidden overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-100"><tr>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Modalidad</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fin</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
+              <th class="px-4 py-3"></th>
+            </tr></thead>
+            <tbody id="tbody-Retiro" class="divide-y divide-gray-50"></tbody>
+          </table>
+        </div>
       </div>
-      <div id="tabla-wrap" class="hidden overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead class="bg-gray-50 border-b border-gray-100">
-            <tr>
-              <th class="text-left px-5 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
-              <th class="text-left px-5 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Tipo</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha inicio</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fecha fin</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
-              <th class="text-left px-4 py-3.5 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
-              <th class="px-4 py-3.5"></th>
-            </tr>
-          </thead>
-          <tbody id="tabla-retiros" class="divide-y divide-gray-50"></tbody>
-        </table>
+    </div>
+
+    <!-- Sección: Cursos -->
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold tracking-widest text-earth uppercase mb-3">Cursos</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="estado-Curso" class="flex flex-col items-center justify-center py-10 text-gray-400 gap-2">
+          <p class="text-sm">Cargando…</p>
+        </div>
+        <div id="wrap-Curso" class="hidden overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-100"><tr>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Modalidad</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fin</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
+              <th class="px-4 py-3"></th>
+            </tr></thead>
+            <tbody id="tbody-Curso" class="divide-y divide-gray-50"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Webinars -->
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold tracking-widest text-earth uppercase mb-3">Webinars</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="estado-Webminar" class="flex flex-col items-center justify-center py-10 text-gray-400 gap-2">
+          <p class="text-sm">Cargando…</p>
+        </div>
+        <div id="wrap-Webminar" class="hidden overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-100"><tr>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Modalidad</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fin</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
+              <th class="px-4 py-3"></th>
+            </tr></thead>
+            <tbody id="tbody-Webminar" class="divide-y divide-gray-50"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Sesiones Individuales -->
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold tracking-widest text-earth uppercase mb-3">Sesiones Individuales</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="estado-Sesion" class="flex flex-col items-center justify-center py-10 text-gray-400 gap-2">
+          <p class="text-sm">Cargando…</p>
+        </div>
+        <div id="wrap-Sesion" class="hidden overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-100"><tr>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Modalidad</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fin</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
+              <th class="px-4 py-3"></th>
+            </tr></thead>
+            <tbody id="tbody-Sesion" class="divide-y divide-gray-50"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección: Intensivos Individuales -->
+    <div class="mb-8">
+      <h2 class="text-sm font-semibold tracking-widest text-earth uppercase mb-3">Intensivos Individuales</h2>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div id="estado-Intensivo" class="flex flex-col items-center justify-center py-10 text-gray-400 gap-2">
+          <p class="text-sm">Cargando…</p>
+        </div>
+        <div id="wrap-Intensivo" class="hidden overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 border-b border-gray-100"><tr>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Portada</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Título</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Modalidad</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Lugar</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Inicio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Fin</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Precio</th>
+              <th class="text-left px-4 py-3 text-xs font-semibold tracking-widest text-gray-400 uppercase">Reserva</th>
+              <th class="px-4 py-3"></th>
+            </tr></thead>
+            <tbody id="tbody-Intensivo" class="divide-y divide-gray-50"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </section>
@@ -301,7 +403,7 @@
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
           </svg>
-          <span id="submit-text">Publicar retiro</span>
+          <span id="submit-text">Publicar servicio</span>
         </button>
       </div>
     </div>
@@ -468,14 +570,31 @@
 
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-xs font-semibold tracking-widest text-gray-500 uppercase border-b border-gray-100 pb-3 mb-5">
-              Datos del retiro
+              Datos del servicio
             </h3>
             <div class="space-y-5">
               <div class="space-y-1.5">
                 <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
-                  Tipo <span class="text-red-400">*</span>
+                  Tipo de servicio <span class="text-red-400">*</span>
                 </label>
-                <select id="tipo" name="tipo" required
+                <select id="tipo_categoria" name="tipo_categoria" required
+                        onchange="actualizarTipoRetiroVisibility()"
+                        class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
+                               focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
+                               bg-white transition cursor-pointer">
+                  <option value="">&#8212; Selecciona &#8212;</option>
+                  <option value="Retiro">Retiro</option>
+                  <option value="Curso">Curso</option>
+                  <option value="Webminar">Webinar</option>
+                  <option value="Sesion">Sesión individual</option>
+                  <option value="Intensivo">Intensivo individual</option>
+                </select>
+              </div>
+              <div id="tipo_retiro_wrap" class="space-y-1.5 hidden">
+                <label class="block text-xs font-semibold tracking-widest text-gray-500 uppercase">
+                  Modalidad <span class="text-red-400">*</span>
+                </label>
+                <select id="tipo_retiro" name="tipo_retiro"
                         class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm
                                focus:outline-none focus:ring-2 focus:ring-sage/40 focus:border-sage
                                bg-white transition cursor-pointer">
@@ -860,6 +979,7 @@ function limpiarFormulario() {
   const vizDefault = document.querySelector('input[name="visualizacion"][value="emergente"]');
   if (vizDefault) vizDefault.checked = true;
   actualizarVizToggle();
+  actualizarTipoRetiroVisibility();
 }
 
 // ── SUBMIT ─────────────────────────────────────────────────────────────────────
@@ -874,7 +994,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
 
   // 2. Validación básica
   const titulo      = form.titulo.value.trim();
-  const tipo        = form.tipo.value;
+  const tipo        = form.tipo_categoria.value;
   const fechaInicio = form.fecha_inicio.value;
   const fechaFin    = form.fecha_fin.value;
   const precio      = form.precio.value;
@@ -940,7 +1060,8 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
     label.textContent = 'Guardando…';
     const payload = {
       titulo:            form.titulo.value.trim(),
-      tipo_retiro:       form.tipo.value,
+      tipo:              form.tipo_categoria.value,
+      tipo_retiro:       form.tipo_retiro.value || null,
       fecha_inicio:      form.fecha_inicio.value,
       fecha_fin:         form.fecha_fin.value              || null,
       precio:            parseFloat(form.precio.value),
@@ -974,122 +1095,114 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
   } finally {
     btn.disabled = false;
     spinner.classList.add('hidden');
-    label.textContent = editandoId ? 'Guardar cambios' : 'Publicar retiro';
+    label.textContent = editandoId ? 'Guardar cambios' : 'Publicar servicio';
   }
 });
 
-// ── CARGAR RETIROS ─────────────────────────────────────────────────────────────
-async function cargarRetiros() {
-  const estado = document.getElementById('tabla-estado');
-  const wrap   = document.getElementById('tabla-wrap');
-  const tbody  = document.getElementById('tabla-retiros');
+// ── CARGAR TODOS LOS SERVICIOS ─────────────────────────────────────────────────
+const SECCIONES = [
+  { key: 'Retiro',    label: 'retiro' },
+  { key: 'Curso',     label: 'curso' },
+  { key: 'Webminar',  label: 'webinar' },
+  { key: 'Sesion',    label: 'sesión individual' },
+  { key: 'Intensivo', label: 'intensivo individual' },
+];
 
-  estado.innerHTML = `
-    <svg class="animate-spin w-6 h-6 text-sage" fill="none" viewBox="0 0 24 24">
-      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
-    </svg>
-    <p class="text-sm text-gray-400">Cargando…</p>`;
-  estado.classList.remove('hidden');
-  wrap.classList.add('hidden');
+async function cargarRetiros() {
+  SECCIONES.forEach(({ key }) => {
+    document.getElementById(`estado-${key}`).innerHTML =
+      `<p class="text-sm text-gray-400">Cargando…</p>`;
+    document.getElementById(`estado-${key}`).classList.remove('hidden');
+    document.getElementById(`wrap-${key}`).classList.add('hidden');
+  });
 
   try {
-    // GET directo a Supabase — funciona tanto en local como en producción
-    const { data: retiros, error } = await sb
+    const { data: items, error } = await sb
       .from('retiros')
       .select('*')
       .order('fecha_inicio', { ascending: true });
 
     if (error) throw new Error(`Supabase: ${error.message}`);
 
-    if (!retiros.length) {
-      estado.innerHTML = `
-        <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-        <p class="text-sm">Todavía no hay retiros publicados.</p>`;
-      return;
-    }
+    const fmtDate = d => { if (!d) return '—'; const dt = new Date(d + 'T12:00:00'); const dm = dt.toLocaleDateString('es-ES', { day:'2-digit', month:'short' }); return `<span class="block">${dm}</span><span class="block text-xs text-gray-400">${dt.getFullYear()}</span>`; };
+    const fmtEur  = v => v != null ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(v) : '—';
 
-    tbody.innerHTML = retiros.map(r => {
-      const fmtDate = d => { if (!d) return '—'; const dt = new Date(d + 'T12:00:00'); const dm = dt.toLocaleDateString('es-ES', { day:'2-digit', month:'short' }); return `<span class="block">${dm}</span><span class="block text-xs text-gray-400">${dt.getFullYear()}</span>`; };
-      const fmtEur  = v => v != null ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(v) : '—';
-      const fecha    = fmtDate(r.fecha_inicio);
-      const fechaFin = fmtDate(r.fecha_fin);
-      const precio   = fmtEur(r.precio);
-      const reserva  = fmtEur(r.precio_reserva);
-      const tipoBadge = r.tipo_retiro === 'presencial'
-        ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
-        : '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>';
+    SECCIONES.forEach(({ key, label }) => {
+      const grupo  = items.filter(r => r.tipo === key);
+      const estado = document.getElementById(`estado-${key}`);
+      const wrap   = document.getElementById(`wrap-${key}`);
+      const tbody  = document.getElementById(`tbody-${key}`);
 
-      const portadaHtml = r.imagen_portada
-        ? `<img src="${r.imagen_portada}" alt="" class="w-14 h-10 object-cover rounded-lg border border-gray-100"/>`
-        : `<div class="w-14 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300 text-xs">—</div>`;
+      if (!grupo.length) {
+        estado.innerHTML = `<p class="text-sm text-gray-400">Aún no se ha creado ningún ${label}</p>`;
+        estado.classList.remove('hidden');
+        wrap.classList.add('hidden');
+        return;
+      }
 
-      return `
-        <tr>
-          <td class="px-6 py-3">${portadaHtml}</td>
-          <td class="px-6 py-3 font-medium text-ink max-w-[220px] truncate">${r.titulo}</td>
-          <td class="px-4 py-3">${tipoBadge}</td>
-          <td class="px-4 py-3 text-gray-400 text-xs max-w-[180px] truncate">${r.lugar || '—'}</td>
-          <td class="px-4 py-3 text-gray-500">${fecha}</td>
-          <td class="px-4 py-3 text-gray-500">${fechaFin}</td>
-          <td class="px-4 py-3 text-gray-700 font-medium">${precio}</td>
-          <td class="px-4 py-3 text-gray-500">${reserva}</td>
-          <td class="px-4 py-3 text-right">
-            <div class="flex items-center justify-end gap-2">
-              <button onclick="editarRetiro('${r.id}')"
-                      class="inline-flex items-center gap-1 text-xs font-semibold text-sage-dark
-                             hover:text-white hover:bg-sage-dark border border-sage-dark/20
-                             hover:border-sage-dark px-3 py-1.5 rounded-lg transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                </svg>
-                Editar
-              </button>
-              <button onclick="eliminarRetiro('${r.id}', this)"
-                      class="inline-flex items-center gap-1 text-xs font-semibold text-red-400
-                             hover:text-white hover:bg-red-500 border border-red-200
-                             hover:border-red-500 px-3 py-1.5 rounded-lg transition-colors">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                </svg>
-                Eliminar
-              </button>
-            </div>
-          </td>
-        </tr>`;
-    }).join('');
+      tbody.innerHTML = grupo.map(r => {
+        const tipoBadge = r.tipo_retiro === 'presencial'
+          ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
+          : r.tipo_retiro === 'online'
+          ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>'
+          : '<span class="text-gray-300 text-xs">—</span>';
+        const portadaHtml = r.imagen_portada
+          ? `<img src="${r.imagen_portada}" alt="" class="w-14 h-10 object-cover rounded-lg border border-gray-100"/>`
+          : `<div class="w-14 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-300 text-xs">—</div>`;
+        return `
+          <tr>
+            <td class="px-6 py-3">${portadaHtml}</td>
+            <td class="px-6 py-3 font-medium text-ink max-w-[220px] truncate">${r.titulo}</td>
+            <td class="px-4 py-3">${tipoBadge}</td>
+            <td class="px-4 py-3 text-gray-400 text-xs max-w-[180px] truncate">${r.lugar || '—'}</td>
+            <td class="px-4 py-3 text-gray-500">${fmtDate(r.fecha_inicio)}</td>
+            <td class="px-4 py-3 text-gray-500">${fmtDate(r.fecha_fin)}</td>
+            <td class="px-4 py-3 text-gray-700 font-medium">${fmtEur(r.precio)}</td>
+            <td class="px-4 py-3 text-gray-500">${fmtEur(r.precio_reserva)}</td>
+            <td class="px-4 py-3 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button onclick="editarRetiro('${r.id}')"
+                        class="inline-flex items-center gap-1 text-xs font-semibold text-sage-dark
+                               hover:text-white hover:bg-sage-dark border border-sage-dark/20
+                               hover:border-sage-dark px-3 py-1.5 rounded-lg transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                  </svg>
+                  Editar
+                </button>
+                <button onclick="eliminarRetiro('${r.id}')"
+                        class="inline-flex items-center gap-1 text-xs font-semibold text-red-400
+                               hover:text-white hover:bg-red-500 border border-red-200
+                               hover:border-red-500 px-3 py-1.5 rounded-lg transition-colors">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
 
-    estado.classList.add('hidden');
-    wrap.classList.remove('hidden');
+      estado.classList.add('hidden');
+      wrap.classList.remove('hidden');
+    });
 
   } catch (err) {
     console.error('[cargarRetiros]', err);
-    estado.innerHTML = `
-      <div class="flex flex-col items-center gap-2 text-red-400">
-        <svg class="w-8 h-8 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-        </svg>
-        <p class="text-sm font-medium">Error al cargar los retiros</p>
-        <p class="text-xs text-red-300 font-mono">${err.message}</p>
-        <button onclick="cargarRetiros()"
-                class="mt-1 text-xs text-red-400 underline hover:text-red-600">Reintentar</button>
-      </div>`;
+    SECCIONES.forEach(({ key }) => {
+      document.getElementById(`estado-${key}`).innerHTML = `
+        <p class="text-sm text-red-400 font-medium">Error al cargar: ${err.message}</p>
+        <button onclick="cargarRetiros()" class="text-xs text-red-400 underline hover:text-red-600 mt-1">Reintentar</button>`;
+    });
   }
 }
 
 // ── ELIMINAR RETIRO ────────────────────────────────────────────────────────────
-async function eliminarRetiro(id, btn) {
-  if (!confirm('¿Seguro que quieres eliminar este retiro? También se borrarán sus imágenes.')) return;
-
-  const fila = btn.closest('tr');
-  btn.disabled = true;
-  btn.textContent = 'Eliminando…';
+async function eliminarRetiro(id) {
+  if (!confirm('¿Seguro que quieres eliminar este servicio? También se borrarán sus imágenes.')) return;
 
   try {
     // 1. Obtener URLs de imágenes antes de borrar la fila
@@ -1117,30 +1230,22 @@ async function eliminarRetiro(id, btn) {
     const { error } = await sb.from('retiros').delete().eq('id', id);
     if (error) throw new Error(`Supabase: ${error.message}`);
 
-    fila.style.transition = 'opacity .3s';
-    fila.style.opacity    = '0';
-    setTimeout(() => { fila.remove(); sincronizarEstado(); }, 300);
-    toast('Retiro eliminado correctamente');
+    toast('Servicio eliminado correctamente');
+    await cargarRetiros();
 
   } catch (err) {
     toast(`Error al eliminar: ${err.message}`, 'error');
-    btn.disabled = false;
-    btn.textContent = 'Eliminar';
   }
 }
 
-// Si la tabla queda vacía tras borrar, mostrar estado vacío
-function sincronizarEstado() {
-  const tbody = document.getElementById('tabla-retiros');
-  if (!tbody.children.length) {
-    document.getElementById('tabla-wrap').classList.add('hidden');
-    document.getElementById('tabla-estado').innerHTML = `
-      <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-      </svg>
-      <p class="text-sm">Todavía no hay retiros publicados.</p>`;
-    document.getElementById('tabla-estado').classList.remove('hidden');
+function actualizarTipoRetiroVisibility() {
+  const cat  = document.getElementById('tipo_categoria').value;
+  const wrap = document.getElementById('tipo_retiro_wrap');
+  if (cat === 'Retiro') {
+    wrap.classList.remove('hidden');
+  } else {
+    wrap.classList.add('hidden');
+    document.getElementById('tipo_retiro').value = '';
   }
 }
 
@@ -1159,7 +1264,9 @@ function mostrarFormulario(retiro = null) {
   if (retiro) {
     editandoId = retiro.id;
     document.getElementById('titulo').value            = retiro.titulo            || '';
-    document.getElementById('tipo').value              = retiro.tipo_retiro        || '';
+    document.getElementById('tipo_categoria').value    = retiro.tipo              || '';
+    document.getElementById('tipo_retiro').value       = retiro.tipo_retiro       || '';
+    actualizarTipoRetiroVisibility();
     document.getElementById('lugar').value             = retiro.lugar             || '';
     document.getElementById('fecha_inicio').value      = retiro.fecha_inicio      || '';
     document.getElementById('fecha_fin').value         = retiro.fecha_fin         || '';
@@ -1189,13 +1296,13 @@ function mostrarFormulario(retiro = null) {
       document.getElementById('galeria-label').textContent =
         `${n} imagen${n !== 1 ? 'es' : ''} existentes`;
     }
-    document.getElementById('form-titulo-label').textContent = 'Editar retiro';
+    document.getElementById('form-titulo-label').textContent = 'Editar servicio';
     document.getElementById('submit-text').textContent       = 'Guardar cambios';
     document.getElementById('btn-submit').className = document.getElementById('btn-submit').className
       .replace('bg-sage-dark hover:bg-sage', 'bg-green-600 hover:bg-green-500');
   } else {
-    document.getElementById('form-titulo-label').textContent = 'Nuevo retiro';
-    document.getElementById('submit-text').textContent       = 'Publicar retiro';
+    document.getElementById('form-titulo-label').textContent = 'Nuevo servicio';
+    document.getElementById('submit-text').textContent       = 'Publicar servicio';
     document.getElementById('btn-submit').className = document.getElementById('btn-submit').className
       .replace('bg-green-600 hover:bg-green-500', 'bg-sage-dark hover:bg-sage');
   }

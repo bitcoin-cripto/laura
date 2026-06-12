@@ -900,8 +900,7 @@ function cardHTML(r){
 }
 const allRetreats = {};
 [...presencial, ...online].forEach(r=>allRetreats[r.id]=r);
-document.getElementById('grid-presencial').innerHTML = presencial.map(cardHTML).join('');
-document.getElementById('grid-online').innerHTML = online.map(cardHTML).join('');
+// Las tarjetas se renderizan en initHub() — no hay grids separados
 
 /* ---------- Supabase: carga dinámica ---------- */
 const SB_URL  = 'https://hdsevxevvwjelhorofqc.supabase.co';
