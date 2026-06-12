@@ -1057,9 +1057,7 @@ async function cargarCategoria(cat) {
   hub.innerHTML = html;
   hub.classList.remove('fading');
   observeReveals();
-  if (window.innerWidth < 768) {
-    document.getElementById('hub-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  document.getElementById('hub-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Clic en tarjeta del hub — gestión de estado activo
