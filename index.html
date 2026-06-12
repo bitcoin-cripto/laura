@@ -426,42 +426,53 @@
   }
 
   /* ---------- HUB DE SERVICIOS (TARJETERO) ---------- */
-  .hub-section{background:var(--sage-dark);padding:56px 0 52px;}
-  .hub-header{text-align:center;margin-bottom:44px;}
+  .hub-section{background:var(--sage-dark);padding:60px 0 56px;}
+  .hub-header{text-align:center;margin-bottom:48px;}
   .hub-header .hub-eyebrow{
     display:block;font-family:"Inter",sans-serif;font-size:.72rem;
     letter-spacing:.36em;text-transform:uppercase;font-weight:600;
-    color:rgba(201,169,110,.75);margin-bottom:.7em;
+    color:rgba(201,169,110,.72);margin-bottom:.65em;
   }
   .hub-header .hub-title-main{
     font-family:"Cormorant Garamond",serif;font-size:clamp(2.4rem,4.8vw,3.8rem);
     font-weight:300;color:#fff;letter-spacing:.06em;line-height:1.05;margin:0;
   }
-  .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;max-width:1080px;margin:0 auto;}
+  /* Grid de 5 tarjetas */
+  .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;max-width:1200px;margin:0 auto;}
+  /* Tarjeta con imagen de fondo */
   .hub-card{
-    border:1px solid rgba(253,251,246,.12);border-radius:8px;
-    padding:36px 18px 30px;text-align:center;cursor:pointer;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-    transition:background .35s,border-color .35s,box-shadow .35s;
-    font-family:inherit;
-    background:rgba(255,255,255,.04);
+    position:relative;overflow:hidden;border-radius:14px;
+    min-height:300px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+    padding:0 0 28px;
+    background-size:cover;background-position:center;
+    border:2px solid transparent;
+    transition:transform .4s ease,box-shadow .4s ease,border-color .4s ease;
   }
-  .hub-card:hover{background:rgba(255,255,255,.08);border-color:rgba(201,169,110,.35);}
-  .hub-card.active{
-    background:rgba(201,169,110,.08);
-    border-color:var(--gold);
-    box-shadow:0 0 0 1px var(--gold);
+  /* Overlay oscuro sobre la imagen */
+  .hub-card::before{
+    content:"";position:absolute;inset:0;border-radius:14px;
+    background:rgba(0,0,0,.48);
+    transition:background .4s ease;
   }
+  .hub-card:hover{transform:scale(1.03);box-shadow:0 22px 50px -14px rgba(0,0,0,.6);}
+  .hub-card:hover::before{background:rgba(0,0,0,.28);}
+  .hub-card.active{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 12px 40px -14px rgba(201,169,110,.3);}
+  .hub-card.active::before{background:rgba(0,0,0,.38);}
+  /* Todo el texto encima del overlay */
+  .hub-card > *{position:relative;z-index:1;}
+  .hub-text-wrap{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 16px;}
   .hub-title{
-    font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:400;
-    color:rgba(253,251,246,.9);letter-spacing:.06em;line-height:1.2;
+    font-family:"Cormorant Garamond",serif;font-size:1.45rem;font-weight:400;
+    color:#fff;letter-spacing:.06em;line-height:1.15;text-align:center;
+    text-shadow:0 2px 10px rgba(0,0,0,.5);
   }
   .hub-card.active .hub-title{color:var(--gold);}
   .hub-sub{
-    font-family:"Inter",sans-serif;font-size:.62rem;letter-spacing:.18em;
-    text-transform:uppercase;color:rgba(253,251,246,.35);line-height:1.4;
+    font-family:"Inter",sans-serif;font-size:.6rem;letter-spacing:.18em;
+    text-transform:uppercase;color:rgba(253,251,246,.65);line-height:1.4;text-align:center;
   }
-  .hub-card.active .hub-sub{color:rgba(201,169,110,.6);}
+  .hub-card.active .hub-sub{color:rgba(201,169,110,.85);}
   /* Contenedor dinámico */
   .hub-content-section{background:var(--cream);padding:64px 0 90px;min-height:340px;}
   .hub-dynamic{transition:opacity .3s ease;}
@@ -471,23 +482,24 @@
     font-family:"Cormorant Garamond",serif;font-style:italic;
     font-size:1.5rem;color:var(--ink-soft);line-height:1.8;
   }
+  /* Grid de tarjetas de retiro (3 columnas) */
   .hub-cards-grid{
     display:grid;gap:28px;
-    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    grid-template-columns:repeat(3,1fr);
     max-width:1060px;margin:0 auto;
   }
-  .hub-cards-grid.two-col{grid-template-columns:repeat(2,1fr)!important;max-width:820px!important;}
   .hub-content-head{text-align:center;max-width:680px;margin:0 auto 48px;}
   .hub-content-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);margin:.5em 0 .35em;}
   .hub-content-head p{font-size:1.18rem;color:var(--ink-soft);font-style:italic;}
   .hub-sub-section{margin-bottom:56px;}
   .hub-sub-section:last-child{margin-bottom:0;}
-  .hub-sub-head{font-family:"Inter",sans-serif;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--earth-deep);margin:0 auto 24px;max-width:820px;padding-bottom:10px;border-bottom:1px solid rgba(122,174,196,.25);}
-  @media(max-width:660px){.hub-cards-grid.two-col{grid-template-columns:1fr!important;}}
-  @media(max-width:900px){.hub-grid{grid-template-columns:repeat(3,1fr);}}
-  @media(max-width:560px){
-    .hub-grid{grid-template-columns:repeat(2,1fr)!important;}
+  .hub-sub-head{font-family:"Inter",sans-serif;font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--earth-deep);margin:0 auto 24px;max-width:1060px;padding-bottom:10px;border-bottom:1px solid rgba(122,174,196,.25);}
+  @media(max-width:1024px){.hub-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:640px){
+    .hub-grid{grid-template-columns:repeat(2,1fr);}
     .hub-card:nth-child(5){grid-column:1/-1;}
+    .hub-card{min-height:220px;}
+    .hub-cards-grid{grid-template-columns:1fr;}
   }
 </style>
 <link id="gfont-Lato" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&amp;display=swap">
@@ -595,29 +607,44 @@
     </div>
     <div class="hub-grid">
 
-      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros">
-        <span class="hub-title">Retiros</span>
-        <span class="hub-sub">Presenciales y online</span>
+      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros"
+        style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80')">
+        <div class="hub-text-wrap">
+          <span class="hub-title">Retiros</span>
+          <span class="hub-sub">Presenciales y online</span>
+        </div>
       </button>
 
-      <button class="hub-card" data-cat="Curso" aria-label="Cursos">
-        <span class="hub-title">Cursos</span>
-        <span class="hub-sub">Formación profunda</span>
+      <button class="hub-card" data-cat="Curso" aria-label="Cursos"
+        style="background-image:url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80')">
+        <div class="hub-text-wrap">
+          <span class="hub-title">Cursos</span>
+          <span class="hub-sub">Formación profunda</span>
+        </div>
       </button>
 
-      <button class="hub-card" data-cat="Webminar" aria-label="Webinars">
-        <span class="hub-title">Webinars</span>
-        <span class="hub-sub">En directo desde casa</span>
+      <button class="hub-card" data-cat="Webminar" aria-label="Webinars"
+        style="background-image:url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=80')">
+        <div class="hub-text-wrap">
+          <span class="hub-title">Webinars</span>
+          <span class="hub-sub">En directo desde casa</span>
+        </div>
       </button>
 
-      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales">
-        <span class="hub-title">Sesiones</span>
-        <span class="hub-sub">Acompañamiento individual</span>
+      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales"
+        style="background-image:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80')">
+        <div class="hub-text-wrap">
+          <span class="hub-title">Sesiones</span>
+          <span class="hub-sub">Acompañamiento individual</span>
+        </div>
       </button>
 
-      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos">
-        <span class="hub-title">Intensivos</span>
-        <span class="hub-sub">Inmersión total</span>
+      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos"
+        style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80')">
+        <div class="hub-text-wrap">
+          <span class="hub-title">Intensivos</span>
+          <span class="hub-sub">Inmersión total</span>
+        </div>
       </button>
 
     </div>
@@ -965,14 +992,14 @@ function hubRetiroHTML() {
     </div>
     <div class="hub-sub-section reveal">
       <p class="hub-sub-head">Presenciales</p>
-      <div class="hub-cards-grid two-col" id="hub-grid-presencial">
+      <div class="hub-cards-grid" id="hub-grid-presencial">
         ${presencial.map(cardHTML).join('')}
         ${sbPresencial.map(cardHTMLSb).join('')}
       </div>
     </div>
     <div class="hub-sub-section reveal d1">
       <p class="hub-sub-head">Online</p>
-      <div class="hub-cards-grid two-col" id="hub-grid-online">
+      <div class="hub-cards-grid" id="hub-grid-online">
         ${online.map(cardHTML).join('')}
         ${sbOnline.map(cardHTMLSb).join('')}
       </div>
@@ -1053,13 +1080,13 @@ document.querySelectorAll('.hub-card').forEach(btn =>
     </div>
     <div class="hub-sub-section reveal">
       <p class="hub-sub-head">Presenciales</p>
-      <div class="hub-cards-grid two-col" id="hub-grid-presencial">
+      <div class="hub-cards-grid" id="hub-grid-presencial">
         ${presencial.map(cardHTML).join('')}
       </div>
     </div>
     <div class="hub-sub-section reveal d1">
       <p class="hub-sub-head">Online</p>
-      <div class="hub-cards-grid two-col" id="hub-grid-online">
+      <div class="hub-cards-grid" id="hub-grid-online">
         ${online.map(cardHTML).join('')}
       </div>
     </div>`;
