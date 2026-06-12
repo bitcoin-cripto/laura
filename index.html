@@ -429,36 +429,47 @@
   .hub-section{background:var(--sage-dark);padding:52px 0 44px;}
   .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1060px;margin:0 auto;}
   .hub-card{
-    background:rgba(255,255,255,.05);border:1px solid rgba(201,169,110,.18);border-radius:16px;
-    padding:28px 14px 24px;text-align:center;cursor:pointer;
+    position:relative;overflow:hidden;
+    border:1.5px solid rgba(201,169,110,.22);border-radius:16px;
+    padding:32px 14px 26px;text-align:center;cursor:pointer;
     display:flex;flex-direction:column;align-items:center;gap:10px;
-    transition:background .35s,border-color .35s,box-shadow .35s,transform .35s;
+    transition:border-color .35s,box-shadow .35s,transform .35s;
     font-family:inherit;
+    background-size:cover;background-position:center;
+    min-height:160px;
   }
-  .hub-card:hover{background:rgba(255,255,255,.09);border-color:rgba(201,169,110,.5);transform:translateY(-3px);}
+  .hub-card::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(160deg,rgba(30,50,68,.62) 0%,rgba(45,74,93,.82) 100%);
+    transition:opacity .35s;
+  }
+  .hub-card:hover{border-color:rgba(201,169,110,.55);transform:translateY(-3px);box-shadow:0 12px 36px -12px rgba(0,0,0,.45);}
+  .hub-card:hover::before{opacity:.75;}
   .hub-card.active{
-    background:rgba(201,169,110,.12);border-color:var(--gold);
-    box-shadow:0 0 0 1px var(--gold),0 8px 32px -8px rgba(201,169,110,.35);
+    border-color:var(--gold);
+    box-shadow:0 0 0 2px var(--gold),0 10px 36px -10px rgba(201,169,110,.4);
   }
+  .hub-card.active::before{background:linear-gradient(160deg,rgba(30,50,68,.5) 0%,rgba(45,74,93,.72) 100%);}
+  .hub-card > *{position:relative;z-index:1;}
   .hub-icon{
     width:44px;height:44px;border-radius:50%;
-    background:rgba(255,255,255,.07);
+    background:rgba(255,255,255,.12);
     display:flex;align-items:center;justify-content:center;
     transition:background .35s;
   }
-  .hub-card.active .hub-icon{background:rgba(201,169,110,.18);}
-  .hub-icon svg{width:22px;height:22px;stroke:rgba(253,251,246,.65);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .hub-card.active .hub-icon{background:rgba(201,169,110,.25);}
+  .hub-icon svg{width:22px;height:22px;stroke:rgba(253,251,246,.85);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
   .hub-card.active .hub-icon svg{stroke:var(--gold);}
   .hub-title{
     font-family:"Cormorant Garamond",serif;font-size:1.2rem;font-weight:500;
-    color:rgba(253,251,246,.88);letter-spacing:.04em;line-height:1.2;
+    color:#fff;letter-spacing:.04em;line-height:1.2;text-shadow:0 1px 6px rgba(0,0,0,.4);
   }
   .hub-card.active .hub-title{color:var(--gold);}
   .hub-sub{
     font-family:"Inter",sans-serif;font-size:.6rem;letter-spacing:.14em;
-    text-transform:uppercase;color:rgba(253,251,246,.38);line-height:1.3;
+    text-transform:uppercase;color:rgba(253,251,246,.6);line-height:1.3;
   }
-  .hub-card.active .hub-sub{color:rgba(201,169,110,.65);}
+  .hub-card.active .hub-sub{color:rgba(201,169,110,.8);}
   /* Contenedor dinámico */
   .hub-content-section{background:var(--white);padding:56px 0 80px;min-height:320px;}
   .hub-dynamic{transition:opacity .3s ease;}
@@ -473,7 +484,7 @@
     grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
     max-width:1060px;margin:0 auto;
   }
-  .hub-cards-grid.two-col{grid-template-columns:repeat(2,1fr);max-width:820px;}
+  .hub-cards-grid.two-col{grid-template-columns:repeat(2,1fr)!important;max-width:820px!important;}
   .hub-content-head{text-align:center;max-width:680px;margin:0 auto 48px;}
   .hub-content-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);margin:.5em 0 .35em;}
   .hub-content-head p{font-size:1.18rem;color:var(--ink-soft);font-style:italic;}
@@ -593,7 +604,8 @@
     <div class="hub-grid">
 
       <!-- Retiros -->
-      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros">
+      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros"
+        style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=75')">
         <div class="hub-icon">
           <svg viewBox="0 0 24 24"><path d="M3 17L9 7l3 5 2-3 5 8H3z"/></svg>
         </div>
@@ -602,7 +614,8 @@
       </button>
 
       <!-- Cursos -->
-      <button class="hub-card" data-cat="Curso" aria-label="Cursos">
+      <button class="hub-card" data-cat="Curso" aria-label="Cursos"
+        style="background-image:url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=75')">
         <div class="hub-icon">
           <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
         </div>
@@ -611,7 +624,8 @@
       </button>
 
       <!-- Webinars -->
-      <button class="hub-card" data-cat="Webminar" aria-label="Webinars">
+      <button class="hub-card" data-cat="Webminar" aria-label="Webinars"
+        style="background-image:url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=75')">
         <div class="hub-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
         </div>
@@ -620,7 +634,8 @@
       </button>
 
       <!-- Sesiones individuales -->
-      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales">
+      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales"
+        style="background-image:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=75')">
         <div class="hub-icon">
           <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
@@ -629,7 +644,8 @@
       </button>
 
       <!-- Intensivos -->
-      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos">
+      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos"
+        style="background-image:url('https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=600&q=75')">
         <div class="hub-icon">
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
