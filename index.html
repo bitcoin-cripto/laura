@@ -424,6 +424,63 @@
     .scroll-cue .line{animation:none;}
     html{scroll-behavior:auto;}
   }
+
+  /* ---------- HUB DE SERVICIOS (TARJETERO) ---------- */
+  .hub-section{background:var(--sage-dark);padding:52px 0 44px;}
+  .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1060px;margin:0 auto;}
+  .hub-card{
+    background:rgba(255,255,255,.05);border:1px solid rgba(201,169,110,.18);border-radius:16px;
+    padding:28px 14px 24px;text-align:center;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    transition:background .35s,border-color .35s,box-shadow .35s,transform .35s;
+    font-family:inherit;
+  }
+  .hub-card:hover{background:rgba(255,255,255,.09);border-color:rgba(201,169,110,.5);transform:translateY(-3px);}
+  .hub-card.active{
+    background:rgba(201,169,110,.12);border-color:var(--gold);
+    box-shadow:0 0 0 1px var(--gold),0 8px 32px -8px rgba(201,169,110,.35);
+  }
+  .hub-icon{
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(255,255,255,.07);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .35s;
+  }
+  .hub-card.active .hub-icon{background:rgba(201,169,110,.18);}
+  .hub-icon svg{width:22px;height:22px;stroke:rgba(253,251,246,.65);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .hub-card.active .hub-icon svg{stroke:var(--gold);}
+  .hub-title{
+    font-family:"Cormorant Garamond",serif;font-size:1.2rem;font-weight:500;
+    color:rgba(253,251,246,.88);letter-spacing:.04em;line-height:1.2;
+  }
+  .hub-card.active .hub-title{color:var(--gold);}
+  .hub-sub{
+    font-family:"Inter",sans-serif;font-size:.6rem;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(253,251,246,.38);line-height:1.3;
+  }
+  .hub-card.active .hub-sub{color:rgba(201,169,110,.65);}
+  /* Contenedor dinámico */
+  .hub-content-section{background:var(--white);padding:56px 0 80px;min-height:320px;}
+  .hub-dynamic{transition:opacity .3s ease;}
+  .hub-dynamic.fading{opacity:0;pointer-events:none;}
+  .hub-empty{
+    text-align:center;padding:80px 0;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    font-size:1.5rem;color:var(--ink-soft);line-height:1.8;
+  }
+  .hub-cards-grid{
+    display:grid;gap:28px;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    max-width:1060px;margin:0 auto;
+  }
+  .hub-content-head{text-align:center;max-width:680px;margin:0 auto 48px;}
+  .hub-content-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);margin:.5em 0 .35em;}
+  .hub-content-head p{font-size:1.18rem;color:var(--ink-soft);font-style:italic;}
+  @media(max-width:900px){.hub-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:560px){
+    .hub-grid{grid-template-columns:repeat(2,1fr)!important;}
+    .hub-card:nth-child(5){grid-column:1/-1;}
+  }
 </style>
 <link id="gfont-Lato" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;600;700&amp;display=swap">
 <link id="gfont-Inter" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap">
@@ -516,43 +573,80 @@
   </div>
 </section>
 
-<!-- brush: cream -> white -->
+<!-- brush: cream -> sage-dark -->
 <div class="brush" style="background:#f5f0e8;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#fdfbf6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#fdfbf6" x="-10" y="115" width="1460" height="60"/></svg>
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleC)"><rect fill="#2d4a5d" x="-10" y="70" width="1460" height="100"/></g><rect fill="#2d4a5d" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
-<!-- ===================== RETIROS PRESENCIALES ===================== -->
-<section class="section retreats presencial" id="retiros" data-screen-label="Retiros presenciales">
+<!-- ===================== HUB TARJETERO ===================== -->
+<section class="section hub-section" id="retiros" data-screen-label="Servicios">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow" style="font-size: 15px">Encuentros en silencio</span>
-      <h2>Retiros presenciales</h2>
-      <p style="font-size: 25px">Unos días de detención y mirada honesta en lugares que invitan al silencio</p>
+    <div class="hub-grid">
+
+      <!-- Retiros -->
+      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 17L9 7l3 5 2-3 5 8H3z"/></svg>
+        </div>
+        <span class="hub-title">Retiros</span>
+        <span class="hub-sub">Presenciales y online</span>
+      </button>
+
+      <!-- Cursos -->
+      <button class="hub-card" data-cat="Curso" aria-label="Cursos">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <span class="hub-title">Cursos</span>
+        <span class="hub-sub">Formación profunda</span>
+      </button>
+
+      <!-- Webinars -->
+      <button class="hub-card" data-cat="Webminar" aria-label="Webinars">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <span class="hub-title">Webinars</span>
+        <span class="hub-sub">En directo desde casa</span>
+      </button>
+
+      <!-- Sesiones individuales -->
+      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="hub-title">Sesiones</span>
+        <span class="hub-sub">Acompañamiento individual</span>
+      </button>
+
+      <!-- Intensivos -->
+      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos">
+        <div class="hub-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="hub-title">Intensivos</span>
+        <span class="hub-sub">Inmersión total</span>
+      </button>
+
     </div>
-    <div class="card-grid" id="grid-presencial"></div>
   </div>
 </section>
 
-<!-- brush: white -> cream-warm -->
+<!-- brush: sage-dark -> white -->
+<div class="brush" style="background:#2d4a5d;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#2d4a5d" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleA)"><rect fill="#fdfbf6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#fdfbf6" x="-10" y="115" width="1460" height="60"/></svg>
+</div>
+
+<!-- ===================== CONTENEDOR DINÁMICO ===================== -->
+<section class="section hub-content-section" id="hub-content">
+  <div class="wrap">
+    <div id="hub-dynamic" class="hub-dynamic"></div>
+  </div>
+</section>
+
+<!-- brush: white -> sage -->
 <div class="brush" style="background:#fdfbf6;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#fdfbf6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleC)"><rect fill="#efe6d6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#efe6d6" x="-10" y="115" width="1460" height="60"/></svg>
-</div>
-
-<!-- ===================== RETIROS ONLINE ===================== -->
-<section class="section retreats online" data-screen-label="Retiros online">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow" style="font-size: 15px">Desde donde estés</span>
-      <h2>Retiros online</h2>
-      <p style="font-size: 18px">El encuentro no precisa desplazamiento: la atención está siempre aquí</p>
-    </div>
-    <div class="card-grid two" id="grid-online"></div>
-  </div>
-</section>
-
-<!-- brush: cream-warm -> sage -->
-<div class="brush" style="background:#efe6d6;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#efe6d6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#7aaec4" x="-10" y="70" width="1460" height="100"/></g><rect fill="#7aaec4" x="-10" y="115" width="1460" height="60"/></svg>
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#fdfbf6" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleB)"><rect fill="#7aaec4" x="-10" y="70" width="1460" height="100"/></g><rect fill="#7aaec4" x="-10" y="115" width="1460" height="60"/></svg>
 </div>
 
 <!-- ===================== ¿CONVERSAMOS? ===================== -->
@@ -852,7 +946,102 @@ function cardHTMLSb(r) {
   </article>`;
 }
 
-(async function cargarRetiros() {
+/* ---------- Hub de servicios ---------- */
+let sbRetiros = []; // caché de items cargados desde Supabase
+
+function hubRetiroHTML() {
+  const sbItems = sbRetiros.filter(r => r.tipo === 'presencial' || r.tipo === 'online');
+  return `
+    <div class="hub-content-head reveal">
+      <span class="eyebrow" style="font-size:15px">Encuentros</span>
+      <h2>Retiros</h2>
+      <p>Presenciales y online — unas jornadas de silencio y mirada honesta</p>
+    </div>
+    <div class="hub-cards-grid" id="hub-cards-grid">
+      ${presencial.map(cardHTML).join('')}
+      ${online.map(cardHTML).join('')}
+      ${sbItems.map(cardHTMLSb).join('')}
+    </div>`;
+}
+
+const HUB_LABELS = {
+  'Curso':            { eyebrow:'Formación',        title:'Cursos',                desc:'Aprende con profundidad desde donde estés' },
+  'Webminar':         { eyebrow:'Online en directo', title:'Webinars',              desc:'Encuentros en directo para explorar juntos' },
+  'Sesión individual':{ eyebrow:'Acompañamiento',   title:'Sesiones individuales', desc:'Un espacio íntimo y cuidado solo para ti' },
+  'Intensivo':        { eyebrow:'Inmersión',         title:'Intensivos',            desc:'Días de entrega y presencia total' },
+};
+
+async function cargarCategoria(cat) {
+  const hub = document.getElementById('hub-dynamic');
+
+  // Fade out
+  hub.classList.add('fading');
+  await new Promise(r => setTimeout(r, 280));
+
+  // Actualizar tarjeta activa
+  document.querySelectorAll('.hub-card').forEach(c =>
+    c.classList.toggle('active', c.dataset.cat === cat)
+  );
+
+  let html = '';
+
+  if (cat === 'Retiros') {
+    html = hubRetiroHTML();
+  } else {
+    try {
+      const res = await fetch(
+        `${SB_URL}/rest/v1/retiros?tipo=eq.${encodeURIComponent(cat)}&select=*&order=fecha_inicio.asc`,
+        { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+      );
+      if (res.ok) {
+        const items = await res.json();
+        items.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
+        if (items.length) {
+          const lbl = HUB_LABELS[cat] || { eyebrow: cat, title: cat, desc: '' };
+          html = `
+            <div class="hub-content-head reveal">
+              <span class="eyebrow" style="font-size:15px">${lbl.eyebrow}</span>
+              <h2>${lbl.title}</h2>
+              ${lbl.desc ? `<p>${lbl.desc}</p>` : ''}
+            </div>
+            <div class="hub-cards-grid">
+              ${items.map(cardHTMLSb).join('')}
+            </div>`;
+        }
+      }
+    } catch(e) {}
+
+    if (!html) {
+      const nombres = { 'Curso':'cursos','Webminar':'webinars','Sesión individual':'sesiones individuales','Intensivo':'intensivos' };
+      html = `<div class="hub-empty">Próximamente ${nombres[cat] || cat} disponibles.<br>¡Vuelve pronto!</div>`;
+    }
+  }
+
+  hub.innerHTML = html;
+  hub.classList.remove('fading');
+  observeReveals();
+}
+
+// Clic en tarjeta del hub
+document.querySelectorAll('.hub-card').forEach(btn =>
+  btn.addEventListener('click', () => cargarCategoria(btn.dataset.cat))
+);
+
+// Carga inicial: render estático inmediato + Supabase async
+(async function initHub() {
+  const hub = document.getElementById('hub-dynamic');
+  hub.innerHTML = `
+    <div class="hub-content-head reveal">
+      <span class="eyebrow" style="font-size:15px">Encuentros</span>
+      <h2>Retiros</h2>
+      <p>Presenciales y online — unas jornadas de silencio y mirada honesta</p>
+    </div>
+    <div class="hub-cards-grid" id="hub-cards-grid">
+      ${presencial.map(cardHTML).join('')}
+      ${online.map(cardHTML).join('')}
+    </div>`;
+  observeReveals();
+
   try {
     const res = await fetch(
       `${SB_URL}/rest/v1/retiros?select=*&order=fecha_inicio.asc`,
@@ -862,16 +1051,23 @@ function cardHTMLSb(r) {
     const retiros = await res.json();
     if (!Array.isArray(retiros) || !retiros.length) return;
 
-    const dynP = retiros.filter(r => r.tipo === 'presencial');
-    const dynO = retiros.filter(r => r.tipo === 'online');
-
-    // APPEND al final de los hardcodeados, no reemplazar
-    if (dynP.length) document.getElementById('grid-presencial').insertAdjacentHTML('beforeend', dynP.map(cardHTMLSb).join(''));
-    if (dynO.length) document.getElementById('grid-online').insertAdjacentHTML('beforeend',     dynO.map(cardHTMLSb).join(''));
-
+    sbRetiros = retiros;
     retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
 
-    // Poblar select de asunto con los retiros reales
+    // Añadir los de Supabase al grid de Retiros si sigue activa esa pestaña
+    const activeCard = document.querySelector('.hub-card.active');
+    if (activeCard?.dataset.cat === 'Retiros') {
+      const grid = document.getElementById('hub-cards-grid');
+      if (grid) {
+        const sbItems = retiros.filter(r => r.tipo === 'presencial' || r.tipo === 'online');
+        if (sbItems.length) {
+          grid.insertAdjacentHTML('beforeend', sbItems.map(cardHTMLSb).join(''));
+          observeReveals();
+        }
+      }
+    }
+
+    // Poblar select de asunto del formulario
     const sel = document.getElementById('asunto');
     const consulta = sel.querySelector('option[value="Consulta general"]');
     retiros.forEach(r => {
@@ -880,13 +1076,11 @@ function cardHTMLSb(r) {
       opt.textContent = r.titulo;
       sel.insertBefore(opt, consulta);
     });
-    // Color placeholder del select
     function syncSelColor(){ sel.classList.toggle('placeholder', !sel.value); }
     syncSelColor();
     sel.addEventListener('change', syncSelColor);
 
-    observeReveals();
-  } catch(e) { /* fallback silencioso a datos estáticos */ }
+  } catch(e) { /* fallback silencioso */ }
 })();
 
 /* ---------- modal ---------- */
