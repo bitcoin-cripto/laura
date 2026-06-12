@@ -435,7 +435,7 @@
   }
 
   /* ---------- HUB DE SERVICIOS (TARJETERO) ---------- */
-  .hub-section{background:var(--sage-dark);padding:60px 0 56px;}
+  .hub-section{background:var(--cream);padding:60px 0 56px;}
   .hub-header{text-align:center;margin-bottom:48px;}
   .hub-header .hub-eyebrow{
     display:block;font-family:"Inter",sans-serif;font-size:.72rem;
@@ -567,73 +567,71 @@
   </div>
 </section>
 
-<!-- brush: cream -> sage-dark -->
-<div class="brush" style="background:#f5f0e8;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleC)"><rect fill="#2d4a5d" x="-10" y="70" width="1460" height="100"/></g><rect fill="#2d4a5d" x="-10" y="115" width="1460" height="60"/></svg>
-</div>
-
 <!-- ===================== HUB TARJETERO ===================== -->
 <section class="section hub-section" id="retiros" data-screen-label="Eventos">
   <div class="wrap">
-    <div class="hub-header reveal">
-      <span class="hub-eyebrow">Encuentra tu encuentro</span>
-      <h2 class="hub-title-main">Eventos</h2>
+    <!-- Títulos superiores -->
+    <div class="text-center max-w-3xl mx-auto px-4 pt-12 mb-10">
+      <h2 class="font-serif text-3xl sm:text-4xl text-stone-800 tracking-wide mb-2">Encuentra tu encuentro</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:.7rem;color:#9a7b56;letter-spacing:.36em;text-transform:uppercase;font-weight:600;">Eventos</p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto px-4 py-8">
 
-      <div class="hub-card active relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Retiros">
-        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Retiros" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
-          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">RETIROS</h3>
-          <p class="text-xs text-stone-200 font-sans opacity-90">Presenciales y online</p>
+    <!-- Grid de 5 tarjetas con texto debajo e imágenes limpias -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto px-4 pb-16">
+
+      <div class="hub-card flex flex-col group cursor-pointer active" data-cat="Retiros">
+        <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
+          <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Retiros" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        </div>
+        <div class="mt-4 text-center" style="font-family:'Inter',sans-serif;">
+          <h3 class="text-sm font-bold tracking-wider text-stone-900 uppercase group-hover:text-[#b59975] transition-colors">RETIROS</h3>
+          <p class="text-xs text-stone-500 mt-1">Presenciales y online</p>
         </div>
       </div>
 
-      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Curso">
-        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80" alt="Cursos" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
-          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">CURSOS</h3>
-          <p class="text-xs text-stone-200 font-sans opacity-90">Formación profunda</p>
+      <div class="hub-card flex flex-col group cursor-pointer" data-cat="Curso">
+        <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Cursos" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        </div>
+        <div class="mt-4 text-center" style="font-family:'Inter',sans-serif;">
+          <h3 class="text-sm font-bold tracking-wider text-stone-900 uppercase group-hover:text-[#b59975] transition-colors">CURSOS</h3>
+          <p class="text-xs text-stone-500 mt-1">Formación profunda</p>
         </div>
       </div>
 
-      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Webminar">
-        <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=80" alt="Webinars" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
-          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">WEBINARS</h3>
-          <p class="text-xs text-stone-200 font-sans opacity-90">En directo desde casa</p>
+      <div class="hub-card flex flex-col group cursor-pointer" data-cat="Webminar">
+        <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
+          <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=80" alt="Webinars" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        </div>
+        <div class="mt-4 text-center" style="font-family:'Inter',sans-serif;">
+          <h3 class="text-sm font-bold tracking-wider text-stone-900 uppercase group-hover:text-[#b59975] transition-colors">WEBINARS</h3>
+          <p class="text-xs text-stone-500 mt-1">En directo desde casa</p>
         </div>
       </div>
 
-      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Sesión individual">
-        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Sesiones" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
-          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">SESIONES</h3>
-          <p class="text-xs text-stone-200 font-sans opacity-90">Acompañamiento individual</p>
+      <div class="hub-card flex flex-col group cursor-pointer" data-cat="Sesión individual">
+        <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
+          <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80" alt="Sesiones" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        </div>
+        <div class="mt-4 text-center" style="font-family:'Inter',sans-serif;">
+          <h3 class="text-sm font-bold tracking-wider text-stone-900 uppercase group-hover:text-[#b59975] transition-colors">SESIONES</h3>
+          <p class="text-xs text-stone-500 mt-1">Acompañamiento individual</p>
         </div>
       </div>
 
-      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Intensivo">
-        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" alt="Intensivos" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
-        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
-          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">INTENSIVOS</h3>
-          <p class="text-xs text-stone-200 font-sans opacity-90">Inmersión total</p>
+      <div class="hub-card flex flex-col group cursor-pointer" data-cat="Intensivo">
+        <div class="w-full h-72 rounded-2xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 group-hover:shadow-md group-hover:scale-[1.02]">
+          <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=600&q=80" alt="Intensivos" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        </div>
+        <div class="mt-4 text-center" style="font-family:'Inter',sans-serif;">
+          <h3 class="text-sm font-bold tracking-wider text-stone-900 uppercase group-hover:text-[#b59975] transition-colors">INTENSIVOS</h3>
+          <p class="text-xs text-stone-500 mt-1">Inmersión total</p>
         </div>
       </div>
 
     </div>
   </div>
 </section>
-
-<!-- brush: sage-dark -> white -->
-<div class="brush" style="background:#2d4a5d;" aria-hidden="true">
-  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg"><rect fill="#2d4a5d" x="-10" y="0" width="1460" height="160"/><g filter="url(#bristleA)"><rect fill="#fdfbf6" x="-10" y="70" width="1460" height="100"/></g><rect fill="#fdfbf6" x="-10" y="115" width="1460" height="60"/></svg>
-</div>
 
 <!-- ===================== CONTENEDOR DINÁMICO ===================== -->
 <section class="section hub-content-section" id="hub-content">
