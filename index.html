@@ -953,7 +953,7 @@ function cardHTMLSb(r) {
   return `
     <div class="flex flex-col bg-[#fbf9f4] rounded-3xl overflow-hidden shadow-sm border border-stone-100 transition-all duration-300 hover:shadow-md reveal">
       <div class="w-full h-48 sm:h-52 overflow-hidden">
-        <img src="${imgSrc}" alt="${r.titulo}" class="w-full h-full object-cover">
+        <img src="${imgSrc.includes('supabase') ? imgSrc.replace('/object/public/','/render/image/public/') + '?width=600&quality=75' : imgSrc}" alt="${r.titulo}" class="w-full h-full object-cover" loading="lazy">
       </div>
       <div class="flex flex-col flex-grow p-6" style="font-family:'Inter',sans-serif;">
         <h4 class="text-xl font-bold text-[#1e293b] text-center mb-4 tracking-wide">${r.titulo}</h4>
