@@ -14,6 +14,15 @@
 <title>Laura Fernández</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { fontFamily: {
+      serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      sans: ['Inter', 'sans-serif'],
+    }}}
+  }
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Dancing+Script:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600&family=Open+Sans:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&family=Raleway:wght@300;400;500;600&family=Roboto:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
@@ -437,42 +446,7 @@
     font-family:"Cormorant Garamond",serif;font-size:clamp(2.4rem,4.8vw,3.8rem);
     font-weight:300;color:#fff;letter-spacing:.06em;line-height:1.05;margin:0;
   }
-  /* Grid de 5 tarjetas */
-  .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;max-width:1200px;margin:0 auto;}
-  /* Tarjeta con imagen de fondo */
-  .hub-card{
-    position:relative;overflow:hidden;border-radius:14px;
-    min-height:300px;cursor:pointer;
-    display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-    padding:0 0 28px;
-    background-size:cover;background-position:center;
-    border:2px solid transparent;
-    transition:transform .4s ease,box-shadow .4s ease,border-color .4s ease;
-  }
-  /* Overlay oscuro sobre la imagen */
-  .hub-card::before{
-    content:"";position:absolute;inset:0;border-radius:14px;
-    background:rgba(0,0,0,.48);
-    transition:background .4s ease;
-  }
-  .hub-card:hover{transform:scale(1.03);box-shadow:0 22px 50px -14px rgba(0,0,0,.6);}
-  .hub-card:hover::before{background:rgba(0,0,0,.28);}
-  .hub-card.active{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),0 12px 40px -14px rgba(201,169,110,.3);}
-  .hub-card.active::before{background:rgba(0,0,0,.38);}
-  /* Todo el texto encima del overlay */
-  .hub-card > *{position:relative;z-index:1;}
-  .hub-text-wrap{display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 16px;}
-  .hub-title{
-    font-family:"Cormorant Garamond",serif;font-size:1.45rem;font-weight:400;
-    color:#fff;letter-spacing:.06em;line-height:1.15;text-align:center;
-    text-shadow:0 2px 10px rgba(0,0,0,.5);
-  }
-  .hub-card.active .hub-title{color:var(--gold);}
-  .hub-sub{
-    font-family:"Inter",sans-serif;font-size:.6rem;letter-spacing:.18em;
-    text-transform:uppercase;color:rgba(253,251,246,.65);line-height:1.4;text-align:center;
-  }
-  .hub-card.active .hub-sub{color:rgba(201,169,110,.85);}
+  .hub-card.active{outline:2px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 2px var(--gold),0 12px 40px -14px rgba(201,169,110,.3);}
   /* Contenedor dinámico */
   .hub-content-section{background:var(--cream);padding:64px 0 90px;min-height:340px;}
   .hub-dynamic{transition:opacity .3s ease;}
@@ -605,47 +579,52 @@
       <span class="hub-eyebrow">Encuentra tu encuentro</span>
       <h2 class="hub-title-main">Eventos</h2>
     </div>
-    <div class="hub-grid">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto px-4 py-8">
 
-      <button class="hub-card active" data-cat="Retiros" aria-label="Retiros"
-        style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80')">
-        <div class="hub-text-wrap">
-          <span class="hub-title">Retiros</span>
-          <span class="hub-sub">Presenciales y online</span>
+      <div class="hub-card active relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Retiros">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80" alt="Retiros" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
+          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">RETIROS</h3>
+          <p class="text-xs text-stone-200 font-sans opacity-90">Presenciales y online</p>
         </div>
-      </button>
+      </div>
 
-      <button class="hub-card" data-cat="Curso" aria-label="Cursos"
-        style="background-image:url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80')">
-        <div class="hub-text-wrap">
-          <span class="hub-title">Cursos</span>
-          <span class="hub-sub">Formación profunda</span>
+      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Curso">
+        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80" alt="Cursos" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
+          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">CURSOS</h3>
+          <p class="text-xs text-stone-200 font-sans opacity-90">Formación profunda</p>
         </div>
-      </button>
+      </div>
 
-      <button class="hub-card" data-cat="Webminar" aria-label="Webinars"
-        style="background-image:url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=80')">
-        <div class="hub-text-wrap">
-          <span class="hub-title">Webinars</span>
-          <span class="hub-sub">En directo desde casa</span>
+      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Webminar">
+        <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=600&q=80" alt="Webinars" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
+          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">WEBINARS</h3>
+          <p class="text-xs text-stone-200 font-sans opacity-90">En directo desde casa</p>
         </div>
-      </button>
+      </div>
 
-      <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales"
-        style="background-image:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80')">
-        <div class="hub-text-wrap">
-          <span class="hub-title">Sesiones</span>
-          <span class="hub-sub">Acompañamiento individual</span>
+      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Sesión individual">
+        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Sesiones" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
+          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">SESIONES</h3>
+          <p class="text-xs text-stone-200 font-sans opacity-90">Acompañamiento individual</p>
         </div>
-      </button>
+      </div>
 
-      <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos"
-        style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80')">
-        <div class="hub-text-wrap">
-          <span class="hub-title">Intensivos</span>
-          <span class="hub-sub">Inmersión total</span>
+      <div class="hub-card relative h-80 rounded-xl overflow-hidden cursor-pointer group shadow-md transition-all duration-300 hover:scale-[1.02]" data-cat="Intensivo">
+        <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=600&q=80" alt="Intensivos" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-black/50 transition-colors duration-300 group-hover:bg-black/40"></div>
+        <div class="absolute inset-0 flex flex-col justify-end p-6 z-10">
+          <h3 class="font-serif text-xl text-white mb-1 tracking-wide">INTENSIVOS</h3>
+          <p class="text-xs text-stone-200 font-sans opacity-90">Inmersión total</p>
         </div>
-      </button>
+      </div>
 
     </div>
   </div>
