@@ -351,7 +351,7 @@ function renderRetiro(r) {
     }
   }
   if (r.lugar) metaHtml += `<div class="meta-item"><span class="k">Lugar</span><span class="v">${r.lugar}</span></div>`;
-  if (r.tipo)  metaHtml += `<div class="meta-item"><span class="k">Modalidad</span><span class="v">${r.tipo === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
+  if (r.tipo)  metaHtml += `<div class="meta-item"><span class="k">Modalidad</span><span class="v">${r.tipo_retiro === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
 
   // Galería
   let galeriaHtml = '';
@@ -365,7 +365,7 @@ function renderRetiro(r) {
   document.getElementById('skeleton').style.display = 'none';
   document.getElementById('retiro-body').style.display = 'block';
   document.getElementById('retiro-body').innerHTML = `
-    <span class="eyebrow">${r.tipo === 'presencial' ? 'Retiro presencial' : 'Retiro online'}</span>
+    <span class="eyebrow">${r.tipo_retiro === 'presencial' ? 'Retiro presencial' : 'Retiro online'}</span>
     <h1>${r.titulo}</h1>
     ${metaHtml ? `<div class="meta">${metaHtml}</div>` : ''}
     ${precioHtml}

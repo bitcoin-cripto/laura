@@ -950,7 +950,7 @@ function cardHTMLSb(r) {
 let sbRetiros = []; // caché de items cargados desde Supabase
 
 function hubRetiroHTML() {
-  const sbItems = sbRetiros.filter(r => r.tipo === 'presencial' || r.tipo === 'online');
+  const sbItems = sbRetiros.filter(r => r.tipo_retiro === 'presencial' || r.tipo_retiro === 'online');
   return `
     <div class="hub-content-head reveal">
       <span class="eyebrow" style="font-size:15px">Encuentros</span>
@@ -1059,7 +1059,7 @@ document.querySelectorAll('.hub-card').forEach(btn =>
     if (activeCard?.dataset.cat === 'Retiros') {
       const grid = document.getElementById('hub-cards-grid');
       if (grid) {
-        const sbItems = retiros.filter(r => r.tipo === 'presencial' || r.tipo === 'online');
+        const sbItems = retiros.filter(r => r.tipo_retiro === 'presencial' || r.tipo_retiro === 'online');
         if (sbItems.length) {
           grid.insertAdjacentHTML('beforeend', sbItems.map(cardHTMLSb).join(''));
           observeReveals();
@@ -1090,7 +1090,7 @@ function openModal(id){
   const inclSection = document.getElementById('m-incl').closest('.modal-incl');
   if (r._sb) {
     document.getElementById('m-img').style.backgroundImage = r.imagen_portada ? `url('${r.imagen_portada}')` : '';
-    document.getElementById('m-loc').textContent   = r.tipo === 'presencial' ? 'Retiro presencial' : 'Retiro online';
+    document.getElementById('m-loc').textContent   = r.tipo_retiro === 'presencial' ? 'Retiro presencial' : 'Retiro online';
     document.getElementById('m-title').textContent = r.titulo;
     // Meta items con etiquetas (Fecha inicio/fin + Lugar + Modalidad)
     const fmtOpts = { day:'numeric', month:'long', year:'numeric' };
@@ -1106,7 +1106,7 @@ function openModal(id){
       }
     }
     if (r.lugar) metaItems += `<div class="modal-meta-item"><span class="mk">Lugar</span><span class="mv">${r.lugar}</span></div>`;
-    if (r.tipo)  metaItems += `<div class="modal-meta-item"><span class="mk">Modalidad</span><span class="mv">${r.tipo === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
+    if (r.tipo)  metaItems += `<div class="modal-meta-item"><span class="mk">Modalidad</span><span class="mv">${r.tipo_retiro === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
     document.getElementById('m-meta-grid').innerHTML = metaItems;
     document.getElementById('m-desc').innerHTML    = r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '');
     document.getElementById('m-incl').innerHTML    = '';

@@ -940,7 +940,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
     label.textContent = 'Guardando…';
     const payload = {
       titulo:            form.titulo.value.trim(),
-      tipo:              form.tipo.value,
+      tipo_retiro:       form.tipo.value,
       fecha_inicio:      form.fecha_inicio.value,
       fecha_fin:         form.fecha_fin.value              || null,
       precio:            parseFloat(form.precio.value),
@@ -1019,7 +1019,7 @@ async function cargarRetiros() {
       const fechaFin = fmtDate(r.fecha_fin);
       const precio   = fmtEur(r.precio);
       const reserva  = fmtEur(r.precio_reserva);
-      const tipoBadge = r.tipo === 'presencial'
+      const tipoBadge = r.tipo_retiro === 'presencial'
         ? '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">🏡 Presencial</span>'
         : '<span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">🌐 Online</span>';
 
@@ -1159,7 +1159,7 @@ function mostrarFormulario(retiro = null) {
   if (retiro) {
     editandoId = retiro.id;
     document.getElementById('titulo').value            = retiro.titulo            || '';
-    document.getElementById('tipo').value              = retiro.tipo              || '';
+    document.getElementById('tipo').value              = retiro.tipo_retiro        || '';
     document.getElementById('lugar').value             = retiro.lugar             || '';
     document.getElementById('fecha_inicio').value      = retiro.fecha_inicio      || '';
     document.getElementById('fecha_fin').value         = retiro.fecha_fin         || '';
