@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Retiro · Laura Fernández No Dualidad</title>
+<link rel="icon" href="favicon.ico"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Dancing+Script:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Josefin+Sans:wght@300;400;500;600&family=Lato:wght@300;400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600&family=Open+Sans:wght@300;400;500;600&family=Oswald:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Poppins:wght@300;400;500;600&family=Raleway:wght@300;400;500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --sage:#7aaec4; --sage-dark:#2d4a5d; --sage-deep:#1e3347;
+    --earth:#a8794f; --earth-deep:#7a5535;
+    --cream:#f5f0e8; --cream-warm:#efe6d6;
+    --ink:#3a3530; --ink-soft:#6b6258;
+    --white:#fdfbf6; --gold:#c9a96e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Inter",sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;
+       display:flex;flex-direction:column;}
+
+  /* ── NAV ──────────────────────────────────────────────── */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:12px clamp(20px,4vw,52px);
+       display:flex;align-items:center;justify-content:space-between;
+       background:rgba(245,240,232,.92);backdrop-filter:blur(8px);
+       box-shadow:0 1px 0 rgba(45,74,93,.1);}
+  .nav .logo-img{height:100px;width:auto;display:block;}
+  .nav-back{display:inline-flex;align-items:center;gap:.5em;font-family:"Inter",sans-serif;
+            font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+            color:var(--sage-dark);text-decoration:none;transition:color .3s;}
+  .nav-back:hover{color:var(--earth);}
+  .nav-back svg{width:16px;height:16px;}
+
+  /* ── HERO — pantalla completa ─────────────────────────── */
+  .hero{margin-top:70px;position:relative;height:calc(100vh - 70px);overflow:hidden;background:var(--sage-dark);}
+  .hero-img{width:100%;height:100%;object-fit:cover;opacity:.8;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(30,51,71,.4));}
+
+  /* ── CONTENT CARD — bordes redondeados arriba y abajo ─── */
+  .wrap{max-width:860px;margin:0 auto;padding:0 clamp(20px,5vw,48px);}
+  .content{background:var(--white);border-radius:24px;position:relative;z-index:2;
+           margin:40px 0 0;
+           padding:clamp(32px,5vw,56px) clamp(24px,5vw,56px) 64px;
+           box-shadow:0 8px 48px -12px rgba(45,74,93,.18);}
+
+  /* ── EYEBROW + TÍTULO ─────────────────────────────────── */
+  .eyebrow{display:block;font-family:"Inter",sans-serif;font-size:.75rem;letter-spacing:.3em;
+           text-transform:uppercase;color:var(--earth);margin-bottom:.7em;}
+  h1{font-family:"Inter",sans-serif;font-size:clamp(1.8rem,4.5vw,2.8rem);
+     font-weight:700;line-height:1.15;color:var(--sage-dark);margin-bottom:.6em;}
+
+  /* ── META ─────────────────────────────────────────────── */
+  .meta{display:flex;flex-wrap:wrap;gap:1.2em 2.5em;margin:1.4em 0 2em;
+        padding:1.2em 0;border-top:1px solid var(--cream-warm);border-bottom:1px solid var(--cream-warm);}
+  .meta-item{display:flex;flex-direction:column;gap:.2em;}
+  .meta-item .k{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+                font-weight:700;color:var(--earth);}
+  .meta-item .v{font-family:"Inter",sans-serif;font-size:1rem;color:var(--ink);font-weight:500;}
+
+  /* ── PRECIO ───────────────────────────────────────────── */
+  .precio-block{display:flex;align-items:center;justify-content:space-between;gap:1em;flex-wrap:wrap;
+                background:var(--cream);border:1px solid var(--cream-warm);
+                border-radius:12px;padding:.75em 1.4em;margin-bottom:2em;}
+  .precio-block .precios{display:inline-flex;align-items:center;gap:.5em;flex-wrap:wrap;}
+  .precio-block .precio-lbl,
+  .precio-block .reserva-lbl{font-family:"Inter",sans-serif;font-size:.9rem;
+                              font-weight:600;color:var(--ink-soft);}
+  .precio-block .precio-amt,
+  .precio-block .reserva-amt{font-family:"Inter",sans-serif;font-size:.9rem;
+                              font-weight:700;color:var(--sage-dark);}
+  .precio-block .sep{color:var(--cream-warm);font-size:1.2rem;margin:0 .2em;}
+
+  /* ── DESCRIPCIÓN ──────────────────────────────────────── */
+  .desc{font-family:"Inter",sans-serif;font-size:1.05rem;line-height:1.8;
+        color:var(--ink-soft);margin-bottom:2em;}
+  .desc .ql-align-center  {text-align:center!important;}
+  .desc .ql-align-right   {text-align:right!important;}
+  .desc .ql-align-justify {text-align:justify!important;}
+  .desc .ql-font-arial    {font-family:Arial,Helvetica,sans-serif!important;}
+  .desc .ql-font-garamond {font-family:"Cormorant Garamond",Georgia,serif!important;}
+  .desc .ql-font-courier  {font-family:"Courier New",monospace!important;}
+  .desc .ql-font-georgia  {font-family:Georgia,serif!important;}
+  .desc .ql-font-verdana  {font-family:Verdana,sans-serif!important;}
+  .desc .ql-font-trebuchet{font-family:"Trebuchet MS",sans-serif!important;}
+  .desc .ql-font-inter    {font-family:"Inter",sans-serif!important;}
+  .desc .ql-font-opensans {font-family:"Open Sans",sans-serif!important;}
+  .desc .ql-font-times    {font-family:"Times New Roman",serif!important;}
+  .desc .ql-font-helvetica{font-family:Helvetica,Arial,sans-serif!important;}
+  .desc .ql-font-tahoma   {font-family:Tahoma,sans-serif!important;}
+  .desc .ql-font-palatino {font-family:Palatino,Georgia,serif!important;}
+  .desc .ql-font-impact   {font-family:Impact,sans-serif!important;}
+  .desc .ql-font-roboto   {font-family:"Roboto",sans-serif!important;}
+  .desc .ql-font-lato     {font-family:"Lato",sans-serif!important;}
+  .desc .ql-font-josefin      {font-family:"Josefin Sans",sans-serif!important;}
+  .desc .ql-font-montserrat  {font-family:"Montserrat",sans-serif!important;}
+  .desc .ql-font-playfair    {font-family:"Playfair Display",serif!important;}
+  .desc .ql-font-nunito      {font-family:"Nunito",sans-serif!important;}
+  .desc .ql-font-poppins     {font-family:"Poppins",sans-serif!important;}
+  .desc .ql-font-merriweather{font-family:"Merriweather",serif!important;}
+  .desc .ql-font-raleway     {font-family:"Raleway",sans-serif!important;}
+  .desc .ql-font-oswald      {font-family:"Oswald",sans-serif!important;}
+  .desc .ql-font-cinzel      {font-family:"Cinzel",serif!important;}
+
+  /* ── GALERÍA ──────────────────────────────────────────── */
+  .galeria{margin:2.5em 0;}
+  .galeria h2{font-family:"Inter",sans-serif;font-size:.75rem;letter-spacing:.28em;
+              text-transform:uppercase;color:var(--earth);margin-bottom:1em;}
+  .galeria-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;}
+  .galeria-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;cursor:pointer;
+                    transition:transform .25s,box-shadow .25s;}
+  .galeria-grid img:hover{transform:scale(1.03);box-shadow:0 8px 24px rgba(0,0,0,.18);}
+
+  /* ── LIGHTBOX ─────────────────────────────────────────── */
+  .lb{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.88);
+      align-items:center;justify-content:center;}
+  .lb.open{display:flex;}
+  .lb img{max-width:90vw;max-height:88vh;border-radius:8px;object-fit:contain;}
+  .lb-close{position:absolute;top:18px;right:22px;background:none;border:none;
+            color:#fff;font-size:2.2rem;cursor:pointer;line-height:1;opacity:.8;}
+  .lb-close:hover{opacity:1;}
+
+  /* ── BOTONES ──────────────────────────────────────────── */
+  .cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:2.5em;}
+  .btn{display:inline-flex;align-items:center;gap:.55em;cursor:pointer;
+       font-family:"Inter",sans-serif;font-size:1rem;letter-spacing:.06em;
+       font-weight:600;padding:.85em 2em;border:none;border-radius:40px;text-decoration:none;
+       transition:transform .3s,background .3s,color .3s,box-shadow .3s;}
+  .btn-earth{background:var(--earth);color:#fff;box-shadow:0 10px 26px -12px rgba(168,121,79,.7);}
+  .btn-earth:hover{background:var(--earth-deep);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--sage-dark);border:1.5px solid var(--sage-dark);}
+  .btn-ghost:hover{background:var(--sage-dark);color:#fff;}
+
+  /* ── SKELETON ─────────────────────────────────────────── */
+  .skeleton{background:linear-gradient(90deg,#e8e0d4 25%,#f0e8df 50%,#e8e0d4 75%);
+            background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:8px;}
+  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .sk-title{height:48px;width:70%;margin-bottom:16px;}
+  .sk-line{height:16px;margin-bottom:10px;}
+  .sk-line.w60{width:60%;}
+  .sk-line.w40{width:40%;}
+
+  /* ── ERROR ────────────────────────────────────────────── */
+  .error-box{text-align:center;padding:80px 24px;}
+  .error-box h2{font-family:"Inter",sans-serif;font-size:2rem;color:var(--sage-dark);margin-bottom:.5em;}
+  .error-box p{color:var(--ink-soft);margin-bottom:2em;}
+
+  /* ── BRUSH (borde irregular antes del footer) ─────────── */
+  .brush{display:block;line-height:0;overflow:hidden;}
+
+  /* ── FOOTER ───────────────────────────────────────────── */
+  .site-footer{background:var(--sage-dark);color:rgba(253,251,246,.78);padding:56px 0 40px;margin-top:0;}
+  .foot-grid{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;}
+  .foot-logo{font-family:"Dancing Script",cursive;font-weight:700;font-size:2.8rem;color:var(--gold);}
+  .foot-tag{font-size:.95rem;font-style:italic;color:rgba(253,251,246,.85);
+            font-weight:500;line-height:1.6;}
+  .foot-legal{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin:18px 0 6px;}
+  .foot-legal a{font-family:"Inter",sans-serif;font-size:.58rem;letter-spacing:.12em;
+                text-transform:uppercase;font-weight:500;color:rgba(253,251,246,.45);
+                text-decoration:none;transition:color .3s ease;}
+  .foot-legal a:hover{color:var(--gold);}
+  .foot-social{display:flex;gap:22px;margin:14px 0 2px;align-items:center;justify-content:center;}
+  .foot-social a{color:rgba(253,251,246,.65);transition:color .3s ease,transform .3s ease;display:inline-flex;}
+  .foot-social a:hover{color:var(--gold);transform:translateY(-3px);}
+  .foot-social svg{width:22px;height:22px;fill:currentColor;}
+  .foot-copyright{font-family:"Inter",sans-serif;font-size:.72rem;letter-spacing:.08em;
+                  color:rgba(253,251,246,.5);margin-top:4px;}
+
+  /* ── WhatsApp flotante ─────────────────────────────────── */
+  .whatsapp-btn{
+    position:fixed;bottom:24px;right:24px;z-index:200;
+    width:48px;height:48px;border-radius:50%;
+    background:#4eba6f;
+    display:flex;align-items:center;justify-content:center;
+    opacity:.82;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+    transition:opacity .35s ease;
+    text-decoration:none;
+  }
+  .whatsapp-btn:hover{opacity:1;}
+  .whatsapp-btn svg{width:24px;height:24px;fill:#fff;}
+  @media(max-width:640px){
+    .whatsapp-btn{width:44px;height:44px;}
+    .whatsapp-btn svg{width:22px;height:22px;}
+    .hero{height:auto;min-height:220px;}
+    .hero-img{height:auto;max-height:60vh;object-fit:contain;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV: logo imagen en lugar de texto -->
+<header class="nav">
+  <a href="index.html">
+    <img src="imgs/logo_dorado_transp.png" alt="Laura Fernández" class="logo-img"/>
+  </a>
+  <a href="index.html#retiros" class="nav-back">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    Volver a retiros
+  </a>
+</header>
+
+<!-- HERO — pantalla completa -->
+<div class="hero" id="hero">
+  <img id="hero-img" src="" alt="" class="hero-img" style="display:none"/>
+  <div class="hero-overlay"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main style="flex:1">
+  <div class="wrap">
+    <div class="content" id="content">
+      <div id="skeleton">
+        <div class="skeleton sk-title"></div>
+        <div class="skeleton sk-line w60"></div>
+        <div class="skeleton sk-line w40"></div>
+        <div style="height:24px"></div>
+        <div class="skeleton sk-line"></div>
+        <div class="skeleton sk-line"></div>
+        <div class="skeleton sk-line w60"></div>
+      </div>
+      <div id="retiro-body" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- espacio entre card y brush -->
+  <div style="height:60px;background:var(--cream)"></div>
+</main>
+
+<!-- SVG filters para el borde irregular (mismo que index.html) -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <defs>
+    <filter id="bristleC" x="-8%" y="-60%" width="116%" height="240%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.022" numOctaves="5" seed="33" stitchTiles="stitch" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- Borde irregular cream → sage-dark (igual que en index.html antes del footer) -->
+<div class="brush" style="background:#f5f0e8;" aria-hidden="true">
+  <svg viewBox="0 0 1440 160" style="display:block" xmlns="http://www.w3.org/2000/svg">
+    <rect fill="#f5f0e8" x="-10" y="0" width="1460" height="160"/>
+    <g filter="url(#bristleC)"><rect fill="#2d4a5d" x="-10" y="70" width="1460" height="100"/></g>
+    <rect fill="#2d4a5d" x="-10" y="115" width="1460" height="60"/>
+  </svg>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <div class="foot-logo">Laura Fernández</div>
+    <p class="foot-tag">Señalando lo que siempre ha estado aquí</p>
+    <div class="foot-social">
+      <a href="https://wa.me/34651079287"
+         target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de Laura Fernández">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+      </a>
+      <a href="https://www.instagram.com/laura_fdez.nodualidad?igsh=MWE5aWptbnFsMmxqeQ%3D%3D&utm_source=qr"
+         target="_blank" rel="noopener noreferrer" aria-label="Instagram de Laura Fernández">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+      <a href="https://www.facebook.com/share/1DxEBSYEBv/?mibextid=wwXIfr"
+         target="_blank" rel="noopener noreferrer" aria-label="Facebook de Laura Fernández">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+        </svg>
+      </a>
+      <a href="https://www.youtube.com/@laurafernandeznodualidad"
+         target="_blank" rel="noopener noreferrer" aria-label="YouTube de Laura Fernández">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="foot-legal">
+      <a href="legal/aviso-legal.html">Aviso Legal</a>
+      <a href="legal/politica-privacidad.html">Política de Privacidad</a>
+      <a href="legal/terminos-condiciones.html">Términos y Condiciones</a>
+      <a href="legal/politica-cookies.html">Política de Cookies</a>
+    </div>
+    <p class="foot-copyright">© 2026 Laura Fernández</p>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lb-close" aria-label="Cerrar">×</button>
+  <img id="lb-img" src="" alt=""/>
+</div>
+
+<script>
+const SB_URL = 'https://hdsevxevvwjelhorofqc.supabase.co';
+const SB_KEY = 'sb_publishable_lFiTdaJuo9MBum9bX_VzGA_zyRNlMZT';
+
+function formatFecha(inicio, fin) {
+  if (!inicio) return '';
+  const loc = 'es-ES';
+  const d1  = new Date(inicio + 'T12:00:00');
+  const fmt  = { day:'numeric', month:'long', year:'numeric' };
+  const fmtM = { day:'numeric', month:'long' };
+  if (!fin || fin === inicio) return d1.toLocaleDateString(loc, fmt);
+  const d2 = new Date(fin + 'T12:00:00');
+  if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth())
+    return `${d1.getDate()} – ${d2.toLocaleDateString(loc, fmt)}`;
+  return `${d1.toLocaleDateString(loc, fmtM)} – ${d2.toLocaleDateString(loc, fmt)}`;
+}
+
+function renderRetiro(r) {
+  if (r.imagen_portada) {
+    const img = document.getElementById('hero-img');
+    img.src = r.imagen_portada;
+    img.style.display = 'block';
+  }
+  document.title = `${r.titulo} · Laura Fernández No Dualidad`;
+
+  // Precio — mismo tamaño para importe y reserva
+  const precioStr  = r.precio         != null ? Number(r.precio).toLocaleString('es-ES')         + '€' : '';
+  const reservaStr = r.precio_reserva != null ? Number(r.precio_reserva).toLocaleString('es-ES') + '€' : '';
+  const reservaBtn = r.stripe_url
+    ? `<a href="${r.stripe_url}" target="_blank" rel="noopener" class="btn btn-earth">Reserva ahora</a>`
+    : `<a href="index.html#contacto" class="btn btn-earth">Reserva ahora</a>`;
+
+  const precioHtml = precioStr
+    ? `<div class="precio-block">
+        <span class="precios">
+          <span class="precio-lbl">Precio:</span>
+          <span class="precio-amt">${precioStr}</span>
+          ${reservaStr
+            ? `<span class="sep">|</span><span class="reserva-lbl">Reserva:</span><span class="reserva-amt">${reservaStr}</span>`
+            : ''}
+        </span>
+        ${reservaBtn}
+       </div>`
+    : '';
+
+  // Meta — fechas
+  const fmt = { day:'numeric', month:'long', year:'numeric' };
+  const loc = 'es-ES';
+  let metaHtml = '';
+  if (r.fecha_inicio) {
+    const d1str = new Date(r.fecha_inicio + 'T12:00:00').toLocaleDateString(loc, fmt);
+    if (r.fecha_fin && r.fecha_fin !== r.fecha_inicio) {
+      const d2str = new Date(r.fecha_fin + 'T12:00:00').toLocaleDateString(loc, fmt);
+      metaHtml += `<div class="meta-item"><span class="k">Fecha inicio</span><span class="v">${d1str}</span></div>`;
+      metaHtml += `<div class="meta-item"><span class="k">Fecha fin</span><span class="v">${d2str}</span></div>`;
+    } else {
+      metaHtml += `<div class="meta-item"><span class="k">Fecha</span><span class="v">${d1str}</span></div>`;
+    }
+  }
+  if (r.lugar) metaHtml += `<div class="meta-item"><span class="k">Lugar</span><span class="v">${r.lugar}</span></div>`;
+  if (r.tipo)  metaHtml += `<div class="meta-item"><span class="k">Modalidad</span><span class="v">${r.tipo === 'presencial' ? 'Presencial' : 'Online'}</span></div>`;
+
+  // Galería
+  let galeriaHtml = '';
+  if (r.galeria_imagenes?.length) {
+    const imgs = r.galeria_imagenes.map((url, i) =>
+      `<img src="${url}" alt="Imagen ${i+1} del retiro" loading="lazy" onclick="abrirLb('${url}')">`
+    ).join('');
+    galeriaHtml = `<div class="galeria"><h2>Galería de imágenes</h2><div class="galeria-grid">${imgs}</div></div>`;
+  }
+
+  document.getElementById('skeleton').style.display = 'none';
+  document.getElementById('retiro-body').style.display = 'block';
+  document.getElementById('retiro-body').innerHTML = `
+    <span class="eyebrow">${r.tipo === 'presencial' ? 'Retiro presencial' : 'Retiro online'}</span>
+    <h1>${r.titulo}</h1>
+    ${metaHtml ? `<div class="meta">${metaHtml}</div>` : ''}
+    ${precioHtml}
+    <div class="desc">${r.descripcion_larga || (r.descripcion_corta ? `<p>${r.descripcion_corta}</p>` : '')}</div>
+    ${galeriaHtml}
+    <div class="cta">
+      <a href="index.html#retiros" class="btn btn-ghost">Ver todos los retiros</a>
+    </div>
+  `;
+}
+
+function mostrarError(msg) {
+  document.getElementById('skeleton').style.display = 'none';
+  document.getElementById('retiro-body').style.display = 'block';
+  document.getElementById('retiro-body').innerHTML = `
+    <div class="error-box">
+      <h2>Retiro no encontrado</h2>
+      <p>${msg}</p>
+      <a href="index.html#retiros" class="btn btn-ghost">Ver todos los retiros</a>
+    </div>`;
+}
+
+// Lightbox
+function abrirLb(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('lb-close').addEventListener('click', () => {
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow = '';
+});
+document.getElementById('lb').addEventListener('click', e => {
+  if (e.target === e.currentTarget) {
+    document.getElementById('lb').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('lb').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// Cargar retiro
+(async () => {
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) { mostrarError('No se ha especificado ningún retiro.'); return; }
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/retiros?id=eq.${encodeURIComponent(id)}&select=*&limit=1`,
+      { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!data.length) { mostrarError('Este retiro no existe o ha sido eliminado.'); return; }
+    renderRetiro(data[0]);
+  } catch(e) {
+    mostrarError('No se pudo cargar la información del retiro.');
+    console.error(e);
+  }
+})();
+</script>
+
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/34651079287" target="_blank" rel="noopener noreferrer"
+   class="whatsapp-btn" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+</body>
+</html>
