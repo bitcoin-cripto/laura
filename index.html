@@ -449,7 +449,7 @@
   }
   .hub-card.active{outline:2px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 2px var(--gold),0 12px 40px -14px rgba(201,169,110,.3);}
   /* Contenedor dinámico */
-  .hub-content-section{background:#d9d3c8;padding:64px 0 96px;min-height:340px;}
+  .hub-content-section{background:#d9d3c8;padding:32px 0 96px;min-height:340px;}
   .hub-dynamic{transition:opacity .3s ease;}
   .hub-dynamic.fading{opacity:0;pointer-events:none;}
   .hub-empty{
@@ -977,7 +977,7 @@ function hubRetiroHTML() {
   const cardsP = [...presencial.map(cardHTML), ...sbPresencial.map(cardHTMLSb)];
   const cardsO = [...online.map(cardHTML),     ...sbOnline.map(cardHTMLSb)];
   const secPresencial = cardsP.length ? `
-    <div class="w-full mt-16 mb-8 max-w-7xl mx-auto px-4">
+    <div class="w-full mt-2 mb-8 max-w-7xl mx-auto px-4">
       <p style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:4px;">Modalidad</p>
       <div class="flex items-center gap-4">
         <h3 class="font-serif text-2xl text-stone-800 tracking-wide font-normal whitespace-nowrap">Retiros Presenciales</h3>
@@ -1054,6 +1054,9 @@ async function cargarCategoria(cat) {
   hub.innerHTML = html;
   hub.classList.remove('fading');
   observeReveals();
+  if (window.innerWidth < 768) {
+    document.getElementById('hub-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 // Clic en tarjeta del hub — gestión de estado activo
