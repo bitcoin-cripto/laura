@@ -573,7 +573,7 @@
     <!-- Encabezado -->
     <div class="sec-head reveal" style="margin-bottom:48px;">
       <span class="eyebrow" style="font-size:15px;font-family:'Inter',sans-serif">Eventos</span>
-      <h2 style="font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);">Encuentra tu evento</h2>
+      <h2 style="font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--sage-dark);font-family:'Cormorant Garamond',serif;">Encuentra tu evento</h2>
     </div>
 
     <!-- Grid de 5 tarjetas -->
@@ -584,7 +584,7 @@
           <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Retiros" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="mt-4 text-center px-2">
-          <h3 style="font-size:18px;font-weight:600;color:var(--sage-dark);font-family:'Inter',sans-serif;" class="transition-colors duration-300 group-hover:text-[#b59975]">Retiros</h3>
+          <h3 style="font-size:18px;font-weight:600;font-family:'Inter',sans-serif;" class="text-[#2d4a5d] transition-colors duration-300 group-hover:text-[#b59975]">Retiros</h3>
           <p class="font-serif italic text-lg text-stone-500 mt-1 transition-colors duration-300 group-hover:text-stone-700">Presenciales y online</p>
         </div>
       </div>
@@ -594,7 +594,7 @@
           <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=600&q=80" alt="Cursos" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="mt-4 text-center px-2">
-          <h3 style="font-size:18px;font-weight:600;color:var(--sage-dark);font-family:'Inter',sans-serif;" class="transition-colors duration-300 group-hover:text-[#b59975]">Cursos</h3>
+          <h3 style="font-size:18px;font-weight:600;font-family:'Inter',sans-serif;" class="text-[#2d4a5d] transition-colors duration-300 group-hover:text-[#b59975]">Cursos</h3>
           <p class="font-serif italic text-lg text-stone-500 mt-1 transition-colors duration-300 group-hover:text-stone-700">Formación profunda</p>
         </div>
       </div>
@@ -604,7 +604,7 @@
           <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=600&q=80" alt="Webinars" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="mt-4 text-center px-2">
-          <h3 style="font-size:18px;font-weight:600;color:var(--sage-dark);font-family:'Inter',sans-serif;" class="transition-colors duration-300 group-hover:text-[#b59975]">Webinars</h3>
+          <h3 style="font-size:18px;font-weight:600;font-family:'Inter',sans-serif;" class="text-[#2d4a5d] transition-colors duration-300 group-hover:text-[#b59975]">Webinars</h3>
           <p class="font-serif italic text-lg text-stone-500 mt-1 transition-colors duration-300 group-hover:text-stone-700">En directo desde casa</p>
         </div>
       </div>
@@ -614,7 +614,7 @@
           <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80" alt="Sesiones" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="mt-4 text-center px-2">
-          <h3 style="font-size:18px;font-weight:600;color:var(--sage-dark);font-family:'Inter',sans-serif;" class="transition-colors duration-300 group-hover:text-[#b59975]">Sesiones</h3>
+          <h3 style="font-size:18px;font-weight:600;font-family:'Inter',sans-serif;" class="text-[#2d4a5d] transition-colors duration-300 group-hover:text-[#b59975]">Sesiones</h3>
           <p class="font-serif italic text-lg text-stone-500 mt-1 transition-colors duration-300 group-hover:text-stone-700">Acompañamiento individual</p>
         </div>
       </div>
@@ -624,7 +624,7 @@
           <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=600&q=80" alt="Intensivos" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <div class="mt-4 text-center px-2">
-          <h3 style="font-size:18px;font-weight:600;color:var(--sage-dark);font-family:'Inter',sans-serif;" class="transition-colors duration-300 group-hover:text-[#b59975]">Intensivos</h3>
+          <h3 style="font-size:18px;font-weight:600;font-family:'Inter',sans-serif;" class="text-[#2d4a5d] transition-colors duration-300 group-hover:text-[#b59975]">Intensivos</h3>
           <p class="font-serif italic text-lg text-stone-500 mt-1 transition-colors duration-300 group-hover:text-stone-700">Inmersión total</p>
         </div>
       </div>
@@ -1038,8 +1038,8 @@ async function cargarCategoria(cat) {
 }
 
 // Clic en tarjeta del hub — gestión de estado activo
-const ACTIVE_CLASSES = ['border-[#a8794f]','bg-[#fbf9f4]','shadow-md','scale-[1.02]','ring-1','ring-[#a8794f]'];
-const INACTIVE_CLASSES = ['border-transparent','ring-0'];
+const ACTIVE_CLASSES = ['border-[#b59975]','bg-[#f5ebd7]','shadow-md','scale-[1.02]'];
+const INACTIVE_CLASSES = ['border-transparent','bg-transparent'];
 function setActiveCard(card) {
   document.querySelectorAll('.hub-card').forEach(c => {
     c.classList.remove(...ACTIVE_CLASSES);
