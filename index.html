@@ -837,8 +837,55 @@ const CAT_IMG = {
   Intensivo:  "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1100&q=80",
 };
 
-const presencial = [];
-const online     = [];
+const presencial = [
+  {
+    id:"leon", img:IMG.leon, tag:"",
+    title:"El silencio que ya Eres", date:"12 – 14 septiembre 2026", place:"León",
+    price:"350€", reserveUrl:"https://buy.stripe.com/4gMcMYg9M4l85cn2n7eEo00",
+    desc:[
+      "Tres días de silencio sostenido en plena montaña de Castilla, donde el ruido habitual se aquieta y lo que permanece se vuelve evidente por sí mismo. Sin nada que alcanzar ni que mejorar, el encuentro consiste en detenerse y mirar con honestidad.",
+      "Las jornadas combinan periodos de silencio, encuentros de indagación con Laura y largos espacios de quietud al aire libre. No se trata de adquirir una nueva creencia, sino de soltar las que sostienen la sensación de separación.",
+      "Un marco sencillo y cuidado para que la atención descanse en su origen, sin agenda y sin personaje que defender."
+    ],
+    incl:["Tres días de programa completo","Alojamiento en casa rural","Comidas vegetarianas incluidas","Encuentros de indagación con Laura","Espacios de silencio guiado"]
+  },
+  {
+    id:"bcn", img:IMG.bcn, tag:"",
+    title:"Encuentro con el Ser", date:"3 – 5 octubre 2026", place:"Barcelona",
+    price:"350€",
+    desc:[
+      "A las afueras de Barcelona, en un espacio de luz mediterránea, este encuentro invita a reconocer aquello que ya está presente antes de todo pensamiento. La cercanía del mar acompaña un ritmo pausado y atento.",
+      "A lo largo de los tres días se alternan diálogos abiertos, indagación directa y momentos de quietud compartida. Laura señala, sin rodeos, los lugares donde la mente vuelve una y otra vez a la idea de ser alguien separado.",
+      "Un espacio para quien intuye que la búsqueda misma puede ser el último velo, y desea mirarlo de frente en compañía."
+    ],
+    incl:["Tres días de programa completo","Alojamiento en espacio mediterráneo","Comidas vegetarianas incluidas","Diálogos e indagación con Laura","Paseos en silencio junto al mar"]
+  },
+];
+
+const online = [
+  {
+    id:"satsang", img:IMG.satsang, tag:"",
+    title:"Satsang Semanal Online", date:"Todos los jueves", place:"19:00h · hora de España",
+    price:"Aportación libre",
+    desc:[
+      "Un encuentro semanal en directo, abierto a cualquier persona con independencia de su recorrido. Cada jueves, un espacio para preguntar, escuchar y mirar juntos los mecanismos que sostienen la ilusión de separación.",
+      "Las sesiones se desarrollan en formato de diálogo: tú planteas lo que te ocupa y Laura señala de forma directa e impersonal. No se requiere preparación ni conocimientos previos.",
+      "Una cita regular para sostener la indagación en lo cotidiano, desde donde estés."
+    ],
+    incl:["Encuentro semanal en directo","Espacio de preguntas y diálogo","Acceso por videollamada","Aportación libre y consciente"]
+  },
+  {
+    id:"sesion", img:IMG.sesion, tag:"",
+    title:"Sesión Individual por Videollamada", date:"A convenir", place:"Horario flexible",
+    price:"A consultar",
+    desc:[
+      "Un encuentro a solas, en el que la indagación se ajusta a lo que en ti pide ser mirado. Sin guion previo, la conversación va directa a los asideros y trampas que sostienen, aparentemente, la sensación de ser alguien separado.",
+      "Estas sesiones ofrecen un espacio íntimo y cuidado para quienes desean acompañamiento personal. La fecha y el horario se acuerdan de forma flexible, según disponibilidad.",
+      "Escríbeme a través del formulario de contacto para concertar día y hora."
+    ],
+    incl:["Sesión individual por videollamada","Duración aproximada de 60 minutos","Día y horario a convenir","Acompañamiento personal y directo"]
+  }
+];
 
 /* ---------- render cards ---------- */
 function cardHTML(r){
