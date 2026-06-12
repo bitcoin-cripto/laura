@@ -449,13 +449,13 @@
   }
   .hub-card.active{outline:2px solid var(--gold);outline-offset:3px;box-shadow:0 0 0 2px var(--gold),0 12px 40px -14px rgba(201,169,110,.3);}
   /* Contenedor dinámico */
-  .hub-content-section{background:#d9d3c8;padding:32px 0 0;min-height:340px;}
+  .hub-content-section{background:#d9d3c8;padding:32px 0 0;min-height:340px;margin-top:-2px;}
   .hub-dynamic{transition:opacity .3s ease;}
   .hub-dynamic.fading{opacity:0;pointer-events:none;}
   .hub-empty{
     text-align:center;padding:80px 0;
     font-family:"Cormorant Garamond",serif;font-style:italic;
-    font-size:1.5rem;color:var(--ink-soft);line-height:1.8;
+    font-size:1.5rem;color:#3a3c36;line-height:1.8;
   }
   /* Grid de tarjetas de retiro (3 columnas) */
   .hub-cards-grid{
@@ -980,7 +980,7 @@ function hubRetiroHTML() {
     <div class="w-full mt-2 mb-8 max-w-7xl mx-auto px-4">
       <p style="font-family:'Inter',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:6px;">Modalidad</p>
       <div class="flex items-center gap-4">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#57534e;font-weight:400;" class="whitespace-nowrap">Retiros Presenciales</h3>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:#57534e;font-weight:400;" class="whitespace-nowrap">Retiros Presenciales</h3>
         <div class="h-px w-full bg-stone-200/80"></div>
       </div>
     </div>
@@ -991,7 +991,7 @@ function hubRetiroHTML() {
     <div class="w-full mt-20 mb-8 max-w-7xl mx-auto px-4">
       <p style="font-family:'Inter',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:6px;">Modalidad</p>
       <div class="flex items-center gap-4">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#57534e;font-weight:400;" class="whitespace-nowrap">Retiros Online</h3>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:#57534e;font-weight:400;" class="whitespace-nowrap">Retiros Online</h3>
         <div class="h-px w-full bg-stone-200/80"></div>
       </div>
     </div>
@@ -1038,7 +1038,7 @@ async function cargarCategoria(cat) {
           const lbl = HUB_LABELS[cat] || { eyebrow: cat, title: cat, desc: '' };
           html = `
             <p style="font-family:'Inter',sans-serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#9a7b56;font-weight:600;margin-bottom:6px;" class="px-4">Modalidad</p>
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#57534e;font-weight:400;" class="mb-6 px-4">${lbl.title}</h3>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:#57534e;font-weight:400;" class="mb-6 px-4">${lbl.title}</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4 mb-12">
               ${items.map(cardHTMLSb).join('')}
             </div>`;
