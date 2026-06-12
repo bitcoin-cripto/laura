@@ -1,0 +1,9 @@
+Opción 2: Usar tu propio servidor de Hostinger con PHP (100% profesional y en español)
+
+Como estuvimos viendo en tus anteriores consultas, tienes contratado un hosting en Hostinger donde vas a subir la web (en la carpeta public_html). Dado que tu hosting soporta PHP de forma nativa, no necesitas depender de herramientas externas como FormSubmit.
+
+Puedes crear un formulario interno que envíe el correo de forma totalmente gratuita, privada y formateado exactamente como tú quieras en español.
+
+Puedes pedirle esto a Claude Code en la terminal:
+
+    "Claude, ya que tengo un hosting en Hostinger que soporta PHP, quiero quitar FormSubmit. Modifica el formulario de la web para que envíe los datos a un archivo llamado enviar.php utilizando el método POST. Créame también ese archivo enviar.php con el código necesario para que procese los campos de nombre, email y mensaje, y me los envíe a mi correo corporativo estructurado de forma bonita y 100% en español."
