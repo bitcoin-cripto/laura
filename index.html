@@ -579,7 +579,7 @@
   <div class="wrap">
     <!-- Encabezado -->
     <div class="text-center max-w-3xl mx-auto px-4 pt-14 mb-12 reveal">
-      <p class="font-sans text-xs text-[#9a7b56] tracking-[0.2em] uppercase font-semibold mb-3">Eventos</p>
+      <p class="font-sans text-[#9a7b56] tracking-[0.2em] uppercase font-semibold mb-3" style="font-size:15px">Eventos</p>
       <h2 class="font-sans text-3xl sm:text-4xl text-[#2e405e] tracking-wide font-medium">Descubre tu evento</h2>
     </div>
 
@@ -1001,7 +1001,7 @@ function hubRetiroHTML() {
       ${cardsO.join('')}
     </div>` : '';
   return secPresencial + secOnline ||
-    `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente retiros disponibles.</p>`;
+    `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente retiros disponibles</p>`;
 }
 
 const HUB_LABELS = {
@@ -1050,7 +1050,7 @@ async function cargarCategoria(cat) {
 
     if (!html) {
       const nombres = { 'Curso':'cursos','Webminar':'webinars','Sesión individual':'sesiones individuales','Intensivo':'intensivos' };
-      html = `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente ${nombres[cat] || cat} disponibles.</p>`;
+      html = `<p style="text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:#3a3530;line-height:1.8;">Próximamente ${nombres[cat] || cat} disponibles</p>`;
     }
   }
 
