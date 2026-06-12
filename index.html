@@ -439,51 +439,29 @@
   }
   .hub-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;max-width:1080px;margin:0 auto;}
   .hub-card{
-    position:relative;overflow:hidden;
-    border:1px solid rgba(201,169,110,.18);border-radius:10px;
-    padding:34px 16px 28px;text-align:center;cursor:pointer;
-    display:flex;flex-direction:column;align-items:center;gap:11px;
-    transition:border-color .4s,box-shadow .4s,transform .4s;
+    border:1px solid rgba(253,251,246,.12);border-radius:8px;
+    padding:36px 18px 30px;text-align:center;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    transition:background .35s,border-color .35s,box-shadow .35s;
     font-family:inherit;
-    background:linear-gradient(160deg,#263544 0%,#1c2c3a 100%);
+    background:rgba(255,255,255,.04);
   }
-  .hub-card::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse at 50% 0%,rgba(201,169,110,.07) 0%,transparent 70%);
-    transition:opacity .4s;
-  }
-  .hub-card:hover{border-color:rgba(201,169,110,.45);transform:translateY(-4px);box-shadow:0 16px 40px -14px rgba(0,0,0,.55);}
+  .hub-card:hover{background:rgba(255,255,255,.08);border-color:rgba(201,169,110,.35);}
   .hub-card.active{
+    background:rgba(201,169,110,.08);
     border-color:var(--gold);
-    box-shadow:0 0 0 1.5px var(--gold),0 12px 40px -12px rgba(201,169,110,.35);
-    background:linear-gradient(160deg,#2e4056 0%,#1e3045 100%);
+    box-shadow:0 0 0 1px var(--gold);
   }
-  .hub-card.active::after{opacity:2;}
-  /* colores individuales por tarjeta */
-  .hub-card[data-cat="Retiros"]   {background:linear-gradient(160deg,#243040 0%,#18252f 100%);}
-  .hub-card[data-cat="Curso"]     {background:linear-gradient(160deg,#2e2418 0%,#201a10 100%);}
-  .hub-card[data-cat="Webminar"]  {background:linear-gradient(160deg,#1a2e3c 0%,#12202c 100%);}
-  .hub-card[data-cat="Sesión individual"]{background:linear-gradient(160deg,#1e2e28 0%,#141e1a 100%);}
-  .hub-card[data-cat="Intensivo"] {background:linear-gradient(160deg,#2c1e18 0%,#1e1410 100%);}
-  .hub-icon{
-    width:42px;height:42px;border-radius:50%;
-    background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.2);
-    display:flex;align-items:center;justify-content:center;
-    transition:background .35s,border-color .35s;
-  }
-  .hub-card:hover .hub-icon,.hub-card.active .hub-icon{background:rgba(201,169,110,.18);border-color:rgba(201,169,110,.45);}
-  .hub-icon svg{width:20px;height:20px;stroke:rgba(201,169,110,.75);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
-  .hub-card.active .hub-icon svg{stroke:var(--gold);}
   .hub-title{
-    font-family:"Cormorant Garamond",serif;font-size:1.18rem;font-weight:500;
-    color:rgba(253,251,246,.92);letter-spacing:.03em;line-height:1.2;
+    font-family:"Cormorant Garamond",serif;font-size:1.35rem;font-weight:400;
+    color:rgba(253,251,246,.9);letter-spacing:.06em;line-height:1.2;
   }
   .hub-card.active .hub-title{color:var(--gold);}
   .hub-sub{
-    font-family:"Inter",sans-serif;font-size:.58rem;letter-spacing:.16em;
-    text-transform:uppercase;color:rgba(253,251,246,.38);line-height:1.4;
+    font-family:"Inter",sans-serif;font-size:.62rem;letter-spacing:.18em;
+    text-transform:uppercase;color:rgba(253,251,246,.35);line-height:1.4;
   }
-  .hub-card.active .hub-sub{color:rgba(201,169,110,.65);}
+  .hub-card.active .hub-sub{color:rgba(201,169,110,.6);}
   /* Contenedor dinámico */
   .hub-content-section{background:var(--cream);padding:64px 0 90px;min-height:340px;}
   .hub-dynamic{transition:opacity .3s ease;}
@@ -617,47 +595,27 @@
     </div>
     <div class="hub-grid">
 
-      <!-- Retiros -->
       <button class="hub-card active" data-cat="Retiros" aria-label="Retiros">
-        <div class="hub-icon">
-          <svg viewBox="0 0 24 24"><path d="M3 17L9 7l3 5 2-3 5 8H3z"/></svg>
-        </div>
         <span class="hub-title">Retiros</span>
         <span class="hub-sub">Presenciales y online</span>
       </button>
 
-      <!-- Cursos -->
       <button class="hub-card" data-cat="Curso" aria-label="Cursos">
-        <div class="hub-icon">
-          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-        </div>
         <span class="hub-title">Cursos</span>
         <span class="hub-sub">Formación profunda</span>
       </button>
 
-      <!-- Webinars -->
       <button class="hub-card" data-cat="Webminar" aria-label="Webinars">
-        <div class="hub-icon">
-          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        </div>
         <span class="hub-title">Webinars</span>
         <span class="hub-sub">En directo desde casa</span>
       </button>
 
-      <!-- Sesiones individuales -->
       <button class="hub-card" data-cat="Sesión individual" aria-label="Sesiones individuales">
-        <div class="hub-icon">
-          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        </div>
         <span class="hub-title">Sesiones</span>
         <span class="hub-sub">Acompañamiento individual</span>
       </button>
 
-      <!-- Intensivos -->
       <button class="hub-card" data-cat="Intensivo" aria-label="Intensivos">
-        <div class="hub-icon">
-          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
         <span class="hub-title">Intensivos</span>
         <span class="hub-sub">Inmersión total</span>
       </button>
