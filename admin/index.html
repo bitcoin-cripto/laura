@@ -1061,7 +1061,7 @@ document.getElementById('form-retiro').addEventListener('submit', async (e) => {
     const payload = {
       titulo:            form.titulo.value.trim(),
       tipo:              form.tipo_categoria.value,
-      tipo_retiro:       form.tipo_retiro.value || 'N/A',
+      tipo_retiro:       (form.tipo_categoria.value === 'Retiro' ? (document.getElementById('tipo_retiro').value || 'presencial') : 'N/A'),
       fecha_inicio:      form.fecha_inicio.value,
       fecha_fin:         form.fecha_fin.value              || null,
       precio:            parseFloat(form.precio.value),
