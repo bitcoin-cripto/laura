@@ -1056,43 +1056,44 @@ document.querySelectorAll('.hub-card').forEach(btn =>
   observeReveals();
 
   try {
-    // Traer todos los registros para poblar allRetreats y el select
-    const resAll = await fetch(
+    const res = await fetch(
       `${SB_URL}/rest/v1/retiros?select=*&order=fecha_inicio.asc`,
       { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` } }
     );
-    if (!resAll.ok) return;
-    const todos = await resAll.json();
-    if (!Array.isArray(todos)) return;
-    todos.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
-    sbRetiros = todos;
+    if (!res.ok) return;
+    const retiros = await res.json();
+    if (!Array.isArray(retiros) || !retiros.length) return;
 
-    // — Grids de retiros: re-renderizar todo si la pestaña Retiros sigue activa —
+    sbRetiros = retiros;
+    retiros.forEach(r => { allRetreats[r.id] = { ...r, _sb: true }; });
+
+    // Añadir tarjetas de Supabase a los grids si la pestaña Retiros sigue activa
     const activeCard = document.querySelector('.hub-card.active');
     if (activeCard?.dataset.cat === 'Retiros') {
-      const hub = document.getElementById('hub-dynamic');
-      if (hub) {
-        hub.innerHTML = hubRetiroHTML();
-        observeReveals();
-      }
+      const gridP = document.getElementById('hub-grid-presencial');
+      const gridO = document.getElementById('hub-grid-online');
+      const sbP = retiros.filter(r => r.tipo_retiro === 'presencial');
+      const sbO = retiros.filter(r => r.tipo_retiro === 'online');
+      if (gridP && sbP.length) { gridP.insertAdjacentHTML('beforeend', sbP.map(cardHTMLSb).join('')); observeReveals(); }
+      if (gridO && sbO.length) { gridO.insertAdjacentHTML('beforeend', sbO.map(cardHTMLSb).join('')); observeReveals(); }
     }
 
-    // — Poblar select de asunto del formulario —
+    // Poblar select de asunto del formulario
     const sel = document.getElementById('asunto');
     if (sel) {
       const consulta = sel.querySelector('option[value="Consulta general"]');
-      todos.forEach(r => {
+      retiros.forEach(r => {
         const opt = document.createElement('option');
         opt.value = r.titulo;
         opt.textContent = r.titulo;
         sel.insertBefore(opt, consulta);
       });
-      function syncSelColor(){ sel.classList.toggle('placeholder', !sel.value); }
+      const syncSelColor = () => sel.classList.toggle('placeholder', !sel.value);
       syncSelColor();
       sel.addEventListener('change', syncSelColor);
     }
 
-  } catch(e) { /* fallback silencioso */ }
+  } catch(e) { console.error('initHub error:', e); }
 })();
 
 /* ---------- modal ---------- */
